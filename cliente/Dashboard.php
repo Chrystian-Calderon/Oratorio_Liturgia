@@ -9,6 +9,135 @@ if (
   exit();
 }
 ?>
+<!-- CONEXION CON LA BASE DE DATOS EL DASCHBOARD -->
+<?php
+include("../servidor/conexionBD.php");
+
+// Total de personas
+$sql = "SELECT COUNT(*) AS total FROM personas";
+$resultado = $conexion->query($sql);
+$totalPersonas = $resultado->fetch_assoc()['total'];
+
+// Total de usuarios
+$sql = "SELECT COUNT(*) AS total FROM usuarios_sistema";
+$resultado = $conexion->query($sql);
+$totalUsuarios = $resultado->fetch_assoc()['total'];
+
+// Total de universidades
+$sql = "SELECT COUNT(*) AS total FROM universidades";
+$resultado = $conexion->query($sql);
+$totalUniversidades = $resultado->fetch_assoc()['total'];
+
+// Total de eventos
+$sql = "SELECT COUNT(*) AS total FROM eventos";
+$resultado = $conexion->query($sql);
+$totalEventos = $resultado->fetch_assoc()['total'];
+
+// Total de actividades
+$sql = "SELECT COUNT(*) AS total FROM actividades";
+$resultado = $conexion->query($sql);
+$totalActividades = $resultado->fetch_assoc()['total'];
+
+// Total de inscripciones
+$sql = "SELECT COUNT(*) AS total FROM inscripcion";
+$resultado = $conexion->query($sql);
+$totalInscripciones = $resultado->fetch_assoc()['total'];
+
+// Total de pagos
+$sql = "SELECT COUNT(*) AS total FROM pagos";
+$resultado = $conexion->query($sql);
+$totalPagos = $resultado->fetch_assoc()['total'];
+
+// Total de asistencias
+$sql = "SELECT COUNT(*) AS total FROM asistencias";
+$resultado = $conexion->query($sql);
+$totalAsistencias = $resultado->fetch_assoc()['total'];
+
+// PERSONAS POR TIPO
+$sql = "SELECT tipo_persona, COUNT(*) AS total
+        FROM personas
+        GROUP BY tipo_persona";
+
+$resultado = $conexion->query($sql);
+
+$tiposPersona = [];
+$totalesPersona = [];
+
+while ($fila = $resultado->fetch_assoc()) {
+  $tiposPersona[] = $fila['tipo_persona'];
+  $totalesPersona[] = $fila['total'];
+}
+
+// EVENTOS POR MES
+$sql = "SELECT
+            MONTH(fecha_evento) AS mes,
+            COUNT(*) AS total
+        FROM eventos
+        WHERE fecha_evento IS NOT NULL
+        GROUP BY MONTH(fecha_evento)
+        ORDER BY MONTH(fecha_evento)";
+
+$resultado = $conexion->query($sql);
+
+// Meses del año
+$meses = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre"
+];
+
+// Inicializar todos los meses con 0
+$datosEventos = array_fill(0, 12, 0);
+
+while ($fila = $resultado->fetch_assoc()) {
+  $datosEventos[$fila['mes'] - 1] = $fila['total'];
+}
+
+// INSCRIPCIONES POR ACTIVIDAD
+$sql = "SELECT
+            a.nombre_actividad,
+            COUNT(i.id_inscripcion) AS total
+        FROM actividades a
+        LEFT JOIN inscripcion i
+            ON a.id_actividad = i.id_actividad
+        GROUP BY a.id_actividad
+        ORDER BY total DESC";
+
+$resultado = $conexion->query($sql);
+
+$actividades = [];
+$totalInscripcionesActividad = [];
+
+while ($fila = $resultado->fetch_assoc()) {
+
+  $actividades[] = $fila['nombre_actividad'];
+  $totalInscripcionesActividad[] = $fila['total'];
+}
+
+// ÚLTIMAS PERSONAS REGISTRADAS
+$sql = "SELECT
+            p.ci,
+            CONCAT(p.nombres,' ',p.apellidos) AS nombre,
+            u.nombre AS universidad,
+            p.estado
+        FROM personas p
+        LEFT JOIN universidades u
+            ON p.id_universidad = u.id_universidad
+        ORDER BY p.id_persona DESC
+        LIMIT 5";
+
+$ultimasPersonas = $conexion->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -20,330 +149,306 @@ if (
   <!-- Bootstrap, FontAwesome, ChartJS, Export libs -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/Dashboard.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="../js/Dashboard.js"></script>
 
   <style>
-    :root {
-      --primary: #0d6efd;
-      --sidebar-bg: #343a40;
-      --sidebar-hover: #495057;
-      --sidebar-active: #0d6efd;
-      --card-bg: #ffffff;
-      --muted: #6c757d;
-    }
+    /* ============================================
+       ORGANIZACIÓN DE COLORES DEL MENÚ LATERAL
+       ============================================ */
 
-    /* DARK THEME VARS (applied when body.dark) */
-    body.dark {
-      --primary: #4e73df;
-      --sidebar-bg: #1f2428;
-      --sidebar-hover: #2b3136;
-      --card-bg: #111315;
-      --muted: #aeb6bd;
-      background: #0b0d0f;
-      color: #e6eef6;
-    }
-
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-      font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--card-bg);
-    }
-
-    /* SIDEBAR */
+    /* === ESTILOS GENERALES DEL SIDEBAR === */
     #sidebar {
+      background: linear-gradient(180deg, #1a2332 0%, #243447 100%);
+      box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      width: 280px;
+      min-height: 100vh;
       position: fixed;
-      left: 0;
       top: 0;
-      bottom: 0;
-      width: 250px;
-      background: var(--sidebar-bg);
-      color: #fff;
-      z-index: 1100;
-      transition: transform .28s ease, box-shadow .28s;
-      box-shadow: 0 0 12px rgba(0, 0, 0, .12);
+      left: 0;
+      z-index: 1050;
+      overflow-y: auto;
+      padding-bottom: 20px;
     }
 
     #sidebar.hidden {
-      transform: translateX(-260px)
+      transform: translateX(-100%);
     }
 
     #sidebar .sidebar-header {
-      padding: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, .06);
-      display: flex;
-      align-items: center;
-      justify-content: space-between
+      padding: 1.2rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.15);
     }
 
-    #sidebar .sidebar-header h3 {
-      margin: 0;
-      font-size: 1rem
-    }
-
-    #sidebar .close-sidebar {
-      background: transparent;
-      border: 0;
-      color: inherit
-    }
-
+    /* === ÍCONOS DE SECCIÓN PRINCIPAL === */
     #sidebar .components {
-      padding: 12px 0;
-      overflow: auto;
-      height: calc(100vh - 220px)
+      padding: 0;
+      margin: 0;
     }
 
-    #sidebar .components li a {
-      display: block;
-      padding: 10px 18px;
-      color: rgba(255, 255, 255, .9);
-      text-decoration: none;
+    #sidebar .components>li {
+      list-style: none;
+    }
+
+    #sidebar .components>li>a,
+    #sidebar .components>li .submenu-toggle {
+      padding: 0.7rem 1.2rem;
+      margin: 2px 0;
+      border-radius: 0;
+      color: rgba(255, 255, 255, 0.75);
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
       border-left: 3px solid transparent;
-      transition: all .18s ease
-    }
-
-    #sidebar .components li a i {
-      width: 20px;
-      margin-right: 10px;
-      text-align: center
-    }
-
-    #sidebar .components li a:hover {
-      background: var(--sidebar-hover);
-      color: #fff;
-      border-left: 3px solid var(--sidebar-active)
-    }
-
-    #sidebar .components li.active>a {
-      background: var(--sidebar-active);
-      color: #fff;
-      border-left: 3px solid #fff
-    }
-
-    /* Submenu improved */
-    .has-submenu>.submenu-toggle {
       cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 10px 18px;
-      color: rgba(255, 255, 255, .9)
+      text-decoration: none;
     }
 
-    .submenu {
+    #sidebar .components>li>a:hover,
+    #sidebar .components>li .submenu-toggle:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border-left-color: #4e9eff;
+    }
+
+    #sidebar .components>li>a i,
+    #sidebar .components>li .submenu-toggle i {
+      width: 24px;
+      text-align: center;
+      margin-right: 10px;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* === COLORES POR SECCIÓN (ÍCONOS) === */
+
+    /* Dashboard - Azul */
+    #sidebar .components>li:first-child>a i {
+      color: #4e9eff;
+    }
+
+    /* Estadísticas - Verde */
+    #sidebar .components>li:nth-child(2)>a i {
+      color: #34d399;
+    }
+
+    /* Calendario - Naranja */
+    #sidebar .components>li:nth-child(3)>a i {
+      color: #f59e0b;
+    }
+
+    /* Panel Actividades - Morado */
+    #sidebar .components>li:nth-child(4)>a i {
+      color: #a78bfa;
+    }
+
+    /* Tablas - Cian */
+    #sidebar .components>li:nth-child(5) .submenu-toggle i:first-child {
+      color: #22d3ee;
+    }
+
+    /* Eventos y Actividades - Rosa */
+    #sidebar .components>li:nth-child(6) .submenu-toggle i:first-child {
+      color: #f472b6;
+    }
+
+    /* Reportes - Rojo */
+    #sidebar .components>li:nth-child(7) .submenu-toggle i:first-child {
+      color: #f87171;
+    }
+
+    /* Formularios - Amarillo */
+    #sidebar .components>li:nth-child(8) .submenu-toggle i:first-child {
+      color: #fbbf24;
+    }
+
+    /* Mis Eventos - Verde */
+    #sidebar .components>li[data-section="mis-eventos"]>a i {
+      color: #34d399;
+    }
+
+    /* Participantes - Azul */
+    #sidebar .components>li[data-section="participantes"]>a i {
+      color: #60a5fa;
+    }
+
+    /* Reportes - Rojo */
+    #sidebar .components>li[data-section="reportes"]>a i {
+      color: #f87171;
+    }
+
+    /* Ayuda - Gris */
+    #sidebar .components>li[data-section="ayuda"]>a i {
+      color: #9ca3af;
+    }
+
+    /* === SUBMENÚS === */
+    #sidebar .submenu {
+      background: rgba(0, 0, 0, 0.2);
+      border-left: 2px solid rgba(78, 158, 255, 0.2);
+      margin: 0 0 0 8px;
+      padding: 4px 0;
       max-height: 0;
       overflow: hidden;
-      transition: max-height .28s ease;
-      padding-left: 0;
-      background: rgba(255, 255, 255, .02)
-    }
-
-    .submenu.show {
-      max-height: 1000px;
-      padding-top: 6px;
-      padding-bottom: 6px
-    }
-
-    .submenu li a {
-      padding: 10px 45px;
-      display: block;
-      color: rgba(255, 255, 255, .92)
-    }
-
-    .rotate-icon {
-      transition: transform .28s ease
-    }
-
-    .has-submenu.open .rotate-icon {
-      transform: rotate(90deg)
-    }
-
-    /* overlay */
-    #overlaySidebar {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, .45);
-      z-index: 1050;
+      transition: max-height 0.3s ease-out, opacity 0.3s ease;
       opacity: 0;
-      visibility: hidden;
-      transition: opacity .18s ease, visibility .18s
+      list-style: none;
+    }
+
+    #sidebar .submenu.show {
+      max-height: 600px;
+      opacity: 1;
+      transition: max-height 0.4s ease-in, opacity 0.3s ease;
+    }
+
+    #sidebar .submenu li a {
+      padding: 0.5rem 1rem 0.5rem 2.8rem;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    #sidebar .submenu li a:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+      border-left-color: #4e9eff;
+    }
+
+    #sidebar .submenu li a i {
+      width: 20px;
+      text-align: center;
+      margin-right: 8px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    #sidebar .submenu li a:hover i {
+      color: #4e9eff;
+    }
+
+    /* === ESTADOS ACTIVOS === */
+    #sidebar .components>li.active>a,
+    #sidebar .components>li.active .submenu-toggle {
+      background: rgba(78, 158, 255, 0.15);
+      color: #ffffff;
+      border-left-color: #4e9eff;
+    }
+
+    #sidebar .components>li.active>a i,
+    #sidebar .components>li.active .submenu-toggle i {
+      color: #4e9eff !important;
+    }
+
+    /* === ICONO DE ROTACIÓN EN SUBMENÚ === */
+    #sidebar .rotate-icon {
+      transition: transform 0.3s ease;
+      margin-left: auto;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    #sidebar .has-submenu.open .rotate-icon {
+      transform: rotate(90deg);
+    }
+
+    .submenu-toggle {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.75);
+      padding: 0.7rem 1.2rem;
+      cursor: pointer;
+    }
+
+    .submenu-toggle span {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+
+    /* === PERFIL DE USUARIO EN EL PIE === */
+    #sidebar .p-3 {
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      margin-top: auto;
+    }
+
+    #sidebar .p-3 h6 {
+      color: #ffffff;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    #sidebar .p-3 .small-muted {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.8rem;
+    }
+
+    /* === SCROLLBAR DEL SIDEBAR === */
+    #sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    #sidebar::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    #sidebar::-webkit-scrollbar-thumb {
+      background: rgba(78, 158, 255, 0.4);
+      border-radius: 4px;
+    }
+
+    #sidebar::-webkit-scrollbar-thumb:hover {
+      background: rgba(78, 158, 255, 0.6);
+    }
+
+    /* === OVERLAY PARA MÓVIL === */
+    #overlaySidebar {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1040;
     }
 
     #overlaySidebar.show {
-      opacity: 1;
-      visibility: visible
-    }
-
-    /* main content */
-    #content {
-      margin-left: 250px;
-      padding: 18px;
-      transition: margin-left .28s ease;
-      min-height: 100vh;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent)
-    }
-
-    #content.fullwidth {
-      margin-left: 0
-    }
-
-    .navbar {
-      margin-bottom: 18px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, .06);
-      background: var(--card-bg)
-    }
-
-    .card {
-      border-radius: 10px;
-      background: var(--card-bg);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04)
-    }
-
-    .stats-card {
-      padding: 16px;
-      color: #fff;
-      text-align: center;
-      border-radius: 10px
-    }
-
-    .bg-custom-primary {
-      background: linear-gradient(45deg, #4e73df, #224abe)
-    }
-
-    .bg-custom-success {
-      background: linear-gradient(45deg, #1cc88a, #13855c)
-    }
-
-    .bg-custom-info {
-      background: linear-gradient(45deg, #36b9cc, #258391)
-    }
-
-    .bg-custom-warning {
-      background: linear-gradient(45deg, #f6c23e, #dda20a)
-    }
-
-    .bg-custom-purple {
-      background: linear-gradient(45deg, #6f42c1, #523592)
-    }
-
-    .bg-custom-pink {
-      background: linear-gradient(45deg, #e83e8c, #c2176a)
-    }
-
-    .bg-custom-cyan {
-      background: linear-gradient(45deg, #17a2b8, #117a8b)
-    }
-
-    /* Secciones de contenido */
-    .content-section {
-      display: none;
-      animation: fadeIn 0.5s;
-    }
-
-    .content-section.active {
       display: block;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
+    /* === CONTENIDO PRINCIPAL === */
+    #content {
+      margin-left: 280px;
+      transition: margin-left 0.3s ease;
+      min-height: 100vh;
     }
 
-    /* responsive toggles - MEJORADO */
-    #sidebarToggle {
-      background: transparent;
-      border: 0;
-      color: var(--sidebar-bg);
-      font-size: 1.15rem
+    #content.fullwidth {
+      margin-left: 0;
     }
 
-    @media (max-width:992px) {
-      #sidebar {
-        transform: translateX(-260px)
-      }
-
-      #sidebar.visible {
-        transform: translateX(0)
-      }
-
-      #content {
-        margin-left: 0
-      }
-
-      #overlaySidebar {
-        display: block
-      }
-    }
-
-    .table th {
-      background-color: #4e73df;
-      color: #fff
-    }
-
-    .section-title {
-      border-left: 4px solid var(--primary);
-      padding-left: 10px;
-      margin: 14px 0
-    }
-
-    .small-muted {
-      color: var(--muted);
-      font-size: .9rem
-    }
-
-    /* search boxes */
-    .search-input {
-      max-width: 360px
-    }
-
-    /* toast container */
-    #toasts {
-      position: fixed;
-      right: 18px;
-      top: 18px;
-      z-index: 2000;
-    }
-
-    /* subtle focus */
-    a:focus,
-    button:focus,
-    input:focus {
-      outline: 3px solid rgba(78, 115, 223, 0.12);
-      outline-offset: 2px;
-    }
-
-    /* Export dropdown improvements */
-    .export-dropdown .dropdown-menu {
-      width: 200px;
-    }
-
-    .export-dropdown .dropdown-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .export-dropdown .dropdown-item i {
-      width: 16px;
-      text-align: center;
-    }
-
-    /* Mejoras adicionales */
     .sidebar-toggle-desktop {
       background: transparent;
-      border: 0;
-      color: var(--sidebar-bg);
-      font-size: 1.15rem;
+      border: none;
+      font-size: 1.5rem;
+      color: #333;
+      cursor: pointer;
       transition: transform 0.3s ease;
     }
 
@@ -351,227 +456,353 @@ if (
       transform: rotate(90deg);
     }
 
-    .btn-action {
+    .close-sidebar {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 991.98px) {
+      #sidebar {
+        transform: translateX(-100%);
+        width: 300px;
+        transition: transform 0.3s ease;
+      }
+
+      #sidebar.visible {
+        transform: translateX(0);
+      }
+
+      #content {
+        margin-left: 0;
+      }
+
+      #sidebar .components>li>a,
+      #sidebar .components>li .submenu-toggle {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      #sidebar .submenu li a {
+        padding: 0.4rem 1rem 0.4rem 2.5rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* === TEMA OSCURO AJUSTES === */
+    body.dark #sidebar {
+      background: linear-gradient(180deg, #0d1117 0%, #161b22 100%);
+    }
+
+    body.dark #sidebar .components>li>a,
+    body.dark #sidebar .components>li .submenu-toggle {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    body.dark #sidebar .components>li>a:hover,
+    body.dark #sidebar .components>li .submenu-toggle:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+    }
+
+    body.dark #sidebar .submenu {
+      background: rgba(0, 0, 0, 0.3);
+      border-left-color: rgba(78, 158, 255, 0.15);
+    }
+
+    body.dark #sidebar .submenu li a {
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    body.dark #sidebar .submenu li a:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: #ffffff;
+    }
+
+    body.dark #sidebar .components>li.active>a,
+    body.dark #sidebar .components>li.active .submenu-toggle {
+      background: rgba(78, 158, 255, 0.1);
+    }
+
+    body.dark #sidebar .p-3 {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark .sidebar-toggle-desktop {
+      color: #e0e0e0;
+    }
+
+    /* ============================================
+       MEJORA VISUAL DE ÍCONOS DEL SIDEBAR
+       ============================================ */
+
+    /* Tamaño y estilo consistente de íconos */
+    #sidebar .components>li>a i.fa-fw,
+    #sidebar .components>li .submenu-toggle i.fa-fw {
+      width: 1.5rem;
+      text-align: center;
+      font-size: 1.05rem;
       transition: all 0.2s ease;
     }
 
-    .btn-action:hover {
-      transform: scale(1.05);
+    /* Efecto hover en íconos */
+    #sidebar .components>li>a:hover i,
+    #sidebar .components>li .submenu-toggle:hover i {
+      transform: scale(1.1);
     }
 
+    /* Badges de notificaciones en el sidebar */
+    #sidebar .badge-notification {
+      background: #ef4444;
+      color: white;
+      font-size: 0.65rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      margin-left: 8px;
+    }
+
+    /* Separador sutil entre secciones */
+    #sidebar .components>li:not(:last-child) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    /* ============================================
+       ESTILOS ADICIONALES PARA EL DASHBOARD
+       ============================================ */
+
     .stats-card {
-      transition: transform 0.3s ease;
+      padding: 1.2rem 1.5rem;
+      border-radius: 12px;
+      color: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: none;
     }
 
     .stats-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     }
 
-    .nav-tabs .nav-link {
-      border: none;
-      color: var(--muted);
-      font-weight: 500;
+    .stats-number {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
     }
 
-    .nav-tabs .nav-link.active {
-      border-bottom: 3px solid var(--primary);
-      color: var(--primary);
-      background: transparent;
+    .bg-custom-primary {
+      background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
     }
 
-    /* Botones de exportación mejorados */
-    .export-buttons {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+    .bg-custom-success {
+      background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%);
     }
 
-    .export-buttons .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 100px;
-      transition: all 0.3s ease;
-      border-radius: 6px;
-      font-weight: 500;
+    .bg-custom-warning {
+      background: linear-gradient(135deg, #f6c23e 0%, #dda20a 100%);
     }
 
-    .export-buttons .btn i {
-      margin-right: 6px;
+    .bg-custom-info {
+      background: linear-gradient(135deg, #36b9cc 0%, #258391 100%);
     }
 
-    .export-all-btn {
-      background: linear-gradient(45deg, #6c757d, #495057);
-      border: none;
-      color: white;
+    .bg-custom-purple {
+      background: linear-gradient(135deg, #858796 0%, #5a5c69 100%);
     }
 
-    .export-all-btn:hover {
-      background: linear-gradient(45deg, #5a6268, #3d4449);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .badge-status {
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: capitalize;
     }
 
-    /* Estilos para las nuevas secciones */
-    .action-buttons {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+    .badge-status.active {
+      background: #d4edda;
+      color: #155724;
     }
 
-    .info-card {
-      border-left: 4px solid #4e73df;
-      background: var(--card-bg);
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 15px;
+    .badge-status.upcoming {
+      background: #cce5ff;
+      color: #004085;
     }
 
-    .info-card.warning {
-      border-left-color: #f6c23e;
+    .badge-status.completed {
+      background: #e2e3e5;
+      color: #383d41;
     }
 
-    .info-card.success {
-      border-left-color: #1cc88a;
+    .badge-status.confirmado {
+      background: #d4edda;
+      color: #155724;
     }
 
-    .info-card.purple {
-      border-left-color: #6f42c1;
+    .badge-status.pendiente {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-status.asistio {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .badge-status.cancelado {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .content-section {
+      display: none;
+      padding: 20px 0;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .section-title {
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 0.25rem;
+    }
+
+    .small-muted {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    .filters-container {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
     }
 
     .quick-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .quick-stat-item {
-      background: var(--card-bg);
-      padding: 15px;
-      border-radius: 8px;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       text-align: center;
-      border-top: 4px solid #4e73df;
-      transition: transform 0.3s ease;
-    }
-
-    .quick-stat-item:hover {
-      transform: translateY(-5px);
+      border: 1px solid #e9ecef;
     }
 
     .quick-stat-item .stat-icon {
-      font-size: 2rem;
-      margin-bottom: 10px;
+      font-size: 1.8rem;
       color: #4e73df;
+      margin-bottom: 0.5rem;
     }
 
     .quick-stat-item .stat-value {
       font-size: 1.8rem;
-      font-weight: bold;
+      font-weight: 700;
+      color: #2d3748;
     }
 
     .quick-stat-item .stat-label {
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    /* Badge personalizados */
-    .badge-status {
-      padding: 5px 12px;
-      border-radius: 20px;
       font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .badge-status.active {
-      background-color: rgba(28, 200, 138, 0.2);
-      color: #1cc88a;
-    }
-
-    .badge-status.upcoming {
-      background-color: rgba(78, 115, 223, 0.2);
-      color: #4e73df;
-    }
-
-    .badge-status.completed {
-      background-color: rgba(108, 117, 125, 0.2);
       color: #6c757d;
     }
 
-    .badge-status.cancelled {
-      background-color: rgba(220, 53, 69, 0.2);
-      color: #dc3545;
-    }
-
-    /* Filtros y búsqueda */
-    .filters-container {
-      background: var(--card-bg);
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    /* Mejoras para tablas */
-    .table-hover tbody tr {
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .table-hover tbody tr:hover {
-      background-color: rgba(78, 115, 223, 0.05);
-    }
-
-    /* Panel de ayuda */
     .help-category {
-      margin-bottom: 25px;
-    }
-
-    .help-category h5 {
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 8px;
-      margin-bottom: 15px;
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
     }
 
     .help-item {
-      margin-bottom: 12px;
-      padding: 12px;
-      background: var(--card-bg);
-      border-radius: 8px;
-      border-left: 3px solid var(--primary);
+      padding: 0.8rem;
+      border-bottom: 1px solid #e9ecef;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .help-item:last-child {
+      border-bottom: none;
     }
 
     .help-item:hover {
-      background: rgba(78, 115, 223, 0.05);
+      background: #e9ecef;
+      border-radius: 6px;
+    }
+
+    .progress {
+      background-color: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      border-radius: 10px;
+      transition: width 0.6s ease;
+    }
+
+    .btn-action {
+      padding: 0.2rem 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .search-input {
+      border-radius: 20px;
+      padding: 0.375rem 1rem;
+      border: 1px solid #d1d5db;
+      min-width: 200px;
+    }
+
+    .search-input:focus {
+      border-color: #4e73df;
+      box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
     }
   </style>
 </head>
 
 <body>
+
   <!-- Overlay (mobile) -->
   <div id="overlaySidebar" tabindex="-1" aria-hidden="true"></div>
 
   <!-- SIDEBAR -->
   <nav id="sidebar" aria-label="Sidebar">
     <div class="sidebar-header">
-      <h3><i class="fas fa-gauge-high me-2"></i>Dashboard</h3>
-      <div>
-        <button id="themeToggle" class="btn btn-sm btn-outline-light me-2" title="Cambiar tema"><i class="fas fa-sun"></i></button>
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <button id="themeToggle" class="btn btn-sm btn-outline-light me-2" title="Cambiar tema"><i class="fas fa-sun"></i></button>
+        </div>
         <button class="close-sidebar d-lg-none" id="closeSidebar" aria-label="Cerrar menú"><i class="fas fa-times"></i></button>
       </div>
     </div>
 
     <ul class="list-unstyled components">
-      <li><a href="../cliente/PaginaInicio.php"><i class="fas fa-home"></i> Inicio</a></li>
-      <li><a href="#"><i class="fas fa-chart-bar"></i> Estadísticas</a></li>
-      <li><a href="../cliente/Calendario.php"><i class="fas fa-calendar-alt"></i> Calendario</a></li>
-      <li><a href="../cliente/Panel_actividades.php"><i class="fas fa-tachometer-alt"></i> Panel de Actividades</a></li>
+      <!-- Dashboard -->
+      <li data-section="dashboard" class="active">
+        <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+      </li>
 
-      <!-- Gestión -->
+       
+
+    
+
+      <!-- Panel de Actividades -->
+      <li data-section="panel-actividades">
+        <a href="../cliente/Panel_actividades.php"><i class="fas fa-tachometer-alt"></i> Panel de Actividades</a>
+      </li>
+
+      <!-- Gestión - Tablas -->
       <li class="has-submenu">
         <div class="submenu-toggle" aria-expanded="false">
-          <span><i class="fas fa-folder-tree me-2"></i> Gestión</span>
+          <span><i class="fas fa-table me-2"></i> Tablas</span>
           <i class="fas fa-chevron-right rotate-icon"></i>
         </div>
         <ul class="submenu list-unstyled">
@@ -587,7 +818,6 @@ if (
           <span><i class="fas fa-calendar-days me-2"></i> Eventos y Actividades</span>
           <i class="fas fa-chevron-right rotate-icon"></i>
         </div>
-
         <ul class="submenu list-unstyled">
           <li><a href="#"><i class="fas fa-calendar-check me-2"></i> Eventos</a></li>
           <li><a href="#"><i class="fas fa-tasks me-2"></i> Actividades</a></li>
@@ -604,7 +834,6 @@ if (
           <span><i class="fas fa-chart-pie me-2"></i> Reportes</span>
           <i class="fas fa-chevron-right rotate-icon"></i>
         </div>
-
         <ul class="submenu list-unstyled">
           <li><a href="#"><i class="fas fa-calendar-days me-2"></i> Reporte de Eventos</a></li>
           <li><a href="#"><i class="fas fa-clipboard-list me-2"></i> Reporte de Actividades</a></li>
@@ -615,7 +844,7 @@ if (
         </ul>
       </li>
 
-      <!-- Improved submenu -->
+      <!-- Formularios -->
       <li class="has-submenu">
         <div class="submenu-toggle" aria-expanded="false">
           <span><i class="fas fa-file-alt me-2"></i> Formularios</span>
@@ -634,11 +863,25 @@ if (
         </ul>
       </li>
 
+      <!-- Mis Eventos -->
+      <li data-section="mis-eventos">
+        <a href="#"><i class="fas fa-calendar-check"></i> Mis Eventos</a>
+      </li>
 
-      <li data-section="mis-eventos"><a href="#"><i class="fas fa-calendar-check"></i> Mis Eventos</a></li>
-      <li data-section="participantes"><a href="#"><i class="fas fa-users"></i> Participantes</a></li>
-      <li data-section="reportes"><a href="#"><i class="fas fa-chart-bar"></i> Reportes</a></li>
-      <li data-section="ayuda"><a href="#"><i class="fas fa-question-circle"></i> Ayuda</a></li>
+      <!-- Participantes -->
+      <li data-section="participantes">
+        <a href="#"><i class="fas fa-users"></i> Participantes</a>
+      </li>
+
+      <!-- Reportes -->
+      <li data-section="reportes">
+        <a href="#"><i class="fas fa-chart-bar"></i> Reportes</a>
+      </li>
+
+      <!-- Ayuda -->
+      <li data-section="ayuda">
+        <a href="#"><i class="fas fa-question-circle"></i> Ayuda</a>
+      </li>
     </ul>
 
     <div class="p-3 text-white mt-auto">
@@ -657,7 +900,9 @@ if (
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid d-flex align-items-center">
         <button id="sidebarToggle" class="me-3 btn sidebar-toggle-desktop" aria-label="Abrir menú"><i class="fas fa-bars"></i></button>
-        <a class="navbar-brand" href="#"><i class="fas fa-calendar-alt me-2"></i>Panel de Eventos</a>
+        <a class="navbar-brand" href="#">
+          <i class="fas fa-tachometer-alt me-2"></i>Panel Administrativo
+        </a>
 
         <div class="ms-auto d-flex align-items-center gap-2">
           <input id="searchGlobal" class="form-control form-control-sm search-input" placeholder="Buscar eventos/usuarios..." title="Buscar en tablas">
@@ -687,48 +932,289 @@ if (
     <!-- Sección Dashboard (Actual) -->
     <div id="dashboard" class="content-section active">
       <div class="container-fluid py-3">
-        <div class="row align-items-center mb-2">
-          <div class="col-md-6">
-            <h2 class="section-title">Resumen Estadístico</h2>
-          </div>
-        </div>
-
-        <!-- STATS -->
+        <!-- RESUMEN ESTADÍSTICO Panel Administrativo -->
         <div class="row mb-4">
-          <div class="col-md-4 mb-3">
+          <!-- Personas -->
+          <div class="col-md-3 mb-3">
             <div class="card stats-card bg-custom-primary">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
-                  <h6 class="mb-0">Próximos Eventos</h6>
-                  <div id="proximos-eventos" class="stats-number">0</div>
+                  <h6 class="mb-0">Personas</h6>
+                  <div class="stats-number">
+                    <?php echo $totalPersonas; ?>
+                  </div>
                 </div>
-                <i class="fas fa-calendar-check fa-2x opacity-75"></i>
+                <i class="fas fa-user-friends fa-2x opacity-75"></i>
               </div>
             </div>
           </div>
-          <div class="col-md-4 mb-3">
+
+          <!-- Usuarios -->
+          <div class="col-md-3 mb-3">
             <div class="card stats-card bg-custom-success">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
-                  <h6 class="mb-0">Usuarios Inscritos</h6>
-                  <div id="usuarios-inscritos" class="stats-number">0</div>
+                  <h6 class="mb-0">Usuarios</h6>
+                  <div class="stats-number">
+                    <?php echo $totalUsuarios; ?>
+                  </div>
                 </div>
                 <i class="fas fa-users fa-2x opacity-75"></i>
               </div>
             </div>
           </div>
-          <div class="col-md-4 mb-3">
+
+          <!-- Universidades -->
+          <div class="col-md-3 mb-3">
+            <div class="card stats-card bg-custom-warning">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-0">Universidades</h6>
+                  <div class="stats-number">
+                    <?php echo $totalUniversidades; ?>
+                  </div>
+                </div>
+                <i class="fas fa-university fa-2x opacity-75"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Eventos -->
+          <div class="col-md-3 mb-3">
             <div class="card stats-card bg-custom-info">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
-                  <h6 class="mb-0">Participación Promedio</h6>
-                  <div id="participacion" class="stats-number">0%</div>
+                  <h6 class="mb-0">Eventos</h6>
+                  <div class="stats-number">
+                    <?php echo $totalEventos; ?>
+                  </div>
                 </div>
-                <i class="fas fa-chart-bar fa-2x opacity-75"></i>
+                <i class="fas fa-calendar-alt fa-2x opacity-75"></i>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- SEGUNDA FILA DE INDICADORES -->
+        <div class="row mb-4">
+          <!-- Actividades -->
+          <div class="col-md-3 mb-3">
+            <div class="card stats-card bg-secondary">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-0">Actividades</h6>
+                  <div class="stats-number">
+                    <?php echo $totalActividades; ?>
+                  </div>
+                </div>
+                <i class="fas fa-book fa-2x opacity-75"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inscripciones -->
+          <div class="col-md-3 mb-3">
+            <div class="card stats-card bg-success">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-0">Inscripciones</h6>
+                  <div class="stats-number">
+                    <?php echo $totalInscripciones; ?>
+                  </div>
+                </div>
+                <i class="fas fa-user-check fa-2x opacity-75"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagos -->
+          <div class="col-md-3 mb-3">
+            <div class="card stats-card bg-danger">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-0">Pagos</h6>
+                  <div class="stats-number">
+                    <?php echo $totalPagos; ?>
+                  </div>
+                </div>
+                <i class="fas fa-money-bill-wave fa-2x opacity-75"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Asistencias -->
+          <div class="col-md-3 mb-3">
+            <div class="card stats-card bg-dark">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-0">Asistencias</h6>
+                  <div class="stats-number">
+                    <?php echo $totalAsistencias; ?>
+                  </div>
+                </div>
+                <i class="fas fa-clipboard-check fa-2x opacity-75"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PERSONAS POR TIPO Y EVENTOS POR MES -->
+        <div class="row mb-4">
+          <!-- Gráfico 1 -->
+          <div class="col-lg-6">
+            <div class="card shadow-sm">
+              <div class="card-header">
+                <h5 class="mb-0">Personas por Tipo</h5>
+              </div>
+              <div class="card-body">
+                <canvas id="graficoPersonas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gráfico 2 -->
+          <div class="col-lg-6">
+            <div class="card shadow-sm">
+              <div class="card-header">
+                <h5 class="mb-0">Eventos por Mes</h5>
+              </div>
+              <div class="card-body">
+                <canvas id="graficoEventosMes"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfico 3 - INSCRIPCIONES POR ACTIVIDAD -->
+        <div class="row mb-4">
+          <div class="col-lg-12">
+            <div class="card shadow-sm">
+              <div class="card-header">
+                <h5 class="mb-0">Inscripciones por Actividad</h5>
+              </div>
+              <div class="card-body">
+                <canvas id="graficoInscripcionesActividad"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLA ÚLTIMAS PERSONAS REGISTRADAS -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                  <i class="fas fa-users"></i>
+                  Últimas Personas Registradas
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-bordered align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>CI</th>
+                        <th>Nombre Completo</th>
+                        <th>Universidad</th>
+                        <th>Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php while ($persona = $ultimasPersonas->fetch_assoc()) { ?>
+                        <tr>
+                          <td><?php echo $persona['ci']; ?></td>
+                          <td><?php echo $persona['nombre']; ?></td>
+                          <td><?php echo $persona['universidad']; ?></td>
+                          <td>
+                            <?php
+                            if ($persona['estado'] == "Activo") {
+                              echo "<span class='badge bg-success'>Activo</span>";
+                            } else {
+                              echo "<span class='badge bg-danger'>Inactivo</span>";
+                            }
+                            ?>
+                          </td>
+                        </tr>
+                      <?php } ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL DE TRABAJO -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                  <i class="fas fa-desktop"></i>
+                  Panel de Trabajo
+                </h5>
+              </div>
+              <div class="card-body">
+                <div id="panel-trabajo" class="text-center py-5">
+                  <i class="fas fa-mouse-pointer fa-4x text-secondary mb-3"></i>
+                  <h4>Seleccione una opción del menú lateral</h4>
+                  <p class="text-muted">
+                    Aquí se cargará Personas, Usuarios, Eventos, Universidades y demás módulos sin salir del Dashboard.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CALENDARIO -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                  <i class="fas fa-calendar-alt me-2"></i>
+                  Calendario de Eventos
+                </h5>
+                <div>
+                  <button class="btn btn-sm btn-light me-2" onclick="cambiarVistaCalendario('mes')">
+                    <i class="fas fa-calendar-alt"></i> Mes
+                  </button>
+                  <button class="btn btn-sm btn-light me-2" onclick="cambiarVistaCalendario('semana')">
+                    <i class="fas fa-calendar-week"></i> Semana
+                  </button>
+                  <button class="btn btn-sm btn-light" onclick="cambiarVistaCalendario('dia')">
+                    <i class="fas fa-calendar-day"></i> Día
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="calendario-container">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="cambiarMesCalendario(-1)">
+                      <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h4 class="mb-0" id="calendario-titulo">Enero 2026</h4>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="cambiarMesCalendario(1)">
+                      <i class="fas fa-chevron-right"></i>
+                    </button>
+                  </div>
+                  <div id="calendario-grid" class="table-responsive">
+                    <!-- El calendario se generará con JavaScript -->
+                  </div>
+                </div>
+                <div id="eventos-del-dia" class="mt-3">
+                  <h6>Eventos del día seleccionado</h6>
+                  <div id="lista-eventos-dia" class="list-group">
+                    <p class="text-muted">Selecciona un día para ver los eventos</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
         <!-- CHART -->
         <div class="row mb-4">
@@ -836,11 +1322,10 @@ if (
             </div>
           </div>
         </div>
+      </div>
+    </div> <!-- end dashboard -->
 
-      </div> <!-- container -->
-    </div> <!-- dashboard -->
-
-    <!-- Sección MIS EVENTOS (Nueva) -->
+    <!-- Sección MIS EVENTOS -->
     <div id="mis-eventos" class="content-section">
       <div class="container-fluid py-3">
         <div class="row align-items-center mb-4">
@@ -957,7 +1442,7 @@ if (
       </div>
     </div>
 
-    <!-- Sección PARTICIPANTES (Nueva) -->
+    <!-- Sección PARTICIPANTES -->
     <div id="participantes" class="content-section">
       <div class="container-fluid py-3">
         <div class="row align-items-center mb-4">
@@ -981,7 +1466,6 @@ if (
               <label class="form-label">Filtrar por evento</label>
               <select class="form-select" id="filterEventoParticipante">
                 <option value="">Todos los eventos</option>
-                <!-- Las opciones se cargarán dinámicamente -->
               </select>
             </div>
             <div class="col-md-4">
@@ -1103,7 +1587,7 @@ if (
       </div>
     </div>
 
-    <!-- Sección REPORTES (Nueva) -->
+    <!-- Sección REPORTES -->
     <div id="reportes" class="content-section">
       <div class="container-fluid py-3">
         <div class="row align-items-center mb-4">
@@ -1265,7 +1749,7 @@ if (
       </div>
     </div>
 
-    <!-- Sección AYUDA (Nueva) -->
+    <!-- Sección AYUDA -->
     <div id="ayuda" class="content-section">
       <div class="container-fluid py-3">
         <div class="row mb-4">
@@ -1429,9 +1913,9 @@ if (
         </div>
       </div>
     </div>
-  </div> <!-- content -->
+  </div> <!-- end content -->
 
-  <!-- MODALES EXISTENTES -->
+  <!-- MODALES -->
   <div class="modal fade" id="eventoModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -1614,13 +2098,14 @@ if (
      ****************************/
     function showToast(message, type = 'success', timeout = 3000) {
       const id = 't' + Date.now();
-      const klass = type === 'error' ? 'bg-danger text-white' : 'bg-dark text-white';
+      const klass = type === 'error' ? 'bg-danger text-white' : type === 'warning' ? 'bg-warning text-dark' : 'bg-dark text-white';
+      const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
       const el = document.createElement('div');
       el.className = `toast ${klass}`;
       el.role = 'alert';
       el.ariaLive = 'polite';
       el.ariaAtomic = 'true';
-      el.innerHTML = `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white ms-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button></div>`;
+      el.innerHTML = `<div class="d-flex align-items-center"><div class="toast-body"><i class="fas ${icon} me-2"></i>${message}</div><button type="button" class="btn-close btn-close-white ms-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button></div>`;
       toastContainer.appendChild(el);
       const bs = new bootstrap.Toast(el, {
         delay: timeout
@@ -1685,6 +2170,7 @@ if (
       const submenu = li.querySelector('.submenu');
       toggle.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         const isOpen = submenu.classList.contains('show');
         // close others
         document.querySelectorAll('.submenu.show').forEach(s => {
@@ -1805,7 +2291,7 @@ if (
           const tr = document.createElement('tr');
           tr.setAttribute('data-event-id', ev.id);
           tr.addEventListener('click', (e) => {
-            if (!e.target.closest('td:last-child')) {
+            if (!e.target.closest('td:last-child') && !e.target.closest('td:nth-child(6)')) {
               mostrarDetallesEvento(ev.id);
             }
           });
@@ -1826,10 +2312,10 @@ if (
             <td><span class="badge-status ${estadoClass}">${estado}</span></td>
             <td>
               <div class="d-flex gap-1">
-                <button class="btn btn-sm btn-outline-primary" onclick="editarEvento(${ev.id})"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-sm btn-outline-success" onclick="verParticipantesEvento(${ev.id})"><i class="fas fa-users"></i></button>
-                <button class="btn btn-sm btn-outline-info" onclick="enviarRecordatorio(${ev.id})"><i class="fas fa-envelope"></i></button>
-                <button class="btn btn-sm btn-outline-danger" onclick="eliminarEvento(${ev.id})"><i class="fas fa-trash"></i></button>
+                <button class="btn btn-sm btn-outline-primary btn-action" onclick="event.stopPropagation();editarEvento(${ev.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-outline-success btn-action" onclick="event.stopPropagation();verParticipantesEvento(${ev.id})"><i class="fas fa-users"></i></button>
+                <button class="btn btn-sm btn-outline-info btn-action" onclick="event.stopPropagation();enviarRecordatorio(${ev.id})"><i class="fas fa-envelope"></i></button>
+                <button class="btn btn-sm btn-outline-danger btn-action" onclick="event.stopPropagation();eliminarEvento(${ev.id})"><i class="fas fa-trash"></i></button>
               </div>
             </td>
           `;
@@ -1865,7 +2351,7 @@ if (
         </div>
         <div class="mt-3">
           <h6>Acciones</h6>
-          <div class="d-flex gap-2">
+          <div class="d-flex gap-2 flex-wrap">
             <button class="btn btn-sm btn-primary" onclick="verParticipantesEvento(${ev.id})"><i class="fas fa-users me-1"></i>Ver Participantes</button>
             <button class="btn btn-sm btn-success" onclick="editarEvento(${ev.id})"><i class="fas fa-edit me-1"></i>Editar Evento</button>
             <button class="btn btn-sm btn-info" onclick="enviarRecordatorio(${ev.id})"><i class="fas fa-envelope me-1"></i>Enviar Recordatorio</button>
@@ -2052,11 +2538,11 @@ if (
               </span>
             </td>
             <td>
-              <div class="d-flex gap-1">
-                <button class="btn btn-sm btn-outline-primary" onclick="editarParticipante(${p.id})"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-sm btn-outline-success" onclick="cambiarEstadoParticipante(${p.id}, 'confirmado')"><i class="fas fa-check"></i></button>
-                <button class="btn btn-sm btn-outline-warning" onclick="cambiarEstadoParticipante(${p.id}, 'pendiente')"><i class="fas fa-clock"></i></button>
-                <button class="btn btn-sm btn-outline-danger" onclick="eliminarParticipante(${p.id})"><i class="fas fa-trash"></i></button>
+              <div class="d-flex gap-1 flex-wrap">
+                <button class="btn btn-sm btn-outline-primary btn-action" onclick="editarParticipante(${p.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-outline-success btn-action" onclick="cambiarEstadoParticipante(${p.id}, 'confirmado')"><i class="fas fa-check"></i></button>
+                <button class="btn btn-sm btn-outline-warning btn-action" onclick="cambiarEstadoParticipante(${p.id}, 'pendiente')"><i class="fas fa-clock"></i></button>
+                <button class="btn btn-sm btn-outline-danger btn-action" onclick="eliminarParticipante(${p.id})"><i class="fas fa-trash"></i></button>
               </div>
             </td>
           `;
@@ -2831,9 +3317,9 @@ if (
       const totalIns = participantesData.length;
       const promedio = totalEventos > 0 ? (eventosData.reduce((a, e) => a + Number(e.participacion || 0), 0) / totalEventos).toFixed(1) : 0;
 
-      pe.textContent = totalEventos;
-      ui.textContent = totalIns;
-      part.textContent = promedio + '%';
+      if (pe) pe.textContent = totalEventos;
+      if (ui) ui.textContent = totalIns;
+      if (part) part.textContent = promedio + '%';
     }
 
     function cargarSelectEventos() {
@@ -2887,6 +3373,7 @@ if (
 
     function cargarEventos() {
       const tabla = document.getElementById('tabla-eventos');
+      if (!tabla) return;
       tabla.innerHTML = '';
       const nombres = [];
       const participaciones = [];
@@ -2921,6 +3408,7 @@ if (
 
     function cargarInscripciones() {
       const tabla = document.getElementById('tabla-inscripciones');
+      if (!tabla) return;
       tabla.innerHTML = '';
       if (inscripcionesData.length === 0) tabla.innerHTML = `<tr><td colspan="5" class="text-center">No hay inscripciones registradas</td></tr>`;
       else inscripcionesData.forEach(ins => {
@@ -3301,6 +3789,181 @@ if (
     window.exportEventos = exportEventos;
     window.exportInscripciones = exportInscripciones;
 
+    /****************************
+     * FUNCIONES DEL CALENDARIO
+     ****************************/
+    let fechaCalendario = new Date();
+    let vistaCalendario = 'mes';
+
+    function generarCalendario(fecha, vista = 'mes') {
+      const year = fecha.getFullYear();
+      const month = fecha.getMonth();
+
+      const titulo = document.getElementById('calendario-titulo');
+      const grid = document.getElementById('calendario-grid');
+      const listaEventos = document.getElementById('lista-eventos-dia');
+
+      // Actualizar título
+      const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+      titulo.textContent = `${nombresMeses[month]} ${year}`;
+
+      if (vista === 'mes') {
+        // Primera línea: días de la semana
+        const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+        let html = '<table class="table table-bordered table-hover">';
+        html += '<thead><tr>';
+        diasSemana.forEach(dia => {
+          html += `<th class="text-center">${dia}</th>`;
+        });
+        html += '</tr></thead><tbody>';
+
+        // Obtener primer día del mes
+        const primerDia = new Date(year, month, 1);
+        const ultimoDia = new Date(year, month + 1, 0);
+        const diaInicio = primerDia.getDay(); // 0=domingo
+
+        // Crear celdas
+        html += '<tr>';
+        // Espacios en blanco antes del primer día
+        for (let i = 0; i < diaInicio; i++) {
+          html += '<td class="text-center text-muted"></td>';
+        }
+
+        // Días del mes
+        for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
+          const fechaActual = new Date(year, month, dia);
+          const fechaStr = fechaActual.toISOString().split('T')[0];
+
+          // Verificar si hay eventos en este día
+          const eventosDelDia = eventosData.filter(ev => ev.fecha === fechaStr);
+          const tieneEvento = eventosDelDia.length > 0;
+          const esHoy = fechaActual.toDateString() === new Date().toDateString();
+
+          html += `<td class="text-center ${esHoy ? 'table-primary' : ''}" 
+                          style="cursor: pointer; position: relative; height: 60px;"
+                          onclick="mostrarEventosDelDia('${fechaStr}')">`;
+          html += `<div>${dia}</div>`;
+
+          if (tieneEvento) {
+            html += `<div class="mt-1">`;
+            eventosDelDia.slice(0, 2).forEach(ev => {
+              html += `<span class="badge bg-primary me-1" style="font-size: 0.6rem;">${ev.nombre.substring(0, 10)}</span>`;
+            });
+            if (eventosDelDia.length > 2) {
+              html += `<span class="badge bg-secondary" style="font-size: 0.6rem;">+${eventosDelDia.length - 2}</span>`;
+            }
+            html += `</div>`;
+          }
+
+          html += '</td>';
+
+          // Salto de línea cada 7 días
+          if ((dia + diaInicio) % 7 === 0 && dia < ultimoDia.getDate()) {
+            html += '</tr><tr>';
+          }
+        }
+
+        // Completar última fila
+        const ultimoDiaSemana = ultimoDia.getDay();
+        for (let i = ultimoDiaSemana + 1; i < 7; i++) {
+          html += '<td class="text-center text-muted"></td>';
+        }
+
+        html += '</tr></tbody></table>';
+        grid.innerHTML = html;
+      } else if (vista === 'semana') {
+        // Implementación para vista semanal
+        const inicioSemana = new Date(fecha);
+        inicioSemana.setDate(fecha.getDate() - fecha.getDay());
+        const finSemana = new Date(inicioSemana);
+        finSemana.setDate(inicioSemana.getDate() + 6);
+
+        let html = '<table class="table table-bordered">';
+        html += '<thead><tr>';
+        const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        diasSemana.forEach((dia, idx) => {
+          const fechaDia = new Date(inicioSemana);
+          fechaDia.setDate(inicioSemana.getDate() + idx);
+          const esHoy = fechaDia.toDateString() === new Date().toDateString();
+          html += `<th class="text-center ${esHoy ? 'table-primary' : ''}">
+                        ${dia}<br>
+                        <small>${fechaDia.getDate()}/${fechaDia.getMonth() + 1}</small>
+                    </th>`;
+        });
+        html += '</tr></thead><tbody>';
+        html += '<tr>';
+
+        for (let i = 0; i < 7; i++) {
+          const fechaDia = new Date(inicioSemana);
+          fechaDia.setDate(inicioSemana.getDate() + i);
+          const fechaStr = fechaDia.toISOString().split('T')[0];
+          const eventosDelDia = eventosData.filter(ev => ev.fecha === fechaStr);
+
+          html += `<td style="height: 100px; vertical-align: top; cursor: pointer;" 
+                       onclick="mostrarEventosDelDia('${fechaStr}')">`;
+          if (eventosDelDia.length > 0) {
+            eventosDelDia.forEach(ev => {
+              html += `<div class="badge bg-primary mb-1 d-block" style="font-size: 0.7rem;">${ev.nombre}</div>`;
+            });
+          } else {
+            html += '<span class="text-muted">Sin eventos</span>';
+          }
+          html += '</td>';
+        }
+
+        html += '</tr></tbody></table>';
+        grid.innerHTML = html;
+      }
+    }
+
+    function cambiarMesCalendario(delta) {
+      fechaCalendario.setMonth(fechaCalendario.getMonth() + delta);
+      generarCalendario(fechaCalendario, vistaCalendario);
+    }
+
+    function cambiarVistaCalendario(vista) {
+      vistaCalendario = vista;
+      generarCalendario(fechaCalendario, vista);
+    }
+
+    function mostrarEventosDelDia(fechaStr) {
+      const eventosDelDia = eventosData.filter(ev => ev.fecha === fechaStr);
+      const lista = document.getElementById('lista-eventos-dia');
+
+      if (eventosDelDia.length === 0) {
+        lista.innerHTML = `<p class="text-muted">No hay eventos para esta fecha</p>`;
+        return;
+      }
+
+      let html = '';
+      eventosDelDia.forEach(ev => {
+        html += `
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>${ev.nombre}</strong>
+                    <span class="text-muted ms-2">${ev.lugar}</span>
+                </div>
+                <div>
+                    <span class="badge bg-primary">${ev.participacion || 0}%</span>
+                    <button class="btn btn-sm btn-outline-secondary ms-2" onclick="editarEvento(${ev.id})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+      });
+      lista.innerHTML = html;
+    }
+
+    // Inicializar calendario
+    document.addEventListener('DOMContentLoaded', function() {
+      generarCalendario(fechaCalendario, 'mes');
+    });
+
+
+
+
+
     // Inicializar
     init();
 
@@ -3313,6 +3976,135 @@ if (
       }
     });
   </script>
+
+  <!-- Gráfico 1 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      const ctx = document.getElementById("graficoPersonas");
+
+      if (!ctx) return;
+
+      new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: <?php echo json_encode($tiposPersona); ?>,
+          datasets: [{
+            label: "Personas por Tipo",
+            data: <?php echo json_encode($totalesPersona); ?>,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "bottom"
+            },
+            title: {
+              display: true,
+              text: "Distribución de Personas"
+            }
+          }
+        }
+      });
+
+    });
+  </script>
+
+  <!-- Gráfico 2 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const ctxEventos = document.getElementById("graficoEventosMes");
+      if (!ctxEventos) return;
+      new Chart(ctxEventos, {
+        type: "bar",
+        data: {
+          labels: <?php echo json_encode($meses); ?>,
+          datasets: [{
+            label: "Eventos registrados",
+            data: <?php echo json_encode($datosEventos); ?>,
+            backgroundColor: "rgba(54, 162, 235, 0.7)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1
+          }]
+        },
+
+        options: {
+          responsive: true,
+          scales: {
+
+            y: {
+
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+              }
+            }
+          },
+
+          plugins: {
+            legend: {
+              display: true
+            },
+
+            title: {
+              display: true,
+              text: "Eventos registrados por mes"
+            }
+          }
+        }
+      });
+
+    });
+  </script>
+
+  <!-- Gráfico 3 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const ctxInscripciones = document.getElementById('graficoInscripcionesActividad');
+      if (!ctxInscripciones) return;
+      new Chart(ctxInscripciones, {
+        type: 'bar',
+        data: {
+          labels: <?php echo json_encode($actividades); ?>,
+          datasets: [{
+            label: 'Inscripciones',
+            data: <?php echo json_encode($totalInscripcionesActividad); ?>,
+            backgroundColor: 'rgba(255, 159, 64, 0.7)',
+            borderColor: 'rgba(255, 159, 64, 1)',
+            borderWidth: 1
+
+          }]
+
+        },
+
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true
+            }
+          },
+
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+
+
+
+
+
+
 </body>
 
 </html>

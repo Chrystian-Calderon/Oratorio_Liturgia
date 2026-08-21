@@ -14,7 +14,7 @@ $resultado=mysqli_query($conexion,$consulta);
 if ($resultado) {
     echo "<script>
             alert('¡Registro exitoso!');
-            window.location='../cliente/menu.php';
+            window.location='../cliente/universidades.php';
         </script>";
 } else {
     echo "Error al insertar: " . mysqli_error($conexion);

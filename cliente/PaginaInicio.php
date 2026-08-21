@@ -1,15 +1,24 @@
 <?php
-// Verificar si el usuario ha iniciado sesión, si no, redirigir al login
-
 session_start();
 
-if (!isset($_SESSION['usuario'])) {
-    header("Location: login.php");
-    exit();
+// 1. Verificamos si hay una sesión activa de forma silenciosa (SIN expulsar a nadie)
+$sesion_iniciada = isset($_SESSION['usuario_correo']) || isset($_SESSION['usuario']);
+
+if ($sesion_iniciada) {
+    // 2. Si inició sesión, armamos su nombre y correo interceptando cualquier posible variable
+    $nombre = $_SESSION['usuario_nombre'] ?? $_SESSION['nombres'] ?? '';
+    $apellido = $_SESSION['usuario_apellido'] ?? $_SESSION['apellidos'] ?? '';
+    
+    $nombres_completos = trim($nombre . ' ' . $apellido);
+    if (empty($nombres_completos)) {
+        $nombres_completos = $_SESSION['usuario'] ?? 'Integrante';
+    }
+
+    $correo_usuario = $_SESSION['usuario_correo'] ?? $_SESSION['correo'] ?? 'Sin correo';
+
+    $usuario_nombre = htmlspecialchars($nombres_completos);
+    $usuario_correo = htmlspecialchars($correo_usuario);
 }
-// Variables para mejorar la seguridad y personalización
-$usuario_nombre = htmlspecialchars($_SESSION['usuario'] ?? 'Usuario');
-$usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
 ?>
 
 <!DOCTYPE html>
@@ -29,23 +38,125 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
     <link rel="stylesheet" href="../css/carousel.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <style>
-        /* ========== REDES SOCIALES FLOTANTES BAJADAS ========== */
+        /* ============================================================
+        0. VARIABLES GLOBALES (Fácil mantenimiento)
+        ============================================================ */
+        :root {
+            --bg-puro: #ffffff;
+            --texto-blanco: #ffffff;
+            --texto-gris-claro: #f8f9fa;
+            --sombra-fuerte: 2px 2px 6px rgba(0,0,0,0.8);
+            --sombra-suave: 1px 1px 4px rgba(0,0,0,0.6);
+            --degradado-inferior: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.85) 100%);
+        }
+
+        /* ============================================================
+        1. LIMPIEZA DE CONTENEDORES (Adiós al gris de Bootstrap)
+        ============================================================ */
+        .hero-carousel, 
+        .hero-carousel .carousel-inner, 
+        .hero-carousel .carousel-item,
+        .carousel:not(.hero-carousel),
+        .carousel:not(.hero-carousel) .carousel-inner,
+        .carousel:not(.hero-carousel) .carousel-item {
+            background-color: var(--bg-puro) !important;
+            border: none;
+        }
+        /* ============================================================
+        2. PRIMER CARRUSEL (Hero Principal - PC Póster Gigante)
+        ============================================================ */
+        .hero-carousel .hero-img {
+            width: 100% !important;
+            /* ¡El secreto del póster! La altura dicta sus propias reglas en PC */
+            height: auto !important; 
+            min-height: 97vh !important; 
+            object-fit: cover !important;
+            object-position: center top; 
+        }
+
+        .hero-carousel .carousel-item::after {
+            content: "";
+            position: absolute;
+            inset: 0; 
+            background: var(--degradado-inferior);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-carousel .carousel-caption {
+            position: absolute;
+            bottom: 5%;
+            left: 0;
+            right: 0;
+            background: transparent;
+            text-align: center;
+            padding: 15px;
+            z-index: 2;
+        }
+
+        .hero-carousel .custom-caption h1 {
+            font-size: clamp(1.4rem, 4vw, 2.5rem);
+            color: var(--texto-blanco);
+            margin-bottom: 6px;
+            text-shadow: var(--sombra-fuerte);
+        }
+
+        .hero-carousel .custom-caption .lead {
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
+            color: var(--texto-gris-claro);
+            margin-bottom: 12px;
+            text-shadow: var(--sombra-suave);
+        }
+
+        .hero-carousel .custom-caption .btn {
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            padding: 8px 16px;
+        }
+
+        /* ============================================================
+        3. SEGUNDO CARRUSEL (Afiches Limpios y sin bordes grises)
+        ============================================================ */
+        .carousel:not(.hero-carousel),
+        .carousel:not(.hero-carousel) .carousel-inner,
+        .carousel:not(.hero-carousel) .carousel-item {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            text-align: center; 
+        }
+
+        .carousel:not(.hero-carousel) .carousel-item img {
+            width: auto !important; 
+            max-width: 100% !important; 
+            height: auto !important;
+            max-height: clamp(350px, 60vh, 650px) !important; 
+            object-fit: contain !important;
+            margin: 0 auto !important; 
+            border-radius: 8px !important;
+            background: transparent !important;
+        }
+
+        .carousel:not(.hero-carousel) .carousel-indicators {
+            display: none !important;
+        }
+
+        /* ============================================================
+        4. INTERFAZ FLOTANTE (Redes y Botones)
+        ============================================================ */
         .social-floating {
             position: fixed;
             left: 20px;
-            top: auto;
             bottom: 100px;
-            /* Bajado para no tapar el slider */
             display: flex;
             flex-direction: column;
             gap: 12px;
             z-index: 1040;
-            /* Por debajo del chatbot (que tiene 1050) */
         }
 
         .social-floating a {
-            width: 45px;
-            height: 45px;
+            width: clamp(38px, 4vw, 45px);
+            height: clamp(38px, 4vw, 45px);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -62,31 +173,14 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
             background-color: white;
         }
 
-        .social-floating a:hover .fa-facebook-f {
-            color: #1877f2;
-        }
+        .social-floating a:hover .fa-facebook-f { color: #1877f2; }
+        .social-floating a:hover .fa-instagram { color: #e4405f; }
+        .social-floating a:hover .fa-tiktok { color: #000000; }
+        .social-floating i { font-size: clamp(16px, 2vw, 22px); }
 
-        .social-floating a:hover .fa-instagram {
-            color: #e4405f;
-        }
-
-        .social-floating a:hover .fa-tiktok {
-            color: #000000;
-        }
-
-        .social-floating a:hover .fa-whatsapp {
-            color: #25D366;
-        }
-
-        .social-floating i {
-            font-size: 22px;
-        }
-
-        /* ========== BOTONES FLOTANTES DERECHOS BAJADOS ========== */
         .floating-buttons {
             position: fixed;
             bottom: 100px;
-            /* Bajado para no tapar el slider */
             right: 20px;
             display: flex;
             flex-direction: column;
@@ -95,8 +189,8 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
         }
 
         .floating-btn {
-            width: 55px;
-            height: 55px;
+            width: clamp(45px, 5vw, 55px);
+            height: clamp(45px, 5vw, 55px);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -104,222 +198,88 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
             text-decoration: none;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
-            cursor: pointer;
             border: none;
         }
 
-        .floating-btn i {
-            font-size: 28px;
-            color: white;
-        }
+        .floating-btn i { font-size: clamp(20px, 2.5vw, 28px); color: white; }
+        .btn-whatsapp { background-color: #25D366; }
+        .btn-whatsapp:hover { background-color: #128C7E; transform: scale(1.1); }
+        .btn-suggestion { background-color: #FF9800; }
+        .btn-suggestion:hover { background-color: #F57C00; transform: scale(1.1); }
 
-        .btn-whatsapp {
-            background-color: #25D366;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #128C7E;
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn-suggestion {
-            background-color: #FF9800;
-        }
-
-        .btn-suggestion:hover {
-            background-color: #F57C00;
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* ========== BOTÓN SUBIR ARRIBA ========== */
-        .scroll-top-btn {
-            position: fixed;
-            bottom: 30px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #0d6efd;
-            color: white;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1040;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            border: none;
-        }
-
-        .scroll-top-btn:hover {
-            background-color: #0b5ed7;
-            transform: translateY(-5px);
-        }
-
-        .scroll-top-btn i {
-            font-size: 24px;
-        }
-
-        .scroll-top-btn.show {
-            display: flex;
-        }
-
-        /* ========== MODAL SUGERENCIAS ========== */
-        .suggestion-modal .modal-content {
-            border-radius: 15px;
-        }
-
-        /* ========== CAROUSEL - MEJORADO PARA MÓVILES ========== */
-        .hero-carousel {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .hero-img {
-            width: 100%;
-            height: 100vh;
-            object-fit: cover;
-            object-position: center;
-        }
-
-        /* Ajustes para móviles - slider más compacto */
+        /* ============================================================
+        5. REGLAS EXCLUSIVAS PARA MÓVILES (Cambios de Estructura)
+        ============================================================ */
         @media (max-width: 768px) {
-            .hero-img {
-                height: 60vh;
-                /* Altura reducida en móviles */
-                min-height: 400px;
+            
+            /* --- AQUÍ VIVE EL TAMAÑO COMPACTO PARA CELULARES --- */
+            .hero-carousel .hero-img {
+                height: 230px !important; 
+                min-height: unset !important;
+                border-radius: 10px !important;
             }
 
-            .custom-caption {
-                padding: 0 15px !important;
-                bottom: 10% !important;
+            .carousel-indicators {
+                display: none !important;
             }
 
-            .custom-caption h1 {
-                font-size: 1.8rem !important;
-                margin-bottom: 10px !important;
+            .hero-carousel, .carousel, .carousel-inner {
+                padding-top: 0 !important;
+                margin-top: 0 !important;
             }
 
-            .custom-caption .lead {
-                font-size: 0.9rem !important;
-                margin-bottom: 15px !important;
+            section {
+                padding-top: 30px !important;
+                padding-bottom: 30px !important;
+            }
+            
+            section:first-of-type {
+                padding-top: 0 !important;
             }
 
-            .custom-caption .badge {
-                font-size: 0.7rem !important;
-                padding: 5px 12px !important;
-            }
-
-            .custom-caption .btn {
-                font-size: 0.8rem !important;
-                padding: 6px 16px !important;
-            }
-
-            /* Flechas del carousel más accesibles en móviles */
-            .carousel-control-prev,
-            .carousel-control-next {
-                width: 10% !important;
-                opacity: 0.6 !important;
-            }
-
-            .carousel-control-prev-icon,
-            .carousel-control-next-icon {
-                width: 30px !important;
-                height: 30px !important;
-            }
-
-            /* Redes sociales flotantes más pequeñas en móviles */
-            .social-floating a {
-                width: 38px;
-                height: 38px;
-            }
-
-            .social-floating i {
-                font-size: 18px;
-            }
-
-            .floating-btn,
             .scroll-top-btn {
-                width: 45px;
-                height: 45px;
+                width: clamp(38px, 4vw, 45px);
+                height: clamp(38px, 4vw, 45px);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #0d6efd;
+                color: white;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             }
 
-            .floating-btn i,
-            .scroll-top-btn i {
-                font-size: 22px;
+            .scroll-top-btn:hover {
+                background-color: #0b5ed7;
+                transform: translateY(-5px);
+                color: white;
             }
 
-            .social-floating,
             .floating-buttons {
+                right: 10px;
                 bottom: 80px;
-                /* Ajustado para móviles */
-            }
-
-            .scroll-top-btn {
-                bottom: 20px;
-                left: 15px;
-            }
-        }
-
-        /* Tablets */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .hero-img {
-                height: 70vh;
-            }
-
-            .custom-caption h1 {
-                font-size: 2.2rem !important;
-            }
-        }
-
-        /* Ajuste general para que el slider ocupe bien todo el ancho */
-        .carousel,
-        .carousel-inner,
-        .carousel-item {
-            width: 100%;
-        }
-
-        .carousel-caption {
-            background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
-            border-radius: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 30px;
-            text-align: left;
-        }
-
-        @media (max-width: 768px) {
-            .carousel-caption {
-                text-align: center;
-                padding: 15px;
-                background: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+                gap: 10px;
             }
         }
     </style>
+
 </head>
 
 <body>
-    <!-- NAVBAR - SIN REDES SOCIALES (se movieron a flotantes) -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-modern sticky-top">
         <div class="container">
-            <!-- LOGO -->
             <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
                 <i class="bi bi-church text-warning me-2"></i>
                 <span>Oratorio y Liturgia</span>
             </a>
 
-            <!-- TOGGLER -->
             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- NAV -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- MENÚ -->
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item">
                         <a class="nav-link nav-hover active" href="#">Inicio</a>
@@ -333,58 +293,62 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
                     <li class="nav-item">
                         <a class="nav-link nav-hover" href="../cliente/Contacto.php">Contacto</a>
                     </li>
-
-                    <!-- BOTONES -->
-                    <li class="nav-item d-flex gap-1 ms-lg-2 mt-2 mt-lg-0">
-                        <a class="btn btn-light btn-sm px-3 rounded-pill" href="../cliente/IniciarSesion.php">
-                            <i class="bi bi-person-circle me-1"></i>
-                            Iniciar Sesión
+                    <li class="nav-item">
+                        <a class="nav-link nav-hover" href="../cliente/Calendario.php">Calendario</a>
+                    </li>                        
+                    <li class="nav-item d-flex gap-2 ms-lg-3 mt-2 mt-lg-0">
+                        <a class="btn btn-outline-light btn-sm px-3 rounded-pill" href="../cliente/IniciarSesion.php">
+                            Iniciar Sesion
                         </a>
-                        <a class="btn btn-success btn-sm px-3 rounded-pill" href="../cliente/Calendario.php">
-                            <i class="bi bi-calendar-event me-1"></i>
-                            Calendario
-                        </a>
-                        <a class="btn btn-warning btn-sm px-3 rounded-pill fw-semibold" href="../cliente/Participar.php">
-                            <i class="bi bi-check-circle me-1"></i>
+                        <a class="btn btn-light btn-sm px-3 rounded-pill fw-semibold text-dark" href="../cliente/Participar.php">
                             Registrarse
                         </a>
                     </li>
 
-                    <!-- USUARIO -->
-                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-                        <div class="user-box text-white">
-                            <div class="fw-semibold user-name">
-                                <i class="bi bi-person-circle text-warning me-1"></i>
-                                <?php echo $usuario_nombre; ?>
-                            </div>
-                            <small class="text-white-50"><?php echo $usuario_correo; ?></small>
-                        </div>
-                    </li>
+                    <php>
 
-                    <!-- LOGOUT -->
-                    <li class="nav-item ms-lg-2 mt-3 mt-lg-0">
-                        <a class="btn btn-danger btn-sm rounded-pill px-3" href="../cliente/logout.php">
-                            <i class="bi bi-box-arrow-right me-1"></i>
-                            Salir
-                        </a>
-                    </li>
+                        <li class="nav-item dropdown ms-lg-3 mt-3 mt-lg-0">
+                            <a class="nav-link dropdown-toggle user-box text-white d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle text-warning fs-4"></i>
+                                <div class="d-flex flex-column text-start" style="line-height: 1.2;">
+                                    <span class="fw-semibold user-name" style="font-size: 0.85rem;"><?php echo $usuario_nombre; ?></span>
+                                    <small class="text-white-50" style="font-size: 0.70rem;"><?php echo $usuario_correo; ?></small>
+                                </div>
+                            </a>
+                            
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                                <li><h6 class="dropdown-header text-muted text-center small"><?php echo $usuario_correo; ?></h6></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger d-flex align-items-center gap-2" href="../cliente/logout.php">
+                                        <i class="bi bi-box-arrow-right"></i> Salir
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    <php>
+                    
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- REDES SOCIALES FLOTANTES (BAJADAS - NO TAPAN EL SLIDER) -->
+    <!-- Panel Izquierdo: Redes Sociales y Botón Subir -->
     <div class="social-floating">
-        <a href="https://www.facebook.com/tu_pagina" target="_blank" title="Facebook">
-            <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://www.instagram.com/tu_cuenta" target="_blank" title="Instagram">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://www.tiktok.com/@tu_cuenta" target="_blank" title="TikTok">
-            <i class="fab fa-tiktok"></i>
-        </a>
+        <!-- Tus redes sociales -->
+        <a href="TU_LINK_FACEBOOK" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="TU_LINK_INSTAGRAM" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="TU_LINK_TIKTOK" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        
+        <!-- Pequeña separación visual opcional -->
+        <div style="height: 5px;"></div>
 
+        <!-- Tu flecha de Subir Arriba -->
+        <!-- Al usar href="#" el navegador automáticamente salta al inicio de la página -->
+        <a href="#" class="scroll-top-btn" title="Volver arriba">
+            <i class="fas fa-arrow-up"></i>
+        </a>
     </div>
 
     <!-- BOTONES FLOTANTES DERECHOS (WhatsApp y Sugerencias - BAJADOS) -->
@@ -398,11 +362,6 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
             <i class="fas fa-comment-dots"></i>
         </button>
     </div>
-
-    <!-- BOTÓN PARA SUBIR ARRIBA -->
-    <button class="scroll-top-btn" id="scrollTopBtn" title="Subir arriba">
-        <i class="fas fa-arrow-up"></i>
-    </button>
 
     <!-- MODAL DE SUGERENCIAS -->
     <div class="modal fade suggestion-modal" id="suggestionModal" tabindex="-1" aria-labelledby="suggestionModalLabel" aria-hidden="true">
@@ -445,8 +404,8 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
         </div>
     </div>
 
-    <!--CAROUSEL - MEJORADO PARA MÓVILES -->
-    <section class="hero-carousel">
+    <!--CAROUSEL - MEJORADO PARA MÓVILES Y EXPANSIBLE EN PC -->
+    <section class="hero-carousel container-fluid p-0">
         <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
@@ -457,14 +416,12 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
             <div class="carousel-inner">
                 <!-- SLIDE 1 -->
                 <div class="carousel-item active">
-                    <img src="../portafolio/img/carousel/img5.jpg" class="d-block w-100 hero-img" alt="Oratorio">
+                    <img src="../portafolio/img/carousel/img1.jpg" class="d-block w-100 hero-img" alt="Oratorio">
                     <div class="carousel-caption custom-caption">
                         <h1 class="display-4 fw-bold">Este espacio es para ti</h1>
                         <p class="lead">Un espacio de fe, comunidad y crecimiento espiritual.</p>
-                        <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start">
-                            <a href="#noticias" class="btn btn-info rounded-pill px-4">Ver Noticias</a>
-                            <a href="../cliente/Contacto.php" class="btn btn-success rounded-pill px-4">Contacto</a>
-                        </div>
+                        <a href="#noticias" class="btn btn-info rounded-pill px-4 me-2">Ver Noticias</a>
+                        <a href="../cliente/Contacto.php" class="btn btn-success rounded-pill px-4">Contacto</a>
                     </div>
                 </div>
                 <!-- SLIDE 2 -->
@@ -526,12 +483,12 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
 
                     <!-- Botones -->
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="#" class="btn btn-danger btn-lg rounded-pill px-4 shadow-sm">
+                        <a href="../cliente/Calendario.php" class="btn btn-danger btn-lg rounded-pill px-4 shadow-sm">
                             <i class="fas fa-calendar-alt me-2"></i>
                             Ver actividades
                         </a>
 
-                        <a href="#" class="btn btn-outline-success btn-lg rounded-pill px-4">
+                        <a  href= "https://www.youtube.com/watch?v=RpIq4r9UJtw" class="btn btn-outline-success btn-lg rounded-pill px-4">
                             <i class="fas fa-circle-play me-2"></i>
                             Conócenos
                         </a>
@@ -688,103 +645,88 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
                 </div>
             </div>
 
-            <!-- TARJETAS MODERNAS -->
-            <div class="row g-4 mb-5">
+            <!-- SECCIÓN: PILARES Y LLAMADO A LA ACCIÓN -->
+            <div class="row mb-4 text-center">
+                <div class="col-12">
+                    <h2 class="display-5 fw-bold">
+                        Descubre tu lugar en la Comunidad
+                    </h2>
+                    <p class="text-muted lead">
+                        Conoce nuestros pilares y sé parte de esta gran familia.
+                    </p>
+                </div>
+            </div>
 
+            <!-- TARJETAS MODERNAS (SIN BOTONES) -->
+            <div class="row g-4 mb-5">
                 <div class="col-md-4">
                     <div class="card border-0 shadow-sm rounded-5 h-100">
                         <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=900"
                             class="card-img-top"
                             style="height: 250px; object-fit: cover;"
                             alt="Oración">
-
-                        <div class="card-body p-4">
-
+                        <div class="card-body p-4 text-center">
                             <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
                                 <i class="fas fa-praying-hands text-primary fs-4"></i>
                             </div>
-                            <h4 class="fw-bold">
-                                Espacios de oración
-                            </h4>
-                            <p class="text-muted">
+                            <h4 class="fw-bold">Espacios de oración</h4>
+                            <p class="text-muted mb-0">
                                 Momentos de reflexión, espiritualidad y encuentro con Dios.
                             </p>
-                            <a href="#" class="btn btn-outline-primary rounded-pill px-4">
-                                Explorar
-                            </a>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="card border-0 shadow-sm rounded-5 h-100">
-
                         <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900"
                             class="card-img-top"
                             style="height: 250px; object-fit: cover;"
                             alt="Formación">
-
-                        <div class="card-body p-4">
-
+                        <div class="card-body p-4 text-center">
                             <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
                                 <i class="fas fa-users text-success fs-4"></i>
                             </div>
-
-                            <h4 class="fw-bold">
-                                Formación juvenil
-                            </h4>
-
-                            <p class="text-muted">
+                            <h4 class="fw-bold">Formación juvenil</h4>
+                            <p class="text-muted mb-0">
                                 Actividades dinámicas para el crecimiento humano y cristiano.
                             </p>
-
-                            <a href="#" class="btn btn-outline-success rounded-pill px-4">
-                                Ver más
-                            </a>
-
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="card border-0 shadow-sm rounded-5 h-100">
-
                         <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=900"
                             class="card-img-top"
                             style="height: 250px; object-fit: cover;"
                             alt="Servicio">
-
-                        <div class="card-body p-4">
-
+                        <div class="card-body p-4 text-center">
                             <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
                                 <i class="fas fa-hand-holding-heart text-warning fs-4"></i>
                             </div>
-
-                            <h4 class="fw-bold">
-                                Servicio comunitario
-                            </h4>
-
-                            <p class="text-muted">
+                            <h4 class="fw-bold">Servicio comunitario</h4>
+                            <p class="text-muted mb-0">
                                 Compartimos esperanza mediante acciones solidarias.
                             </p>
-
-                            <a href="#" class="btn btn-outline-warning rounded-pill px-4">
-                                Participar
-                            </a>
-
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- BOTÓN GIGANTE DE PARTICIPACIÓN -->
+            <div class="row mb-5 text-center">
+                <div class="col-12">
+                    <a href="../cliente/Participar.php" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow-lg fs-5 fw-bold transition-all hover-scale">
+                        <i class="fas fa-rocket me-2"></i> ¡Quiero Participar!
+                    </a>
+                </div>
+            </div>           
+
             <!-- VIDEOS MODERNOS -->
             <div class="row align-items-center g-5">
 
                 <div class="col-lg-5">
-
-                    <span class="badge bg-dark px-3 py-2 rounded-pill mb-3">
-                        🎥 Contenido Multimedia
-                    </span>
 
                     <h2 class="display-5 fw-bold mb-4">
                         Vive la experiencia del Oratorio
@@ -823,7 +765,7 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
 
                 <div class="col-lg-7">
                     <div class="ratio ratio-16x9 rounded-5 overflow-hidden shadow-lg">
-                        <iframe src="https://www.youtube.com/embed/Jf1e0nTz2Qc"
+                        <iframe src="https://www.youtube.com/embed/CkU66thoYRs?si=CveXfUIPDuchqHeZ"
                             title="Video"
                             allowfullscreen>
                         </iframe>
@@ -835,251 +777,7 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
         </div>
     </section>
 
-    <!-- Tarjetas de Noticias -->
-    <section id="noticias" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center fw-bold border-bottom border-primary pb-2 mb-5">Nuestras Noticias</h2>
-            <p class="text-center mb-5 lead">Ofrecemos una variedad de servicios espirituales para fortalecer tu fe y conexión con Dios.</p>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden">
-                        <div class="position-relative" style="height: 250px; overflow: hidden;">
-                            <img src="../assets/img/img_eucaristía.jpg" alt="Misas" class="w-100 h-100 object-fit-cover transition-transform" style="transition: transform 0.5s ease;">
-                            <span class="position-absolute top-0 start-0 bg-primary text-white px-3 py-1 m-3 rounded-pill">Nuevo</span>
-                        </div>
-                        <div class="card-body d-flex flex-column p-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
-                                    <i class="bi bi-calendar-check text-primary fs-4"></i>
-                                </div>
-                                <h5 class="card-title fw-bold mb-0">Celebraciones Eucarísticas</h5>
-                            </div>
-                            <p class="card-text flex-grow-1 text-muted">Participa en nuestras misas diarias y dominicales, así como en celebraciones especiales durante el año litúrgico.</p>
-                            <div class="mt-auto pt-3">
-                                <button type="button" class="btn btn-primary w-100 py-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalEucaristia">Ver Horarios <i class="bi bi-clock ms-1"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden">
-                        <div class="position-relative" style="height: 250px; overflow: hidden;">
-                            <img src="../assets/img/Sacramentos.jpg" alt="Sacramentos" class="w-100 h-100 object-fit-cover transition-transform" style="transition: transform 0.5s ease;">
-                            <span class="position-absolute top-0 start-0 bg-success text-white px-3 py-1 m-3 rounded-pill">Destacado</span>
-                        </div>
-                        <div class="card-body d-flex flex-column p-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="bg-success bg-opacity-10 p-2 rounded me-3">
-                                    <i class="bi bi-heart-fill text-success fs-4"></i>
-                                </div>
-                                <h5 class="card-title fw-bold mb-0">Sacramentos</h5>
-                            </div>
-                            <p class="card-text flex-grow-1 text-muted">Celebramos todos los sacramentos: bautismo, primera comunión, confirmación, reconciliación, unción de los enfermos y matrimonio.</p>
-                            <div class="mt-auto pt-3">
-                                <button type="button" class="btn btn-success w-100 py-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalSacramentos">Más Información <i class="bi bi-info-circle ms-1"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden">
-                        <div class="position-relative" style="height: 250px; overflow: hidden;">
-                            <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?auto=format&fit=crop&w=1350&q=80" alt="Grupos de oración" class="w-100 h-100 object-fit-cover transition-transform" style="transition: transform 0.5s ease;">
-                            <span class="position-absolute top-0 start-0 bg-warning text-dark px-3 py-1 m-3 rounded-pill">Comunidad</span>
-                        </div>
-                        <div class="card-body d-flex flex-column p-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="bg-warning bg-opacity-10 p-2 rounded me-3">
-                                    <i class="bi bi-people-fill text-warning fs-4"></i>
-                                </div>
-                                <h5 class="card-title fw-bold mb-0">Grupos de Oración</h5>
-                            </div>
-                            <p class="card-text flex-grow-1 text-muted">Únete a nuestros grupos de oración para compartir y crecer juntos en la fe a través de la oración comunitaria y el estudio bíblico.</p>
-                            <div class="mt-auto pt-3">
-                                <button type="button" class="btn btn-warning text-dark w-100 py-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalOracion">Unirse <i class="bi bi-person-plus ms-1"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modales (Eucaristía, Sacramentos, Oración) - Conservados -->
-    <div class="modal fade" id="modalEucaristia" tabindex="-1" aria-labelledby="modalEucaristiaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content rounded-4 overflow-hidden">
-                <div class="modal-header bg-primary text-white">
-                    <h2 class="modal-title fw-bold" id="modalEucaristiaLabel"><i class="bi bi-calendar-check me-2"></i> Horarios de Misas</h2>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-0">
-                    <div class="row">
-                        <div class="col-md-6 p-4">
-                            <h4 class="fw-bold mb-4">Horarios Regulares</h4>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex justify-content-between"><span><strong>Domingos:</strong></span><span>7:00 AM, 9:00 AM, 11:00 AM, 6:00 PM</span></li>
-                                <li class="list-group-item d-flex justify-content-between"><span><strong>Lunes a Viernes:</strong></span><span>7:00 AM, 12:00 PM</span></li>
-                                <li class="list-group-item d-flex justify-content-between"><span><strong>Sábados:</strong></span><span>7:00 AM, 5:00 PM</span></li>
-                                <li class="list-group-item d-flex justify-content-between"><span><strong>Primeros Viernes:</strong></span><span>7:00 PM (Adoración)</span></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6 bg-light p-4">
-                            <h4 class="fw-bold mb-4">Próximas Celebraciones</h4>
-                            <div class="mb-3">
-                                <h6 class="text-primary fw-bold">Navidad</h6>
-                                <p class="mb-1">24 de Diciembre: Misa de Gallo - 10:00 PM</p>
-                                <p>25 de Diciembre: Misas - 7:00 AM, 9:00 AM, 11:00 AM</p>
-                            </div>
-                            <div class="mb-3">
-                                <h6 class="text-primary fw-bold">Semana Santa</h6>
-                                <p class="mb-1">Jueves Santo: 7:00 PM</p>
-                                <p>Viernes Santo: 3:00 PM</p>
-                            </div>
-                            <div class="alert alert-info mt-4"><i class="bi bi-info-circle me-2"></i><strong>Nota:</strong> Los horarios pueden cambiar en días festivos.</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary"><i class="bi bi-download me-1"></i> Descargar Horarios</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalSacramentos" tabindex="-1" aria-labelledby="modalSacramentosLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content rounded-4 overflow-hidden">
-                <div class="modal-header bg-success text-white">
-                    <h2 class="modal-title fw-bold" id="modalSacramentosLabel"><i class="bi bi-heart-fill me-2"></i> Sacramentos</h2>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <h4 class="fw-bold mb-3">Información General</h4>
-                            <p>Ofrecemos todos los sacramentos de la Iglesia Católica. Para cada sacramento se requiere preparación previa y documentación específica.</p>
-                            <div class="accordion" id="accordionSacramentos">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">Bautismo</button></h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionSacramentos">
-                                        <div class="accordion-body">
-                                            <p>Se realiza el primer sábado de cada mes a las 10:00 AM. Se requiere inscripción previa y asistencia a charlas de preparación.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">Matrimonio</button></h2>
-                                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionSacramentos">
-                                        <div class="accordion-body">
-                                            <p>Se requiere aviso de 6 meses mínimo. Es necesario asistir al curso prematrimonial y presentar documentación requerida.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <h4 class="fw-bold mb-3">Contacto para Sacramentos</h4>
-                            <div class="card border-success">
-                                <div class="card-body">
-                                    <p class="card-text"><strong>Encargada:</strong> María González</p>
-                                    <p class="card-text"><strong>Teléfono:</strong> (555) 123-4567</p>
-                                    <p class="card-text"><strong>Email:</strong> sacramentos@parroquiaejemplo.org</p>
-                                    <p class="card-text"><strong>Horario de atención:</strong> Lunes a Viernes 9:00 AM - 1:00 PM</p>
-                                    <hr>
-                                    <p class="card-text">Para solicitar información sobre cualquier sacramento, puede acudir a la oficina parroquial o contactarnos por teléfono/email.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <a href="#" class="btn btn-success"><i class="bi bi-telephone me-1"></i> Contactar</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalOracion" tabindex="-1" aria-labelledby="modalOracionLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4 overflow-hidden">
-                <div class="modal-header bg-warning text-dark">
-                    <h2 class="modal-title fw-bold" id="modalOracionLabel"><i class="bi bi-people-fill me-2"></i> Unirse a Grupos de Oración</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <h4 class="fw-bold mb-3">Formulario de Inscripción</h4>
-                    <p>Complete el siguiente formulario para unirse a uno de nuestros grupos de oración. Nos contactaremos con usted en breve.</p>
-                    <form action="https://formspree.io/f/maqqoeby" method="POST">
-                        <input type="hidden" name="_subject" value="Inscripción a Grupos de Oración">
-                        <div class="mb-3"><label for="nombreOracion" class="form-label">Nombre completo *</label><input type="text" class="form-control" id="nombreOracion" name="nombre_completo" required></div>
-                        <div class="mb-3"><label for="emailOracion" class="form-label">Correo electrónico *</label><input type="email" class="form-control" id="emailOracion" name="email" required></div>
-                        <div class="mb-3"><label for="telefonoOracion" class="form-label">Teléfono</label><input type="tel" class="form-control" id="telefonoOracion" name="telefono"></div>
-                        <div class="mb-3"><label for="grupo" class="form-label">Grupo de interés *</label>
-                            <select class="form-select" id="grupo" name="grupo_interes" required>
-                                <option value="" selected disabled>Seleccione un grupo</option>
-                                <option value="jovenes">Grupo de Jóvenes (18-30 años)</option>
-                                <option value="adultos">Grupo de Adultos (30-60 años)</option>
-                                <option value="tercera_edad">Grupo de la Tercera Edad</option>
-                                <option value="matrimonios">Grupo de Matrimonios</option>
-                                <option value="estudio">Grupo de Estudio Bíblico</option>
-                            </select>
-                        </div>
-                        <div class="mb-3"><label for="mensajeOracion" class="form-label">Mensaje adicional</label><textarea class="form-control" id="mensajeOracion" name="mensaje_adicional" rows="3"></textarea></div>
-                        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="privacidadOracion" name="acepta_privacidad" required><label class="form-check-label" for="privacidadOracion">Acepto la política de privacidad y el tratamiento de mis datos *</label></div>
-                        <div class="modal-footer pt-3 pb-0 px-0"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button><button type="submit" class="btn btn-warning fw-bold">Enviar Inscripción</button></div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Testimonios -->
-    <section id="testimonios" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center fw-bold border-bottom border-primary pb-2 mb-5">Testimonios</h2>
-            <p class="text-center mb-5 lead">Lo que dicen los miembros de nuestra comunidad sobre su experiencia.</p>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="mb-4"><img src="https://randomuser.me/api/portraits/women/45.jpg" alt="María González" class="rounded-circle border border-3 border-primary" width="80"></div>
-                            <h5 class="card-title">María González</h5>
-                            <p class="text-muted mb-3">Miembro desde 2018</p>
-                            <p class="card-text">"Encontré en esta comunidad un hogar espiritual donde puedo crecer en mi fe. Las celebraciones litúrgicas son especialmente significativas para mí y mi familia."</p>
-                            <div class="mt-3 text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="mb-4"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos Rodríguez" class="rounded-circle border border-3 border-primary" width="80"></div>
-                            <h5 class="card-title">Carlos Rodríguez</h5>
-                            <p class="text-muted mb-3">Miembro desde 2015</p>
-                            <p class="card-text">"Los grupos de oración han transformado mi vida espiritual. La comunidad es acogedora y me ha ayudado a profundizar mi relación con Dios de manera significativa."</p>
-                            <div class="mt-3 text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="mb-4"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Ana Martínez" class="rounded-circle border border-3 border-primary" width="80"></div>
-                            <h5 class="card-title">Ana Martínez</h5>
-                            <p class="text-muted mb-3">Miembro desde 2020</p>
-                            <p class="card-text">"Las actividades para jóvenes han sido fundamentales para que mis hijos mantengan su fe. Estoy muy agradecida por el trabajo que hacen con las nuevas generaciones."</p>
-                            <div class="mt-3 text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Eventos Próximos -->
+ <!-- 1. PRÓXIMOS EVENTOS (Sentido de Urgencia) -->
     <section id="eventos" class="py-5">
         <div class="container">
             <h2 class="text-center fw-bold border-bottom border-primary pb-2 mb-5">Próximos Eventos</h2>
@@ -1137,7 +835,7 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
         </div>
     </section>
 
-    <!-- Actividades Regulares -->
+    <!-- 2. ACTIVIDADES REGULARES (Prueba Social / Constancia) -->
     <section id="actividades" class="py-5 bg-light">
         <div class="container">
             <h2 class="text-center fw-bold border-bottom border-primary pb-2 mb-5">Actividades Regulares</h2>
@@ -1192,7 +890,7 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
                     <div class="card mb-4 border-0 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="card-title mb-0">Adoración Eucarística</h5><span class="badge bg-purple">Primer Viernes de mes</span>
+                                <h5 class="card-title mb-0">Adoración Eucarística</h5><span class="badge bg-purple" style="background-color: #6f42c1;">Primer Viernes de mes</span>
                             </div>
                             <p class="card-text"><i class="bi bi-clock me-2"></i>7:00 PM - 8:00 PM</p>
                             <p class="card-text">Momento de oración silenciosa ante el Santísimo Sacramento.</p>
@@ -1207,40 +905,252 @@ $usuario_correo = htmlspecialchars($_SESSION['correo'] ?? 'Sin correo');
         </div>
     </section>
 
-    <!-- Formulario de Inscripción -->
-    <section class="py-5">
+    <!-- 3. SERVICIOS ESPIRITUALES (Profundidad Institucional) -->
+    <section id="servicios-espirituales" class="py-5">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <h2 class="text-center fw-bold border-bottom border-primary pb-2 mb-5">Reserva tu lugar</h2>
-                    <p class="text-center mb-5 lead">Completa este formulario para inscribirte en nuestras actividades y eventos.</p>
-                    <form action="../servidor/guardar_inscripcion.php" method="POST" class="bg-light p-4 rounded shadow-sm">
-                        <div class="row g-3">
-                            <div class="col-md-12"><label for="nombre_completo" class="form-label">Nombre completo *</label><input type="text" class="form-control" id="nombre_completo" name="nombre_completo" required></div>
-                            <div class="col-md-12"><label for="email" class="form-label">Correo electrónico *</label><input type="email" class="form-control" id="email" name="email" required></div>
-                            <div class="col-md-12"><label for="telefono" class="form-label">Teléfono</label><input type="tel" class="form-control" id="telefono" name="telefono"></div>
-                            <div class="col-md-12"><label for="actividad" class="form-label">Actividad/Evento de interés *</label>
-                                <select class="form-select" id="actividad" name="actividad" required>
-                                    <option value="" selected disabled>Selecciona una opción</option>
-                                    <option value="retiro">Retiro Espiritual (15-17 Nov)</option>
-                                    <option value="concierto">Concierto de Música Sacra (25 Nov)</option>
-                                    <option value="taller">Taller de Liturgia (2 Dic)</option>
-                                    <option value="jovenes">Grupo de Jóvenes (Viernes)</option>
-                                    <option value="catequesis">Catequesis Familiar (Sábados)</option>
-                                    <option value="adoracion">Adoración Eucarística</option>
-                                </select>
-                            </div>
-                            <div class="col-12"><label for="mensaje" class="form-label">Mensaje adicional (opcional)</label><textarea class="form-control" id="mensaje" name="mensaje" rows="4"></textarea></div>
-                            <div class="col-12">
-                                <div class="form-check"><input class="form-check-input" type="checkbox" id="newsletter" name="newsletter"><label class="form-check-label" for="newsletter">Deseo recibir información sobre futuros eventos y actividades</label></div>
-                            </div>
-                            <div class="col-12"><button type="submit" class="btn btn-primary w-100 py-2">Enviar Inscripción</button></div>
+            <h2 class="text-center fw-bold border-bottom border-primary pb-2 mb-5">Nuestros Servicios Espirituales</h2>
+            <p class="text-center mb-5 lead">Ofrecemos una variedad de servicios espirituales para fortalecer tu fe y conexión con Dios.</p>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden">
+                        <div class="position-relative" style="height: 250px; overflow: hidden;">
+                            <img src="../portafolio/img/Celebraciones_eucaristicas.jpg" alt="Misas" class="w-100 h-100 object-fit-cover transition-transform" style="transition: transform 0.5s ease;">
+                            <span class="position-absolute top-0 start-0 bg-primary text-white px-3 py-1 m-3 rounded-pill">Nuevo</span>
                         </div>
-                    </form>
+                        <div class="card-body d-flex flex-column p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                    <i class="bi bi-calendar-check text-primary fs-4"></i>
+                                </div>
+                                <h5 class="card-title fw-bold mb-0">Celebraciones Eucarísticas</h5>
+                            </div>
+                            <p class="card-text flex-grow-1 text-muted">Participa en nuestras misas diarias y dominicales, así como en celebraciones especiales durante el año litúrgico.</p>
+                            <div class="mt-auto pt-3">
+                                <button type="button" class="btn btn-primary w-100 py-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalEucaristia">Ver Horarios <i class="bi bi-clock ms-1"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden">
+                        <div class="position-relative" style="height: 250px; overflow: hidden;">
+                            <img src="../portafolio/img/Sacramentos.jpg" alt="Sacramentos" class="w-100 h-100 object-fit-cover transition-transform" style="transition: transform 0.5s ease;">
+                            <span class="position-absolute top-0 start-0 bg-success text-white px-3 py-1 m-3 rounded-pill">Destacado</span>
+                        </div>
+                        <div class="card-body d-flex flex-column p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-success bg-opacity-10 p-2 rounded me-3">
+                                    <i class="bi bi-heart-fill text-success fs-4"></i>
+                                </div>
+                                <h5 class="card-title fw-bold mb-0">Sacramentos</h5>
+                            </div>
+                            <p class="card-text flex-grow-1 text-muted">Celebramos todos los sacramentos: bautismo, primera comunión, confirmación, reconciliación, unción de los enfermos y matrimonio.</p>
+                            <div class="mt-auto pt-3">
+                                <button type="button" class="btn btn-success w-100 py-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalSacramentos">Más Información <i class="bi bi-info-circle ms-1"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden">
+                        <div class="position-relative" style="height: 250px; overflow: hidden;">
+                            <img src="../portafolio/img/oracion.jpg" alt="Grupos de oración" class="w-100 h-100 object-fit-cover transition-transform" style="transition: transform 0.5s ease;">
+                            <span class="position-absolute top-0 start-0 bg-warning text-dark px-3 py-1 m-3 rounded-pill">Comunidad</span>
+                        </div>
+                        <div class="card-body d-flex flex-column p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-warning bg-opacity-10 p-2 rounded me-3">
+                                    <i class="bi bi-people-fill text-warning fs-4"></i>
+                                </div>
+                                <h5 class="card-title fw-bold mb-0">Grupos de Oración</h5>
+                            </div>
+                            <p class="card-text flex-grow-1 text-muted">Únete a nuestros grupos de oración para compartir y crecer juntos en la fe a través de la oración comunitaria y el estudio bíblico.</p>
+                            <div class="mt-auto pt-3">
+                                <button type="button" class="btn btn-warning text-dark w-100 py-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalOracion">Unirse <i class="bi bi-person-plus ms-1"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- 4. TESTIMONIOS -->
+    <section id="testimonios" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center fw-bold border-bottom border-primary pb-2 mb-5">Testimonios</h2>
+            <p class="text-center mb-5 lead">Lo que dicen los miembros de nuestra comunidad sobre su experiencia.</p>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-4"><img src="https://randomuser.me/api/portraits/women/45.jpg" alt="María González" class="rounded-circle border border-3 border-primary" width="80"></div>
+                            <h5 class="card-title">María González</h5>
+                            <p class="text-muted mb-3">Miembro desde 2018</p>
+                            <p class="card-text">"Encontré en esta comunidad un hogar espiritual donde puedo crecer en mi fe. Las celebraciones litúrgicas son especialmente significativas para mí y mi familia."</p>
+                            <div class="mt-3 text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-4"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos Rodríguez" class="rounded-circle border border-3 border-primary" width="80"></div>
+                            <h5 class="card-title">Carlos Rodríguez</h5>
+                            <p class="text-muted mb-3">Miembro desde 2015</p>
+                            <p class="card-text">"Los grupos de oración han transformado mi vida espiritual. La comunidad es acogedora y me ha ayudado a profundizar mi relación con Dios de manera significativa."</p>
+                            <div class="mt-3 text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-4"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Ana Martínez" class="rounded-circle border border-3 border-primary" width="80"></div>
+                            <h5 class="card-title">Ana Martínez</h5>
+                            <p class="text-muted mb-3">Miembro desde 2020</p>
+                            <p class="card-text">"Las actividades para jóvenes han sido fundamentales para que mis hijos mantengan su fe. Estoy muy agradecida por el trabajo que hacen con las nuevas generaciones."</p>
+                            <div class="mt-3 text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODALES (Ocultos a nivel visual, se activan con los botones) -->
+    <!-- Modal Eucaristía -->
+    <div class="modal fade" id="modalEucaristia" tabindex="-1" aria-labelledby="modalEucaristiaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 overflow-hidden">
+                <div class="modal-header bg-primary text-white">
+                    <h2 class="modal-title fw-bold" id="modalEucaristiaLabel"><i class="bi bi-calendar-check me-2"></i> Horarios de Misas</h2>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="row">
+                        <div class="col-md-6 p-4">
+                            <h4 class="fw-bold mb-4">Horarios Regulares</h4>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between"><span><strong>Domingos:</strong></span><span>7:00 AM, 9:00 AM, 11:00 AM, 6:00 PM</span></li>
+                                <li class="list-group-item d-flex justify-content-between"><span><strong>Lunes a Viernes:</strong></span><span>7:00 AM, 12:00 PM</span></li>
+                                <li class="list-group-item d-flex justify-content-between"><span><strong>Sábados:</strong></span><span>7:00 AM, 5:00 PM</span></li>
+                                <li class="list-group-item d-flex justify-content-between"><span><strong>Primeros Viernes:</strong></span><span>7:00 PM (Adoración)</span></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 bg-light p-4">
+                            <h4 class="fw-bold mb-4">Próximas Celebraciones</h4>
+                            <div class="mb-3">
+                                <h6 class="text-primary fw-bold">Navidad</h6>
+                                <p class="mb-1">24 de Diciembre: Misa de Gallo - 10:00 PM</p>
+                                <p>25 de Diciembre: Misas - 7:00 AM, 9:00 AM, 11:00 AM</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="text-primary fw-bold">Semana Santa</h6>
+                                <p class="mb-1">Jueves Santo: 7:00 PM</p>
+                                <p>Viernes Santo: 3:00 PM</p>
+                            </div>
+                            <div class="alert alert-info mt-4"><i class="bi bi-info-circle me-2"></i><strong>Nota:</strong> Los horarios pueden cambiar en días festivos.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary"><i class="bi bi-download me-1"></i> Descargar Horarios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sacramentos -->
+    <div class="modal fade" id="modalSacramentos" tabindex="-1" aria-labelledby="modalSacramentosLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 overflow-hidden">
+                <div class="modal-header bg-success text-white">
+                    <h2 class="modal-title fw-bold" id="modalSacramentosLabel"><i class="bi bi-heart-fill me-2"></i> Sacramentos</h2>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h4 class="fw-bold mb-3">Información General</h4>
+                            <p>Ofrecemos todos los sacramentos de la Iglesia Católica. Para cada sacramento se requiere preparación previa y documentación específica.</p>
+                            <div class="accordion" id="accordionSacramentos">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">Bautismo</button></h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionSacramentos">
+                                        <div class="accordion-body">
+                                            <p>Se realiza el primer sábado de cada mes a las 10:00 AM. Se requiere inscripción previa y asistencia a charlas de preparación.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">Matrimonio</button></h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionSacramentos">
+                                        <div class="accordion-body">
+                                            <p>Se requiere aviso de 6 meses mínimo. Es necesario asistir al curso prematrimonial y presentar documentación requerida.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="fw-bold mb-3">Contacto para Sacramentos</h4>
+                            <div class="card border-success">
+                                <div class="card-body">
+                                    <p class="card-text"><strong>Encargada:</strong> María González</p>
+                                    <p class="card-text"><strong>Teléfono:</strong> (555) 123-4567</p>
+                                    <p class="card-text"><strong>Email:</strong> sacramentos@parroquiaejemplo.org</p>
+                                    <p class="card-text"><strong>Horario de atención:</strong> Lunes a Viernes 9:00 AM - 1:00 PM</p>
+                                    <hr>
+                                    <p class="card-text">Para solicitar información sobre cualquier sacramento, puede acudir a la oficina parroquial o contactarnos por teléfono/email.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <a href="#" class="btn btn-success"><i class="bi bi-telephone me-1"></i> Contactar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Oración -->
+    <div class="modal fade" id="modalOracion" tabindex="-1" aria-labelledby="modalOracionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 overflow-hidden">
+                <div class="modal-header bg-warning text-dark">
+                    <h2 class="modal-title fw-bold" id="modalOracionLabel"><i class="bi bi-people-fill me-2"></i> Unirse a Grupos de Oración</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <h4 class="fw-bold mb-3">Formulario de Inscripción</h4>
+                    <p>Complete el siguiente formulario para unirse a uno de nuestros grupos de oración. Nos contactaremos con usted en breve.</p>
+                    <form action="https://formspree.io/f/maqqoeby" method="POST">
+                        <input type="hidden" name="_subject" value="Inscripción a Grupos de Oración">
+                        <div class="mb-3"><label for="nombreOracion" class="form-label">Nombre completo *</label><input type="text" class="form-control" id="nombreOracion" name="nombre_completo" required></div>
+                        <div class="mb-3"><label for="emailOracion" class="form-label">Correo electrónico *</label><input type="email" class="form-control" id="emailOracion" name="email" required></div>
+                        <div class="mb-3"><label for="telefonoOracion" class="form-label">Teléfono</label><input type="tel" class="form-control" id="telefonoOracion" name="telefono"></div>
+                        <div class="mb-3"><label for="grupo" class="form-label">Grupo de interés *</label>
+                            <select class="form-select" id="grupo" name="grupo_interes" required>
+                                <option value="" selected disabled>Seleccione un grupo</option>
+                                <option value="jovenes">Grupo de Jóvenes (18-30 años)</option>
+                                <option value="adultos">Grupo de Adultos (30-60 años)</option>
+                                <option value="tercera_edad">Grupo de la Tercera Edad</option>
+                                <option value="matrimonios">Grupo de Matrimonios</option>
+                                <option value="estudio">Grupo de Estudio Bíblico</option>
+                            </select>
+                        </div>
+                        <div class="mb-3"><label for="mensajeOracion" class="form-label">Mensaje adicional</label><textarea class="form-control" id="mensajeOracion" name="mensaje_adicional" rows="3"></textarea></div>
+                        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="privacidadOracion" name="acepta_privacidad" required><label class="form-check-label" for="privacidadOracion">Acepto la política de privacidad y el tratamiento de mis datos *</label></div>
+                        <div class="modal-footer pt-3 pb-0 px-0"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button><button type="submit" class="btn btn-warning fw-bold">Enviar Inscripción</button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Contacto -->
     <section id="contacto" class="py-5 bg-primary text-white">

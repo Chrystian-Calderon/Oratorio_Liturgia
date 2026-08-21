@@ -1,14 +1,18 @@
 <?php
 include("conexionBD.php");
 
-$rol=$_POST['txtrol'];
-$permisos=$_POST['txtpermisos'];
-$estado=$_POST['txtestado'];
+$rol = $_POST['txtrol'];
+$permisos = "";
+
+if (isset($_POST['permisos'])) {
+
+    $permisos = implode(",", $_POST['permisos']);
+}
 
 
-$consulta=" INSERT INTO usuarios_sistema (rol,permisos,estado) VALUES ('$rol','$permisos','$estado')";
+$consulta = " INSERT INTO usuarios_sistema (rol,permisos) VALUES ('$rol','$permisos')";
 
-$resultado=mysqli_query($conexion,$consulta);
+$resultado = mysqli_query($conexion, $consulta);
 
 if ($resultado) {
     echo "<script>
@@ -18,4 +22,3 @@ if ($resultado) {
 } else {
     echo "Error al insertar: " . mysqli_error($conexion);
 }
-?>

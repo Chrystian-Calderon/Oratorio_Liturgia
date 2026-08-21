@@ -45,109 +45,28 @@
             </div>
         </div>
 
-        <!-- Botones -->
-        <div class="mb-3 text-center">
-            <button class="btn btn-success me-2" onclick="abrirModalActividad()">+ Nueva Actividad</button>
-            <button class="btn btn-primary me-2" onclick="abrirModalInscripcion()">+ Nueva Inscripción</button>
-            <button class="btn btn-warning me-2" onclick="exportarPDF()">Exportar PDF</button>
-            <button class="btn btn-info" onclick="exportarExcel()">Exportar Excel</button>
-        </div>
+       
 
-        <!-- Tabla Actividades -->
-        <h3 class="mt-4">Lista de Actividades</h3>
-        <div class="table-responsive">
-            <table id="tabla-actividades-html" class="table table-bordered table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Fecha</th>
-                        <th>Lugar</th>
-                        <th>Inscritos</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-actividades"></tbody>
-            </table>
-        </div>
+        
+        
 
-        <!-- Tabla Inscripciones -->
-        <h3 class="mt-4">Lista de Inscripciones</h3>
-        <div class="table-responsive">
-            <table id="tabla-inscripciones-html" class="table table-bordered table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Participante</th>
-                        <th>Actividad</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-inscripciones"></tbody>
-            </table>
-        </div>
+        
 
        <!-- Gráfico -->
         <h3 class="mt-5">Estadísticas</h3>
         <canvas id="grafico-actividades" height="100"></canvas>
     </div>
 
-    <!-- Modal Actividad -->
-    <div class="modal fade" id="actividadModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Registrar Actividad</h5>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="actividadId">
-                    <div class="mb-3"><label>Nombre</label><input type="text" id="actividadNombre" class="form-control"></div>
-                    <div class="mb-3"><label>Tipo</label><input type="text" id="actividadTipo" class="form-control"></div>
-                    <div class="mb-3"><label>Fecha</label><input type="date" id="actividadFecha" class="form-control"></div>
-                    <div class="mb-3"><label>Lugar</label><input type="text" id="actividadLugar" class="form-control"></div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button class="btn btn-primary" onclick="guardarActividad()">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Inscripción -->
-    <div class="modal fade" id="inscripcionModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Registrar Inscripción</h5>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="inscripcionId">
-                    <div class="mb-3"><label>Participante</label><input type="text" id="inscripcionUsuario" class="form-control"></div>
-                    <div class="mb-3"><label>Actividad</label><select id="actividadInscripcion" class="form-select"></select></div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button class="btn btn-primary" onclick="guardarInscripcion()">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const modalActividad = new bootstrap.Modal(document.getElementById('actividadModal'));
-        const modalInscripcion = new bootstrap.Modal(document.getElementById('inscripcionModal'));
-
+        
         let actividades = JSON.parse(localStorage.getItem("actividades")) || [];
         let inscripciones = JSON.parse(localStorage.getItem("inscripciones")) || [];
         let chart;
 
-        function guardarStorage() {
-            localStorage.setItem("actividades", JSON.stringify(actividades));
-            localStorage.setItem("inscripciones", JSON.stringify(inscripciones));
-        }
+        
 
         // CORREGIDO: NO RENNUMERA LOS IDs
         function corregirIds() {
@@ -342,3 +261,4 @@
 </body>
 
 </html>
+

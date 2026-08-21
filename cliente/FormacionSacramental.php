@@ -12,6 +12,11 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card p-4 shadow">
+                    <div class="mb-3">
+                        <a href="../cliente/Participar.php" class="text-decoration-none text-secondary">
+                            <i class="bi bi-arrow-left"></i> Volver al panel
+                        </a>
+                    </div>
                     <h2 class="card-title text-center mb-4">Formulario de Inscripción Sacramental</h2>
                     
                     <form action="../servidor/sacramentos_db.php" method="POST">

@@ -12,6 +12,11 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-10">
+                <div class="mb-3">
+                    <a href="../cliente/Participar.php" class="text-decoration-none text-secondary">
+                        <i class="bi bi-arrow-left"></i> Volver al panel
+                    </a>
+                </div>
                 <!-- Tarjeta -->
                 <div class="card shadow-lg rounded-4">
                     <div class="card-body p-4">
