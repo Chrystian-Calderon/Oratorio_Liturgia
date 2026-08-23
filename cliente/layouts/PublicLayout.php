@@ -2,6 +2,7 @@
 $pageTitle = $pageTitle ?? 'Oratorio y Liturgia';
 require_once appPath('cliente/components/Navbar.php');
 require_once appPath('cliente/components/footer/FooterIndex.php');
+require_once appPath('cliente/components/footer/FooterPublic.php');
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +41,10 @@ require_once appPath('cliente/components/footer/FooterIndex.php');
     $ruta = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     if ($ruta === '/inicio' || $ruta === '/') {
         renderFooterIndex();
+    } else {
+      if ($ruta !== '/contacto' && $ruta !== '/calendario') {
+          renderFooterPublic();
+      }
     }
   ?>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
