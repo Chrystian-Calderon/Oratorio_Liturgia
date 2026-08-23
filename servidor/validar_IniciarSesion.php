@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include("conexionBD.php");
+require_once appPath('servidor/conexionBD.php');
 
 $correo = $_POST['txtcorreo'];
 $password = $_POST['txtpassword'];
@@ -26,7 +26,7 @@ if(mysqli_num_rows($resultado) > 0){
             $_SESSION['tipo_persona'] = $usuario['tipo_persona'];
 
             // Redireccionar
-            header("Location: ../cliente/Dashboard.php");
+            header("Location: " . url('/dashboard'));
             exit();
 
         }else{
