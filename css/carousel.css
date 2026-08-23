@@ -45,11 +45,16 @@
 
 /* BOTONES */
 
-.custom-caption .btn{
+.custom-caption {
 
     padding: 10px 24px;
     font-weight: 600;
     transition: .3s;
+
+    position: absolute;
+    left: 50vw;
+    bottom: -50px;
+    transform: translateX(-50%);
 }
 
 .custom-caption .btn:hover{

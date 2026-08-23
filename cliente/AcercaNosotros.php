@@ -142,7 +142,7 @@
     <!-- Header -->
     <header class="text-center py-5 shadow-lg">
       <h1 class="fw-bold">
-        <i class="fas fa-users"></i> Sobre Nosotros
+        <i class="fas fa-users"></i> Acerca de Nosotros
       </h1>
       <p class="lead mb-0">
         Oratorio y Liturgia – Universidad Salesiana de Bolivia
@@ -154,7 +154,7 @@
       <!-- Imagen: Organigrama -->
       <div class="text-center mb-5">
         <img
-          src="../assets/img/Organigrama.png"
+          src="../portafolio/img/Organigrama.png"
           alt="Organigrama"
           class="img-fluid organigrama shadow-lg"
         />

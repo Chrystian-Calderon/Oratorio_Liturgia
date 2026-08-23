@@ -90,8 +90,8 @@
                             Inscríbase en actividades parroquiales como retiros, encuentros juveniles,
                             grupos de oración y eventos comunitarios.
                         </p>
-                        <a href="../cliente/actividades.php" class="btn btn-success">
-                            <i class="bi bi-arrow-right-circle me-2"></i> Acceder al Registro
+                        <a href="../cliente/Ver_Actividades.php" class="btn btn-success">
+                            <i class="bi bi-arrow-right-circle me-2"></i> Ver Actividades
                         </a>
                     </div>
                 </div>
@@ -109,8 +109,8 @@
                             Inscríbase y registre su participación en eventos y encuentros
                             organizados por el Oratorio Universitario.
                         </p>
-                        <a href="../cliente/eventos.php" class="btn btn-warning text-light">
-                            <i class="bi bi-arrow-right-circle me-2"></i> Acceder al Registro
+                        <a href="../cliente/Ver_Eventos.php" class="btn btn-warning text-light">
+                            <i class="bi bi-arrow-right-circle me-2"></i> Ver Eventos
                         </a>
                     </div>
                 </div>

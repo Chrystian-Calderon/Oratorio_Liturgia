@@ -1,25 +1,65 @@
 <?php
+
 session_start();
 
-// 1. Verificamos si hay una sesión activa de forma silenciosa (SIN expulsar a nadie)
-$sesion_iniciada = isset($_SESSION['usuario_correo']) || isset($_SESSION['usuario']);
+// =====================================================
+// VERIFICAR SI EL USUARIO INICIÓ SESIÓN
+// =====================================================
 
-if ($sesion_iniciada) {
-    // 2. Si inició sesión, armamos su nombre y correo interceptando cualquier posible variable
-    $nombre = $_SESSION['usuario_nombre'] ?? $_SESSION['nombres'] ?? '';
-    $apellido = $_SESSION['usuario_apellido'] ?? $_SESSION['apellidos'] ?? '';
-    
-    $nombres_completos = trim($nombre . ' ' . $apellido);
-    if (empty($nombres_completos)) {
-        $nombres_completos = $_SESSION['usuario'] ?? 'Integrante';
-    }
-
-    $correo_usuario = $_SESSION['usuario_correo'] ?? $_SESSION['correo'] ?? 'Sin correo';
-
-    $usuario_nombre = htmlspecialchars($nombres_completos);
-    $usuario_correo = htmlspecialchars($correo_usuario);
+if (!isset($_SESSION['correo'])) {
+    header("Location: login.php");
+    exit();
 }
+
+// =====================================================
+// VERIFICAR ROL
+// SOLO ADMINISTRADOR Y ENCARGADO
+// =====================================================
+
+
+
+// =====================================================
+// OBTENER DATOS DEL USUARIO
+// =====================================================
+
+$nombre = $_SESSION['nombre'] ?? '';
+$apellido = $_SESSION['apellidos'] ?? '';
+$correo_usuario = $_SESSION['correo'] ?? '';
+
+// =====================================================
+// ARMAR NOMBRE COMPLETO
+// =====================================================
+
+$nombres_completos = trim($nombre . ' ' . $apellido);
+
+if (empty($nombres_completos)) {
+    $nombres_completos = 'Integrante';
+}
+
+// =====================================================
+// PROTEGER DATOS
+// =====================================================
+
+$usuario_nombre = htmlspecialchars(
+    $nombres_completos,
+    ENT_QUOTES,
+    'UTF-8'
+);
+
+$usuario_apellido = htmlspecialchars(
+    $apellido,
+    ENT_QUOTES,
+    'UTF-8'
+);
+
+$usuario_correo = htmlspecialchars(
+    $correo_usuario,
+    ENT_QUOTES,
+    'UTF-8'
+);
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -45,16 +85,16 @@ if ($sesion_iniciada) {
             --bg-puro: #ffffff;
             --texto-blanco: #ffffff;
             --texto-gris-claro: #f8f9fa;
-            --sombra-fuerte: 2px 2px 6px rgba(0,0,0,0.8);
-            --sombra-suave: 1px 1px 4px rgba(0,0,0,0.6);
+            --sombra-fuerte: 2px 2px 6px rgba(0, 0, 0, 0.8);
+            --sombra-suave: 1px 1px 4px rgba(0, 0, 0, 0.6);
             --degradado-inferior: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.85) 100%);
         }
 
         /* ============================================================
         1. LIMPIEZA DE CONTENEDORES (Adiós al gris de Bootstrap)
         ============================================================ */
-        .hero-carousel, 
-        .hero-carousel .carousel-inner, 
+        .hero-carousel,
+        .hero-carousel .carousel-inner,
         .hero-carousel .carousel-item,
         .carousel:not(.hero-carousel),
         .carousel:not(.hero-carousel) .carousel-inner,
@@ -62,22 +102,23 @@ if ($sesion_iniciada) {
             background-color: var(--bg-puro) !important;
             border: none;
         }
+
         /* ============================================================
         2. PRIMER CARRUSEL (Hero Principal - PC Póster Gigante)
         ============================================================ */
         .hero-carousel .hero-img {
             width: 100% !important;
             /* ¡El secreto del póster! La altura dicta sus propias reglas en PC */
-            height: auto !important; 
-            min-height: 97vh !important; 
+            height: auto !important;
+            min-height: 97vh !important;
             object-fit: cover !important;
-            object-position: center top; 
+            object-position: center top;
         }
 
         .hero-carousel .carousel-item::after {
             content: "";
             position: absolute;
-            inset: 0; 
+            inset: 0;
             background: var(--degradado-inferior);
             z-index: 1;
             pointer-events: none;
@@ -123,16 +164,16 @@ if ($sesion_iniciada) {
             background-color: transparent !important;
             border: none !important;
             box-shadow: none !important;
-            text-align: center; 
+            text-align: center;
         }
 
         .carousel:not(.hero-carousel) .carousel-item img {
-            width: auto !important; 
-            max-width: 100% !important; 
+            width: auto !important;
+            max-width: 100% !important;
             height: auto !important;
-            max-height: clamp(350px, 60vh, 650px) !important; 
+            max-height: clamp(350px, 60vh, 650px) !important;
             object-fit: contain !important;
-            margin: 0 auto !important; 
+            margin: 0 auto !important;
             border-radius: 8px !important;
             background: transparent !important;
         }
@@ -173,10 +214,21 @@ if ($sesion_iniciada) {
             background-color: white;
         }
 
-        .social-floating a:hover .fa-facebook-f { color: #1877f2; }
-        .social-floating a:hover .fa-instagram { color: #e4405f; }
-        .social-floating a:hover .fa-tiktok { color: #000000; }
-        .social-floating i { font-size: clamp(16px, 2vw, 22px); }
+        .social-floating a:hover .fa-facebook-f {
+            color: #1877f2;
+        }
+
+        .social-floating a:hover .fa-instagram {
+            color: #e4405f;
+        }
+
+        .social-floating a:hover .fa-tiktok {
+            color: #000000;
+        }
+
+        .social-floating i {
+            font-size: clamp(16px, 2vw, 22px);
+        }
 
         .floating-buttons {
             position: fixed;
@@ -201,20 +253,37 @@ if ($sesion_iniciada) {
             border: none;
         }
 
-        .floating-btn i { font-size: clamp(20px, 2.5vw, 28px); color: white; }
-        .btn-whatsapp { background-color: #25D366; }
-        .btn-whatsapp:hover { background-color: #128C7E; transform: scale(1.1); }
-        .btn-suggestion { background-color: #FF9800; }
-        .btn-suggestion:hover { background-color: #F57C00; transform: scale(1.1); }
+        .floating-btn i {
+            font-size: clamp(20px, 2.5vw, 28px);
+            color: white;
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #128C7E;
+            transform: scale(1.1);
+        }
+
+        .btn-suggestion {
+            background-color: #FF9800;
+        }
+
+        .btn-suggestion:hover {
+            background-color: #F57C00;
+            transform: scale(1.1);
+        }
 
         /* ============================================================
         5. REGLAS EXCLUSIVAS PARA MÓVILES (Cambios de Estructura)
         ============================================================ */
         @media (max-width: 768px) {
-            
+
             /* --- AQUÍ VIVE EL TAMAÑO COMPACTO PARA CELULARES --- */
             .hero-carousel .hero-img {
-                height: 230px !important; 
+                height: 230px !important;
                 min-height: unset !important;
                 border-radius: 10px !important;
             }
@@ -223,7 +292,9 @@ if ($sesion_iniciada) {
                 display: none !important;
             }
 
-            .hero-carousel, .carousel, .carousel-inner {
+            .hero-carousel,
+            .carousel,
+            .carousel-inner {
                 padding-top: 0 !important;
                 margin-top: 0 !important;
             }
@@ -232,7 +303,7 @@ if ($sesion_iniciada) {
                 padding-top: 30px !important;
                 padding-bottom: 30px !important;
             }
-            
+
             section:first-of-type {
                 padding-top: 0 !important;
             }
@@ -295,11 +366,17 @@ if ($sesion_iniciada) {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-hover" href="../cliente/Calendario.php">Calendario</a>
-                    </li>                        
+                    </li>
                     <li class="nav-item d-flex gap-2 ms-lg-3 mt-2 mt-lg-0">
-                        <a class="btn btn-outline-light btn-sm px-3 rounded-pill" href="../cliente/IniciarSesion.php">
-                            Iniciar Sesion
-                        </a>
+                        <?php
+                        if (in_array($_SESSION['tipo_persona'] ?? '', ['Administrativo', 'Encargado'])) {
+                        ?>
+                            <a class="btn btn-outline-light btn-sm px-3 rounded-pill" href="../cliente/IniciarSesion.php">
+                                Iniciar Sesión
+                            </a>
+                        <?php
+                        }
+                        ?>
                         <a class="btn btn-light btn-sm px-3 rounded-pill fw-semibold text-dark" href="../cliente/Participar.php">
                             Registrarse
                         </a>
@@ -315,10 +392,14 @@ if ($sesion_iniciada) {
                                     <small class="text-white-50" style="font-size: 0.70rem;"><?php echo $usuario_correo; ?></small>
                                 </div>
                             </a>
-                            
+
                             <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                                <li><h6 class="dropdown-header text-muted text-center small"><?php echo $usuario_correo; ?></h6></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <h6 class="dropdown-header text-muted text-center small"><?php echo $usuario_correo; ?></h6>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li>
                                     <a class="dropdown-item text-danger d-flex align-items-center gap-2" href="../cliente/logout.php">
                                         <i class="bi bi-box-arrow-right"></i> Salir
@@ -327,8 +408,8 @@ if ($sesion_iniciada) {
                             </ul>
                         </li>
 
-                    <php>
-                    
+                        <php>
+
                 </ul>
             </div>
         </div>
@@ -340,7 +421,7 @@ if ($sesion_iniciada) {
         <a href="TU_LINK_FACEBOOK" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
         <a href="TU_LINK_INSTAGRAM" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
         <a href="TU_LINK_TIKTOK" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-        
+
         <!-- Pequeña separación visual opcional -->
         <div style="height: 5px;"></div>
 
@@ -414,29 +495,40 @@ if ($sesion_iniciada) {
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
             </div>
             <div class="carousel-inner">
+
                 <!-- SLIDE 1 -->
                 <div class="carousel-item active">
-                    <img src="../portafolio/img/carousel/img1.jpg" class="d-block w-100 hero-img" alt="Oratorio">
-                    <div class="carousel-caption custom-caption">
-                        <h1 class="display-4 fw-bold">Este espacio es para ti</h1>
-                        <p class="lead">Un espacio de fe, comunidad y crecimiento espiritual.</p>
-                        <a href="#noticias" class="btn btn-info rounded-pill px-4 me-2">Ver Noticias</a>
-                        <a href="../cliente/Contacto.php" class="btn btn-success rounded-pill px-4">Contacto</a>
+
+                    <img src="../portafolio/img/carousel/img1.jpg"
+                        class="d-block w-100 hero-img"
+                        alt="Oratorio">
+
+                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
+
+                    <h1 class="display-4 fw-bold">Este espacio es para ti</h1>
+                    <p class="lead">Un espacio de fe, comunidad y crecimiento espiritual.</p>
+
+                        <!-- BOTÓN CENTRADO ABAJO -->
+                        <a href="../cliente/Contacto.php"
+                            class="btn btn-success rounded-pill px-4 position-absolute start-50 translate-middle-x">Leer Más</a>
                     </div>
                 </div>
+
+
                 <!-- SLIDE 2 -->
                 <div class="carousel-item">
                     <img src="../portafolio/img/carousel/img2.jpg" class="d-block w-100 hero-img" alt="Eventos">
-                    <div class="carousel-caption custom-caption">
+                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold">Reuniones Comunitarias</h1>
                         <p class="lead">Participa en encuentros de fe y amistad.</p>
                         <a href="#eventos" class="btn btn-warning rounded-pill px-4">Ver Eventos</a>
                     </div>
                 </div>
+
                 <!-- SLIDE 3 -->
                 <div class="carousel-item">
                     <img src="../portafolio/img/carousel/img1.jpg" class="d-block w-100 hero-img" alt="Formación">
-                    <div class="carousel-caption custom-caption">
+                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold">Formación Sacramental</h1>
                         <p class="lead">Fortalece tu vida espiritual.</p>
                         <a href="#formacion" class="btn btn-danger rounded-pill px-4">Más Información</a>
@@ -445,7 +537,7 @@ if ($sesion_iniciada) {
                 <!-- SLIDE 4 -->
                 <div class="carousel-item">
                     <img src="../portafolio/img/carousel/img3.jpg" class="d-block w-100 hero-img" alt="Cultura">
-                    <div class="carousel-caption custom-caption">
+                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold">Eventos Culturales</h1>
                         <p class="lead">Vive nuestras tradiciones y cultura.</p>
                         <a href="#cultura" class="btn btn-info rounded-pill px-4">Explorar</a>
@@ -488,9 +580,18 @@ if ($sesion_iniciada) {
                             Ver actividades
                         </a>
 
-                        <a  href= "https://www.youtube.com/watch?v=RpIq4r9UJtw" class="btn btn-outline-success btn-lg rounded-pill px-4">
+                        <a href="https://www.youtube.com/watch?v=RpIq4r9UJtw" class="btn btn-outline-success btn-lg rounded-pill px-4 shadow-sm">
                             <i class="fas fa-circle-play me-2"></i>
                             Conócenos
+                        </a>
+
+                        <!--Ver Noticias -->
+                        <a href="#" class="btn btn-primary btn-lg rouded-pill px-4 shadow-sm"
+                            class="btn btn-outline-primary btn-lg rounded-pill px-4">
+
+                            <i class="fas fa-newspaper me-2"></i>
+                            Ver Noticias
+
                         </a>
                     </div>
 
@@ -721,7 +822,7 @@ if ($sesion_iniciada) {
                         <i class="fas fa-rocket me-2"></i> ¡Quiero Participar!
                     </a>
                 </div>
-            </div>           
+            </div>
 
             <!-- VIDEOS MODERNOS -->
             <div class="row align-items-center g-5">
@@ -777,7 +878,7 @@ if ($sesion_iniciada) {
         </div>
     </section>
 
- <!-- 1. PRÓXIMOS EVENTOS (Sentido de Urgencia) -->
+    <!-- 1. PRÓXIMOS EVENTOS (Sentido de Urgencia) -->
     <section id="eventos" class="py-5">
         <div class="container">
             <h2 class="text-center fw-bold border-bottom border-primary pb-2 mb-5">Próximos Eventos</h2>
