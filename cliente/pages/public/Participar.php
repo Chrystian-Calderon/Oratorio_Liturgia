@@ -1,62 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="../assets/img/logo.jpg">
-    <title>Sistema de Registro - Parroquia</title>
-
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-    <style>
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .header {
-            background: linear-gradient(to right, #1a2980, #26d0ce);
-            color: white;
-            border-radius: 0 0 1rem 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo-container i {
-            font-size: 2.5rem;
-            color: #1a2980;
-        }
-
-        .footer {
-            background-color: rgba(0, 0, 0, 0.05);
-            border-radius: 1rem 1rem 0 0;
-            margin-top: 3rem;
-            padding: 1.5rem 0;
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-    </style>
-</head>
-
-<body>
-
+$pageTitle = 'Participar';
+$pageStyles = [
+    'cliente/assets/css/participar.css',
+];
+ob_start();
+?>
     <!-- HEADER -->
     <div class="header py-4 mb-5">
         <div class="container">
@@ -328,28 +277,6 @@
             </div>
         </div>
     </div>
-
-    <!-- FOOTER -->
-    <div class="footer mt-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0">
-                        <i class="bi bi-c-circle me-1"></i> 2026 Oratorio y Liturgia. Todos los derechos reservados.
-                    </p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <p class="mb-0">
-                        <i class="bi bi-telephone me-1"></i> Contacto: (123) 456-7890
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-
     <!-- Animación segura (no rompe botones) -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -367,7 +294,6 @@
             });
         });
     </script>
-
-</body>
-
-</html>
+<?php
+$content = ob_get_clean();
+require_once appPath('cliente/layouts/PublicLayout.php');
