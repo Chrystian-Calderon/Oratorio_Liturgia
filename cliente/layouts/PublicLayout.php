@@ -38,7 +38,7 @@ require_once appPath('cliente/components/footer/FooterIndex.php');
   </main>
   <?php
     $ruta = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    if ($ruta === '/inicio' && $ruta === '/') {
+    if ($ruta === '/inicio' || $ruta === '/') {
         renderFooterIndex();
     }
   ?>
