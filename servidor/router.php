@@ -8,43 +8,37 @@ switch ($uri) {
     case '/':
     case '/inicio':
         require appPath(
-            'cliente/pages/private/PaginaInicio.php'
+            'cliente/pages/public/PaginaInicio.php'
         );
         break;
       
     case '/servicios':
         require appPath(
-            'cliente/pages/private/Servicios.php'
+            'cliente/pages/public/Servicios.php'
         );
         break;
 
     case '/nosotros':
         require appPath(
-            'cliente/pages/private/AcercaNosotros.php'
+            'cliente/pages/public/AcercaNosotros.php'
         );
         break;
 
     case '/contacto':
         require appPath(
-            'cliente/pages/private/Contacto.php'
+            'cliente/pages/public/Contacto.php'
         );
         break;
 
     case '/calendario':
         require appPath(
-            'cliente/pages/private/Calendario.php'
+            'cliente/pages/public/Calendario.php'
         );
         break;
 
     case '/dashboard':
         require appPath(
             'cliente/Dashboard.php'
-        );
-        break;
-
-    case '/servicios-estadisticas':
-        require appPath(
-            'cliente/pages/private/publico.php'
         );
         break;
 
