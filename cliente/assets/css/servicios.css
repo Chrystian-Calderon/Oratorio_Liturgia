@@ -133,61 +133,6 @@ body {
   color: var(--white);
 }
 
-/* Footer simplificado */
-.simple-footer {
-  background-color: var(--dark-blue);
-  color: var(--white);
-  padding: 40px 0 20px;
-  text-align: center;
-  border-radius: 15px 15px 0 0;
-  margin-top: 40px;
-}
-
-.simple-footer h5 {
-  color: var(--gold);
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-.simple-footer p {
-  color: rgba(255, 255, 255, 0.8);
-  max-width: 500px;
-  margin: 0 auto 25px;
-}
-
-.footer-contact {
-  margin-bottom: 20px;
-}
-
-.footer-contact div {
-  margin-bottom: 10px;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.social-links {
-  margin-top: 20px;
-}
-
-.social-links a {
-  color: var(--white);
-  margin: 0 10px;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.social-links a:hover {
-  color: var(--gold);
-  transform: translateY(-3px);
-}
-
-.footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 20px;
-  margin-top: 20px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-}
-
 /* Animaciones */
 @keyframes fadeInUp {
   from {
