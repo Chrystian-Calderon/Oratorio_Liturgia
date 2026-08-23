@@ -27,32 +27,13 @@ if (!empty($errores)) {
     exit;
 }
 
-// Verificar que no estén vacíos
-if (empty($email) || empty($password)) {
-    echo "<script>
-            alert('Debe ingresar correo y contraseña');
-            window.location='../cliente/login.php';
-          </script>";
-    exit();
-}
-
-// =====================================================
 // BUSCAR USUARIO
-// =====================================================
-
 $stmt = $conexion->prepare(
     "SELECT * FROM personas WHERE correo = ?"
 );
-
 $stmt->bind_param("s", $email);
-
 $stmt->execute();
-
 $resultado = $stmt->get_result();
-
-// =====================================================
-// VERIFICAR SI EXISTE EL USUARIO
-// =====================================================
 
 if ($usuario = $resultado->fetch_assoc()) {
 
@@ -61,27 +42,11 @@ if ($usuario = $resultado->fetch_assoc()) {
     // =================================================
 
     if (password_verify($password, $usuario['password'])) {
-
-        $_SESSION['correo'] = $usuario['correo'];
-        // Regenerar sesión por seguridad
         session_regenerate_id(true);
-
-        // =================================================
-        // GUARDAR DATOS DEL USUARIO EN LA SESIÓN
-        // =================================================
-
         $_SESSION['correo'] = $usuario['correo'];
-
         $_SESSION['nombre'] = $usuario['nombres'];
         $_SESSION['apellidos'] = $usuario['apellidos'];
-
-        $_SESSION['apellidos'] = $usuario['apellidos'];
-
         $_SESSION['tipo_persona'] = $usuario['tipo_persona'];
-
-        // =================================================
-        // REDIRECCIONAR
-        // =================================================
 
         header("Location: " . url('/inicio'));
         exit();

@@ -6,6 +6,29 @@ require_once appPath('servidor/conexionBD.php');
 $correo = $_POST['txtcorreo'];
 $password = $_POST['txtpassword'];
 
+$errores = [];
+
+if ($correo === '') {
+    $errores['txtemail'] = 'El correo es obligatorio.';
+} elseif (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+    $errores['txtemail'] = 'El correo no es válido.';
+}
+
+if ($password === '') {
+    $errores['txtpassword'] = 'La contraseña es obligatoria.';
+} elseif (strlen($password) < 8) {
+    $errores['txtpassword'] = 'La contraseña debe tener al menos 8 caracteres.';
+}
+
+if (!empty($errores)) {
+    $_SESSION['errors'] = $errores;
+    $_SESSION['old'] = [
+        'txtemail' => $correo,
+    ];
+    header('Location: ' . url('/login-admin'));
+    exit;
+}
+
 $sql = "SELECT * FROM personas WHERE correo='$correo'";
 
 $resultado = mysqli_query($conexion, $sql);
@@ -16,12 +39,10 @@ if(mysqli_num_rows($resultado) > 0){
 
     // Verificar contraseña encriptada
     if(password_verify($password, $usuario['password'])){
-
-        // VALIDAR SI ES ADMINISTRATIVO
         if($usuario['tipo_persona'] == 'Administrativo'){
-
-            // Crear sesión
-            $_SESSION['usuario'] = $usuario['nombres'];
+            $nombres = $usuario['nombres'];
+            $apellido = $usuario['apellidos'];
+            $_SESSION['usuario'] = $nombres . ' ' . $apellido;
             $_SESSION['correo'] = $usuario['correo'];
             $_SESSION['tipo_persona'] = $usuario['tipo_persona'];
 
@@ -30,35 +51,29 @@ if(mysqli_num_rows($resultado) > 0){
             exit();
 
         }else{
-
-            echo "
-            <script>
-                alert('No tienes permisos para ingresar al panel administrativo');
-                window.location.href='../cliente/IniciarSesion.php';
-            </script>
-            ";
-
+            $_SESSION['errors'] = ['txtpassword' => 'No tienes permisos para ingresar al panel administrativo'];
+            $_SESSION['old'] = [
+                'txtemail' => $correo,
+            ];
+            header('Location: ' . url('/login-admin'));
+            exit;
         }
 
     }else{
-
-        echo "
-        <script>
-            alert('Contraseña incorrecta');
-            window.location.href='../cliente/IniciarSesion.php';
-        </script>
-        ";
-
+        $_SESSION['errors'] = ['txtpassword' => 'Contraseña incorrecta'];
+        $_SESSION['old'] = [
+            'txtemail' => $correo,
+        ];
+        header('Location: ' . url('/login-admin'));
+        exit;
     }
 
 }else{
-
-    echo "
-    <script>
-        alert('Correo no encontrado');
-        window.location.href='../cliente/IniciarSesion.php';
-    </script>
-    ";
-
+    $_SESSION['errors'] = ['txtemail' => 'Usuario no existe'];
+    $_SESSION['old'] = [
+        'txtemail' => $correo,
+    ];
+    header('Location: ' . url('/login-admin'));
+    exit;
 }
 ?>
