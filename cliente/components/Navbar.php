@@ -37,7 +37,7 @@ function renderNavbar(): void {
             <a class="btn btn-outline-light btn-sm px-3 rounded-pill" href="<?php echo url('/login-admin'); ?>">
               Iniciar Sesion
             </a>
-            <a class="btn btn-light btn-sm px-3 rounded-pill fw-semibold text-dark" href="../cliente/Participar.php">
+            <a class="btn btn-light btn-sm px-3 rounded-pill fw-semibold text-dark" href="<?php echo url('/participar'); ?>">
               Registrarse
             </a>
           </li>
