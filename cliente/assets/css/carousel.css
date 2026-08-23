@@ -19,7 +19,7 @@
 /* CONTENIDO */
 
 .custom-caption {
-    bottom: 18%;
+    bottom: 10%;
     left: 50%;
     right: auto;
     text-align: left;
@@ -36,29 +36,19 @@
 }
 
 /* TEXTO */
-
 .custom-caption p {
-
     font-size: 1.1rem;
     opacity: .9;
 }
 
 /* BOTONES */
-
 .custom-caption .btn {
-
     padding: 10px 24px;
     font-weight: 600;
     transition: .3s;
-
-    position: absolute;
-    left: 50vw;
-    bottom: -50px;
-    transform: translateX(-50%);
 }
 
 .custom-caption .btn:hover {
-
     transform: translateY(-2px);
 }
 
