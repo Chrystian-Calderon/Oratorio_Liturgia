@@ -11,7 +11,7 @@ if (
 ?>
 <!-- CONEXION CON LA BASE DE DATOS EL DASCHBOARD -->
 <?php
-include("../servidor/conexionBD.php");
+require_once appPath('servidor/conexionBD.php');
 
 // Total de personas
 $sql = "SELECT COUNT(*) AS total FROM personas";
