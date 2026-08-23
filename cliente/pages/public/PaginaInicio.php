@@ -17,7 +17,6 @@ ob_start();
         <div style="height: 5px;"></div>
 
         <!-- Tu flecha de Subir Arriba -->
-        <!-- Al usar href="#" el navegador automáticamente salta al inicio de la página -->
         <a href="#" class="scroll-top-btn" title="Volver arriba">
             <i class="fas fa-arrow-up"></i>
         </a>
@@ -86,29 +85,22 @@ ob_start();
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
             </div>
             <div class="carousel-inner">
-
                 <!-- SLIDE 1 -->
                 <div class="carousel-item active">
-
-                    <img src="../portafolio/img/carousel/img1.jpg"
+                    <img src="<?= url('cliente/assets/img/carousel/img1.jpg') ?>"
                         class="d-block w-100 hero-img"
                         alt="Oratorio">
-
-                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
-
-                    <h1 class="display-4 fw-bold">Este espacio es para ti</h1>
-                    <p class="lead">Un espacio de fe, comunidad y crecimiento espiritual.</p>
-
-                        <!-- BOTÓN CENTRADO ABAJO -->
-                        <a href="<?= url('/contacto') ?>"
-                            class="btn btn-success rounded-pill px-4 position-absolute start-50 translate-middle-x">Leer Más</a>
+                    <div class="carousel-caption custom-caption">
+                        <h1 class="display-4 fw-bold">Este espacio es para ti</h1>
+                        <p class="lead">Un espacio de fe, comunidad y crecimiento espiritual.</p>
+                        <a href="<?= url('/contacto') ?>" class="btn btn-success rounded-pill px-4">Leer Más</a>
                     </div>
                 </div>
 
 
                 <!-- SLIDE 2 -->
                 <div class="carousel-item">
-                    <img src="../portafolio/img/carousel/img2.jpg" class="d-block w-100 hero-img" alt="Eventos">
+                    <img src="<?= url('cliente/assets/img/carousel/img2.jpg') ?>" class="d-block w-100 hero-img" alt="Eventos">
                     <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold">Reuniones Comunitarias</h1>
                         <p class="lead">Participa en encuentros de fe y amistad.</p>
@@ -118,7 +110,7 @@ ob_start();
 
                 <!-- SLIDE 3 -->
                 <div class="carousel-item">
-                    <img src="../portafolio/img/carousel/img1.jpg" class="d-block w-100 hero-img" alt="Formación">
+                    <img src="<?= url('cliente/assets/img/carousel/img1.jpg') ?>" class="d-block w-100 hero-img" alt="Formación">
                     <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold">Formación Sacramental</h1>
                         <p class="lead">Fortalece tu vida espiritual.</p>
@@ -127,7 +119,7 @@ ob_start();
                 </div>
                 <!-- SLIDE 4 -->
                 <div class="carousel-item">
-                    <img src="../portafolio/img/carousel/img3.jpg" class="d-block w-100 hero-img" alt="Cultura">
+                    <img src="<?= url('cliente/assets/img/carousel/img3.jpg') ?>" class="d-block w-100 hero-img" alt="Cultura">
                     <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold">Eventos Culturales</h1>
                         <p class="lead">Vive nuestras tradiciones y cultura.</p>
@@ -152,11 +144,9 @@ ob_start();
         <div class="container">
             <!-- HERO PRINCIPAL -->
             <div class="row align-items-center g-5 mb-5">
-
-                <!-- Texto -->
                 <div class="col-lg-6">
                     <h1 class="display-3 fw-bold text-dark lh-sm mb-4">
-                        <span class="text-primary">Comunidad Pastoral <center>Universitaria</center></span>
+                        <span class="text-primary">Comunidad Pastoral Universitaria</span>
                     </h1>
 
                     <p class="lead text-secondary mb-4">
@@ -166,7 +156,7 @@ ob_start();
 
                     <!-- Botones -->
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="../cliente/Calendario.php" class="btn btn-danger btn-lg rounded-pill px-4 shadow-sm">
+                        <a href="<?= url('/calendario') ?>" class="btn btn-danger btn-lg rounded-pill px-4 shadow-sm">
                             <i class="fas fa-calendar-alt me-2"></i>
                             Ver actividades
                         </a>
@@ -179,10 +169,8 @@ ob_start();
                         <!--Ver Noticias -->
                         <a href="#" class="btn btn-primary btn-lg rouded-pill px-4 shadow-sm"
                             class="btn btn-outline-primary btn-lg rounded-pill px-4">
-
                             <i class="fas fa-newspaper me-2"></i>
                             Ver Noticias
-
                         </a>
                     </div>
 
@@ -212,33 +200,11 @@ ob_start();
                             class="carousel slide shadow rounded-4 overflow-hidden"
                             data-bs-ride="carousel"
                             data-bs-interval="4000">
-                            <!-- Indicadores -->
-                            <div class="carousel-indicators mb-3">
-                                <button type="button"
-                                    data-bs-target="#sliderModern"
-                                    data-bs-slide-to="0"
-                                    class="active"
-                                    aria-current="true"
-                                    aria-label="Slide 1">
-                                </button>
-
-                                <button type="button"
-                                    data-bs-target="#sliderModern"
-                                    data-bs-slide-to="1"
-                                    aria-label="Slide 2">
-                                </button>
-
-                                <button type="button"
-                                    data-bs-target="#sliderModern"
-                                    data-bs-slide-to="2"
-                                    aria-label="Slide 3">
-                                </button>
-                            </div>
                             <!-- Slides -->
                             <div class="carousel-inner">
                                 <!-- Slide 1 -->
                                 <div class="carousel-item active position-relative">
-                                    <img src="../portafolio/img/comunidad-1.jpeg"
+                                    <img src="<?= url('cliente/assets/img/comunidad-2.jpeg') ?>"
                                         class="d-block w-100"
                                         alt="Comunidad"
                                         style="height: 620px; object-fit: cover;">
@@ -246,7 +212,6 @@ ob_start();
                                     <div class="position-absolute top-0 start-0 w-100 h-100"
                                         style="background: rgba(0,0,0,0.35);">
                                     </div>
-                                    <!-- Texto -->
                                     <div class="carousel-caption text-start pb-5">
                                         <span class="badge bg-primary px-3 py-2 rounded-pill mb-3">
                                             Comunidad
@@ -262,18 +227,14 @@ ob_start();
 
                                 <!-- Slide 2 -->
                                 <div class="carousel-item position-relative">
-
-                                    <img src="../portafolio/img/comunidad-2.jpeg"
+                                    <img src="<?= url('cliente/assets/img/comunidad-1.jpeg') ?>"
                                         class="d-block w-100"
                                         alt="Juventud"
                                         style="height: 620px; object-fit: cover;">
-
                                     <!-- Overlay -->
                                     <div class="position-absolute top-0 start-0 w-100 h-100"
                                         style="background: rgba(0,0,0,0.35);">
                                     </div>
-
-                                    <!-- Texto -->
                                     <div class="carousel-caption text-start pb-5">
                                         <span class="badge bg-success px-3 py-2 rounded-pill mb-3">
                                             Juventud
@@ -289,18 +250,14 @@ ob_start();
 
                                 <!-- Slide 3 -->
                                 <div class="carousel-item position-relative">
-
-                                    <img src="../portafolio/img/comunidad-3.jpeg"
+                                    <img src="<?= url('cliente/assets/img/comunidad-3.jpeg') ?>"
                                         class="d-block w-100"
                                         alt="Servicio"
                                         style="height: 620px; object-fit: cover;">
-
                                     <!-- Overlay -->
                                     <div class="position-absolute top-0 start-0 w-100 h-100"
                                         style="background: rgba(0,0,0,0.35);">
                                     </div>
-
-                                    <!-- Texto -->
                                     <div class="carousel-caption text-start pb-5">
                                         <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3">
                                             Servicio
@@ -320,152 +277,143 @@ ob_start();
                                 type="button"
                                 data-bs-target="#sliderModern"
                                 data-bs-slide="prev">
-
                                 <span class="carousel-control-prev-icon"></span>
-
                             </button>
                             <!-- Flecha derecha -->
                             <button class="carousel-control-next"
                                 type="button"
                                 data-bs-target="#sliderModern"
                                 data-bs-slide="next">
-
                                 <span class="carousel-control-next-icon"></span>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- SECCIÓN: PILARES Y LLAMADO A LA ACCIÓN -->
-            <div class="row mb-4 text-center">
-                <div class="col-12">
-                    <h2 class="display-5 fw-bold">
-                        Descubre tu lugar en la Comunidad
-                    </h2>
-                    <p class="text-muted lead">
-                        Conoce nuestros pilares y sé parte de esta gran familia.
-                    </p>
-                </div>
+    <!-- descubre tu lugar en la comunidad -->
+    <section class="py-5 bg-light overflow-hidden container">
+        <div class="row mb-4 text-center">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold">Descubre tu lugar en la Comunidad</h2>
+                <p class="text-muted lead">
+                    Conoce nuestros pilares y sé parte de esta gran familia.
+                </p>
             </div>
+        </div>
 
-            <!-- TARJETAS MODERNAS (SIN BOTONES) -->
-            <div class="row g-4 mb-5">
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm rounded-5 h-100">
-                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=900"
-                            class="card-img-top"
-                            style="height: 250px; object-fit: cover;"
-                            alt="Oración">
-                        <div class="card-body p-4 text-center">
-                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                                <i class="fas fa-praying-hands text-primary fs-4"></i>
-                            </div>
-                            <h4 class="fw-bold">Espacios de oración</h4>
-                            <p class="text-muted mb-0">
-                                Momentos de reflexión, espiritualidad y encuentro con Dios.
-                            </p>
+        <!-- TARJETAS MODERNAS (SIN BOTONES) -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-5 h-100">
+                    <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=900"
+                        class="card-img-top"
+                        style="height: 250px; object-fit: cover;"
+                        alt="Oración">
+                    <div class="card-body p-4 text-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="fas fa-praying-hands text-primary fs-4"></i>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm rounded-5 h-100">
-                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900"
-                            class="card-img-top"
-                            style="height: 250px; object-fit: cover;"
-                            alt="Formación">
-                        <div class="card-body p-4 text-center">
-                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                                <i class="fas fa-users text-success fs-4"></i>
-                            </div>
-                            <h4 class="fw-bold">Formación juvenil</h4>
-                            <p class="text-muted mb-0">
-                                Actividades dinámicas para el crecimiento humano y cristiano.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm rounded-5 h-100">
-                        <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=900"
-                            class="card-img-top"
-                            style="height: 250px; object-fit: cover;"
-                            alt="Servicio">
-                        <div class="card-body p-4 text-center">
-                            <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                                <i class="fas fa-hand-holding-heart text-warning fs-4"></i>
-                            </div>
-                            <h4 class="fw-bold">Servicio comunitario</h4>
-                            <p class="text-muted mb-0">
-                                Compartimos esperanza mediante acciones solidarias.
-                            </p>
-                        </div>
+                        <h4 class="fw-bold">Espacios de oración</h4>
+                        <p class="text-muted mb-0">
+                            Momentos de reflexión, espiritualidad y encuentro con Dios.
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- BOTÓN GIGANTE DE PARTICIPACIÓN -->
-            <div class="row mb-5 text-center">
-                <div class="col-12">
-                    <a href="../cliente/Participar.php" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow-lg fs-5 fw-bold transition-all hover-scale">
-                        <i class="fas fa-rocket me-2"></i> ¡Quiero Participar!
-                    </a>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-5 h-100">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900"
+                        class="card-img-top"
+                        style="height: 250px; object-fit: cover;"
+                        alt="Formación">
+                    <div class="card-body p-4 text-center">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="fas fa-users text-success fs-4"></i>
+                        </div>
+                        <h4 class="fw-bold">Formación juvenil</h4>
+                        <p class="text-muted mb-0">
+                            Actividades dinámicas para el crecimiento humano y cristiano.
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <!-- VIDEOS MODERNOS -->
-            <div class="row align-items-center g-5">
-
-                <div class="col-lg-5">
-
-                    <h2 class="display-5 fw-bold mb-4">
-                        Vive la experiencia del Oratorio
-                    </h2>
-
-                    <p class="text-secondary lead">
-                        Reflexiones, celebraciones y momentos especiales compartidos
-                        con toda la comunidad.
-                    </p>
-
-                    <div class="d-flex flex-column gap-3 mt-4">
-
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-primary bg-opacity-10 rounded-circle p-3">
-                                <i class="fas fa-check text-primary"></i>
-                            </div>
-                            <span>Eventos y celebraciones</span>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-5 h-100">
+                    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=900"
+                        class="card-img-top"
+                        style="height: 250px; object-fit: cover;"
+                        alt="Servicio">
+                    <div class="card-body p-4 text-center">
+                        <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="fas fa-hand-holding-heart text-warning fs-4"></i>
                         </div>
-
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-success bg-opacity-10 rounded-circle p-3">
-                                <i class="fas fa-check text-success"></i>
-                            </div>
-                            <span>Formación espiritual</span>
-                        </div>
-
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-warning bg-opacity-10 rounded-circle p-3">
-                                <i class="fas fa-check text-warning"></i>
-                            </div>
-                            <span>Testimonios y experiencias</span>
-                        </div>
-
+                        <h4 class="fw-bold">Servicio comunitario</h4>
+                        <p class="text-muted mb-0">
+                            Compartimos esperanza mediante acciones solidarias.
+                        </p>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="col-lg-7">
-                    <div class="ratio ratio-16x9 rounded-5 overflow-hidden shadow-lg">
-                        <iframe src="https://www.youtube.com/embed/CkU66thoYRs?si=CveXfUIPDuchqHeZ"
-                            title="Video"
-                            allowfullscreen>
-                        </iframe>
+        <!-- BOTÓN GIGANTE DE PARTICIPACIÓN -->
+        <div class="row mb-5 text-center">
+            <div class="col-12">
+                <a href="<?= url('/participar') ?>" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow-lg fs-5 fw-bold transition-all hover-scale">
+                    <i class="fas fa-rocket me-2"></i> ¡Quiero Participar!
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- video -->
+    <section class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5">
+                <h2 class="display-5 fw-bold mb-4">
+                    Vive la experiencia del Oratorio
+                </h2>
+                <p class="text-secondary lead">
+                    Reflexiones, celebraciones y momentos especiales compartidos
+                    con toda la comunidad.
+                </p>
+                <div class="d-flex flex-column gap-3 mt-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                            <i class="fas fa-check text-primary"></i>
+                        </div>
+                        <span>Eventos y celebraciones</span>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                            <i class="fas fa-check text-success"></i>
+                        </div>
+                        <span>Formación espiritual</span>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                            <i class="fas fa-check text-success"></i>
+                        </div>
+                        <span>Testimonios y experiencias</span>
                     </div>
                 </div>
-
             </div>
 
+            <div class="col-lg-7">
+                <div class="ratio ratio-16x9 rounded-5 overflow-hidden shadow-lg">
+                    <iframe src="https://www.youtube.com/embed/CkU66thoYRs?si=CveXfUIPDuchqHeZ"
+                        title="Video"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -626,7 +574,7 @@ ob_start();
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden">
                         <div class="position-relative" style="height: 250px; overflow: hidden;">
-                            <img src="../portafolio/img/Sacramentos.jpg" alt="Sacramentos" class="w-100 h-100 object-fit-cover transition-transform" style="transition: transform 0.5s ease;">
+                            <img src="<?= url('cliente/assets/img/Sacramentos.jpg') ?>" alt="Sacramentos" class="w-100 h-100 object-fit-cover transition-transform" style="transition: transform 0.5s ease;">
                             <span class="position-absolute top-0 start-0 bg-success text-white px-3 py-1 m-3 rounded-pill">Destacado</span>
                         </div>
                         <div class="card-body d-flex flex-column p-4">
@@ -709,6 +657,69 @@ ob_start();
             </div>
         </div>
     </section>
+
+    <!-- Contacto -->
+    <section id="contacto" class="py-5 bg-primary text-white">
+        <div class="container">
+            <h2 class="text-center fw-bold border-bottom border-white pb-2 mb-5">Contáctanos</h2>
+            <p class="text-center mb-5 lead">Estamos aquí para responder tus preguntas y ayudarte en tu camino espiritual.</p>
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <div class="p-4 bg-primary bg-opacity-25 rounded-3 h-100"><i class="bi bi-geo-alt fs-1 mb-3"></i>
+                        <h5>Dirección</h5>
+                        <p>Av.Chacaltaya Nro.1258, Zona Achachicala. #123<br>Ciudad de La Paz</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="p-4 bg-primary bg-opacity-25 rounded-3 h-100"><i class="bi bi-telephone fs-1 mb-3"></i>
+                        <h5>Teléfono</h5>
+                        <p>Whatsapp: (591)72060082 Celular:(591)72002192<br>Lunes a Viernes: 8:30AM - 4:30PM</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="p-4 bg-primary bg-opacity-25 rounded-3 h-100"><i class="bi bi-envelope fs-1 mb-3"></i>
+                        <h5>Correo Electrónico</h5>
+                        <p>www.usalesiana.edu.bo<br>contacto@oratorioliturgia.org</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-lg-8 mx-auto">
+                    <div class="bg-white text-dark rounded-3 p-4 shadow">
+                        <h4 class="text-center mb-4">Envíanos un mensaje</h4>
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6"><input type="text" class="form-control" placeholder="Tu nombre" required></div>
+                                <div class="col-md-6"><input type="email" class="form-control" placeholder="Tu correo electrónico" required></div>
+                                <div class="col-12"><input type="text" class="form-control" placeholder="Asunto"></div>
+                                <div class="col-12"><textarea class="form-control" rows="4" placeholder="Tu mensaje" required></textarea></div>
+                                <div class="col-12"><button type="submit" class="btn btn-primary w-100 py-2">Enviar Mensaje</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal para inscripción rápida -->
+    <div class="modal fade" id="inscripcionModal" tabindex="-1" aria-labelledby="inscripcionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inscripcionModalLabel">Inscripción a Evento</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalEventoDesc">¿Deseas inscribirte en este evento?</p>
+                    <form>
+                        <div class="mb-3"><label for="modalNombre" class="form-label">Nombre completo</label><input type="text" class="form-control" id="modalNombre" required></div>
+                        <div class="mb-3"><label for="modalEmail" class="form-label">Correo electrónico</label><input type="email" class="form-control" id="modalEmail" required></div>
+                    </form>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary">Confirmar Inscripción</button></div>
+            </div>
+        </div>
+    </div>
 
     <!-- MODALES (Ocultos a nivel visual, se activan con los botones) -->
     <!-- Modal Eucaristía -->
@@ -844,70 +855,7 @@ ob_start();
         </div>
     </div>
 
-    <!-- Contacto -->
-    <section id="contacto" class="py-5 bg-primary text-white">
-        <div class="container">
-            <h2 class="text-center fw-bold border-bottom border-white pb-2 mb-5">Contáctanos</h2>
-            <p class="text-center mb-5 lead">Estamos aquí para responder tus preguntas y ayudarte en tu camino espiritual.</p>
-            <div class="row g-4">
-                <div class="col-md-4 text-center">
-                    <div class="p-4 bg-primary bg-opacity-25 rounded-3 h-100"><i class="bi bi-geo-alt fs-1 mb-3"></i>
-                        <h5>Dirección</h5>
-                        <p>Av.Chacaltaya Nro.1258, Zona Achachicala. #123<br>Ciudad de La Paz</p>
-                    </div>
-                </div>
-                <div class="col-md-4 text-center">
-                    <div class="p-4 bg-primary bg-opacity-25 rounded-3 h-100"><i class="bi bi-telephone fs-1 mb-3"></i>
-                        <h5>Teléfono</h5>
-                        <p>Whatsapp: (591)72060082 Celular:(591)72002192<br>Lunes a Viernes: 8:30AM - 4:30PM</p>
-                    </div>
-                </div>
-                <div class="col-md-4 text-center">
-                    <div class="p-4 bg-primary bg-opacity-25 rounded-3 h-100"><i class="bi bi-envelope fs-1 mb-3"></i>
-                        <h5>Correo Electrónico</h5>
-                        <p>www.usalesiana.edu.bo<br>contacto@oratorioliturgia.org</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-5">
-                <div class="col-lg-8 mx-auto">
-                    <div class="bg-white text-dark rounded-3 p-4 shadow">
-                        <h4 class="text-center mb-4">Envíanos un mensaje</h4>
-                        <form>
-                            <div class="row g-3">
-                                <div class="col-md-6"><input type="text" class="form-control" placeholder="Tu nombre" required></div>
-                                <div class="col-md-6"><input type="email" class="form-control" placeholder="Tu correo electrónico" required></div>
-                                <div class="col-12"><input type="text" class="form-control" placeholder="Asunto"></div>
-                                <div class="col-12"><textarea class="form-control" rows="4" placeholder="Tu mensaje" required></textarea></div>
-                                <div class="col-12"><button type="submit" class="btn btn-primary w-100 py-2">Enviar Mensaje</button></div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modal para inscripción rápida -->
-    <div class="modal fade" id="inscripcionModal" tabindex="-1" aria-labelledby="inscripcionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="inscripcionModalLabel">Inscripción a Evento</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="modalEventoDesc">¿Deseas inscribirte en este evento?</p>
-                    <form>
-                        <div class="mb-3"><label for="modalNombre" class="form-label">Nombre completo</label><input type="text" class="form-control" id="modalNombre" required></div>
-                        <div class="mb-3"><label for="modalEmail" class="form-label">Correo electrónico</label><input type="email" class="form-control" id="modalEmail" required></div>
-                    </form>
-                </div>
-                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary">Confirmar Inscripción</button></div>
-            </div>
-        </div>
-    </div>
-
-    <script src="../js/mini_estadisticas.js"></script>
+    <script src="<?= url('cliente/assets/js/mini_estadisticas.js') ?>"></script>
 
     <!-- CHATBOT-->
     <script>
@@ -950,27 +898,9 @@ ob_start();
     </script>
 
     <script src="<?= url('cliente/assets/js/navbar.js') ?>"></script>
-    <script src="../js/carousel.js"></script>
+    <script src="<?= url('cliente/assets/js/carousel.js') ?>"></script>
 
     <script>
-        // Botón para subir arriba
-        const scrollTopBtn = document.getElementById('scrollTopBtn');
-
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 300) {
-                scrollTopBtn.classList.add('show');
-            } else {
-                scrollTopBtn.classList.remove('show');
-            }
-        });
-
-        scrollTopBtn.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
         // Manejo del formulario de sugerencias
         const sendSuggestionBtn = document.getElementById('sendSuggestionBtn');
         const suggestionModal = document.getElementById('suggestionModal');
