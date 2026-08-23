@@ -12,7 +12,7 @@ ob_start();
         <a href="TU_LINK_FACEBOOK" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
         <a href="TU_LINK_INSTAGRAM" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
         <a href="TU_LINK_TIKTOK" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-        
+
         <!-- Pequeña separación visual opcional -->
         <div style="height: 5px;"></div>
 
@@ -86,29 +86,40 @@ ob_start();
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
             </div>
             <div class="carousel-inner">
+
                 <!-- SLIDE 1 -->
                 <div class="carousel-item active">
-                    <img src="../portafolio/img/carousel/img1.jpg" class="d-block w-100 hero-img" alt="Oratorio">
-                    <div class="carousel-caption custom-caption">
-                        <h1 class="display-4 fw-bold">Este espacio es para ti</h1>
-                        <p class="lead">Un espacio de fe, comunidad y crecimiento espiritual.</p>
-                        <a href="#noticias" class="btn btn-info rounded-pill px-4 me-2">Ver Noticias</a>
-                        <a href="<?= url('/contacto') ?>" class="btn btn-success rounded-pill px-4">Contacto</a>
+
+                    <img src="../portafolio/img/carousel/img1.jpg"
+                        class="d-block w-100 hero-img"
+                        alt="Oratorio">
+
+                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
+
+                    <h1 class="display-4 fw-bold">Este espacio es para ti</h1>
+                    <p class="lead">Un espacio de fe, comunidad y crecimiento espiritual.</p>
+
+                        <!-- BOTÓN CENTRADO ABAJO -->
+                        <a href="<?= url('/contacto') ?>"
+                            class="btn btn-success rounded-pill px-4 position-absolute start-50 translate-middle-x">Leer Más</a>
                     </div>
                 </div>
+
+
                 <!-- SLIDE 2 -->
                 <div class="carousel-item">
                     <img src="../portafolio/img/carousel/img2.jpg" class="d-block w-100 hero-img" alt="Eventos">
-                    <div class="carousel-caption custom-caption">
+                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold">Reuniones Comunitarias</h1>
                         <p class="lead">Participa en encuentros de fe y amistad.</p>
                         <a href="#eventos" class="btn btn-warning rounded-pill px-4">Ver Eventos</a>
                     </div>
                 </div>
+
                 <!-- SLIDE 3 -->
                 <div class="carousel-item">
                     <img src="../portafolio/img/carousel/img1.jpg" class="d-block w-100 hero-img" alt="Formación">
-                    <div class="carousel-caption custom-caption">
+                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold">Formación Sacramental</h1>
                         <p class="lead">Fortalece tu vida espiritual.</p>
                         <a href="#formacion" class="btn btn-danger rounded-pill px-4">Más Información</a>
@@ -117,7 +128,7 @@ ob_start();
                 <!-- SLIDE 4 -->
                 <div class="carousel-item">
                     <img src="../portafolio/img/carousel/img3.jpg" class="d-block w-100 hero-img" alt="Cultura">
-                    <div class="carousel-caption custom-caption">
+                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold">Eventos Culturales</h1>
                         <p class="lead">Vive nuestras tradiciones y cultura.</p>
                         <a href="#cultura" class="btn btn-info rounded-pill px-4">Explorar</a>
@@ -160,9 +171,18 @@ ob_start();
                             Ver actividades
                         </a>
 
-                        <a  href= "https://www.youtube.com/watch?v=RpIq4r9UJtw" class="btn btn-outline-success btn-lg rounded-pill px-4">
+                        <a href="https://www.youtube.com/watch?v=RpIq4r9UJtw" class="btn btn-outline-success btn-lg rounded-pill px-4 shadow-sm">
                             <i class="fas fa-circle-play me-2"></i>
                             Conócenos
+                        </a>
+
+                        <!--Ver Noticias -->
+                        <a href="#" class="btn btn-primary btn-lg rouded-pill px-4 shadow-sm"
+                            class="btn btn-outline-primary btn-lg rounded-pill px-4">
+
+                            <i class="fas fa-newspaper me-2"></i>
+                            Ver Noticias
+
                         </a>
                     </div>
 
@@ -393,7 +413,7 @@ ob_start();
                         <i class="fas fa-rocket me-2"></i> ¡Quiero Participar!
                     </a>
                 </div>
-            </div>           
+            </div>
 
             <!-- VIDEOS MODERNOS -->
             <div class="row align-items-center g-5">
@@ -449,7 +469,7 @@ ob_start();
         </div>
     </section>
 
- <!-- 1. PRÓXIMOS EVENTOS (Sentido de Urgencia) -->
+    <!-- 1. PRÓXIMOS EVENTOS (Sentido de Urgencia) -->
     <section id="eventos" class="py-5">
         <div class="container">
             <h2 class="text-center fw-bold border-bottom border-primary pb-2 mb-5">Próximos Eventos</h2>

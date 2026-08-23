@@ -11,7 +11,7 @@ if (
 ?>
 <!-- CONEXION CON LA BASE DE DATOS EL DASCHBOARD -->
 <?php
-require_once appPath('servidor/conexionBD.php');
+include("../servidor/conexionBD.php");
 
 // Total de personas
 $sql = "SELECT COUNT(*) AS total FROM personas";
@@ -150,6 +150,7 @@ $ultimasPersonas = $conexion->query($sql);
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="../css/Dashboard.css">
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -785,19 +786,29 @@ $ultimasPersonas = $conexion->query($sql);
     </div>
 
     <ul class="list-unstyled components">
-      
+      <!-- Dashboard -->
+     
       <li class="has-submenu">
         <div class="submenu-toggle" aria-expanded="false">
-          <span><i class="fas fa-table me-2"></i> Dashboard</span>
+          <span><i class="fas fa-home"></i> Dashboard</span>
           <i class="fas fa-chevron-right rotate-icon"></i>
         </div>
         <ul class="submenu list-unstyled">
-          <li><a href="../cliente/Panel_Eventos.php"><i class="fas fa-users me-2"></i> Panel de Eventos</a></li>
-          <li><a href="../cliente/Panel_actividades.php"><i class="fas fa-id-card me-2"></i> Panel de Actividades</a></li>
+          <li>
+    <a href="../cliente/Panel_Eventos.php">
+        <i class="fas fa-calendar-alt me-2"></i> Panel de Eventos
+    </a>
+</li>
+
+<li>
+    <a href="../cliente/Panel_actividades.php">
+        <i class="fas fa-tasks me-2"></i> Panel de Actividades
+    </a>
+</li>
         </ul>
       </li>
 
-      
+    
 
       <!-- Gestión - Tablas -->
       <li class="has-submenu">
@@ -1167,165 +1178,125 @@ $ultimasPersonas = $conexion->query($sql);
             </div>
           </div>
         </div>
-
-        <!-- CALENDARIO -->
-        <div class="row mb-4">
-          <div class="col-12">
-            <div class="card shadow-sm">
-              <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                  <i class="fas fa-calendar-alt me-2"></i>
-                  Calendario de Eventos
-                </h5>
-                <div>
-                  <button class="btn btn-sm btn-light me-2" onclick="cambiarVistaCalendario('mes')">
-                    <i class="fas fa-calendar-alt"></i> Mes
-                  </button>
-                  <button class="btn btn-sm btn-light me-2" onclick="cambiarVistaCalendario('semana')">
-                    <i class="fas fa-calendar-week"></i> Semana
-                  </button>
-                  <button class="btn btn-sm btn-light" onclick="cambiarVistaCalendario('dia')">
-                    <i class="fas fa-calendar-day"></i> Día
-                  </button>
-                </div>
-              </div>
-              <div class="card-body">
-                <div id="calendario-container">
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                    <button class="btn btn-outline-secondary btn-sm" onclick="cambiarMesCalendario(-1)">
-                      <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <h4 class="mb-0" id="calendario-titulo">Enero 2026</h4>
-                    <button class="btn btn-outline-secondary btn-sm" onclick="cambiarMesCalendario(1)">
-                      <i class="fas fa-chevron-right"></i>
-                    </button>
-                  </div>
-                  <div id="calendario-grid" class="table-responsive">
-                    <!-- El calendario se generará con JavaScript -->
-                  </div>
-                </div>
-                <div id="eventos-del-dia" class="mt-3">
-                  <h6>Eventos del día seleccionado</h6>
-                  <div id="lista-eventos-dia" class="list-group">
-                    <p class="text-muted">Selecciona un día para ver los eventos</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <!-- CHART -->
-        <div class="row mb-4">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                <h5 class="m-0">Participación en Eventos</h5>
-                <div class="small-muted">Últimos eventos</div>
-              </div>
-              <div class="card-body">
-                <div class="chart-container" style="height:360px"><canvas id="grafico-participacion"></canvas></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ACTIONS -->
-        <div class="row mb-3">
-          <div class="col-12 d-flex flex-wrap justify-content-between gap-2">
-            <div>
-              <button class="btn btn-primary" onclick="mostrarFormularioAgregar()"><i class="fas fa-plus me-1"></i> Agregar Evento</button>
-              <button class="btn btn-success" onclick="mostrarFormularioInscripcion()"><i class="fas fa-user-plus me-1"></i> Nueva Inscripción</button>
-            </div>
-            <div>
-              <input id="filterEventos" class="form-control form-control-sm d-inline-block search-input" placeholder="Filtrar eventos..." style="width:260px">
-            </div>
-          </div>
-        </div>
-
-        <!-- TABS: Eventos / Inscripciones -->
-        <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-          <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#eventos">Eventos</button></li>
-          <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#inscripciones">Inscripciones</button></li>
-        </ul>
-
-        <div class="tab-content">
-          <!-- EVENTOS -->
-          <div class="tab-pane fade show active" id="eventos">
-            <div class="card">
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="m-0">Lista de Eventos</h5>
-                <div class="export-section">
-                  <div class="export-buttons">
-                    <button class="btn btn-outline-success btn-sm" onclick="exportEventos('excel')"><i class="fas fa-file-excel me-1"></i>Excel</button>
-                    <button class="btn btn-outline-danger btn-sm" onclick="exportEventos('pdf')"><i class="fas fa-file-pdf me-1"></i>PDF</button>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover" id="table-eventos">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Fecha</th>
-                        <th>Lugar</th>
-                        <th>Participación</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tabla-eventos">
-                      <tr>
-                        <td colspan="6" class="text-center">No hay eventos registrados</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- INSCRIPCIONES -->
-          <div class="tab-pane fade" id="inscripciones">
-            <div class="card">
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="m-0">Lista de Inscripciones</h5>
-                <div class="export-section">
-                  <div class="export-buttons">
-                    <button class="btn btn-outline-success btn-sm" onclick="exportInscripciones('excel')"><i class="fas fa-file-excel me-1"></i>Excel</button>
-                    <button class="btn btn-outline-danger btn-sm" onclick="exportInscripciones('pdf')"><i class="fas fa-file-pdf me-1"></i>PDF</button>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover" id="table-inscripciones">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Evento</th>
-                        <th>Usuario</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tabla-inscripciones">
-                      <tr>
-                        <td colspan="5" class="text-center">No hay inscripciones registradas</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div> <!-- end dashboard -->
 
-  
+    <!-- Sección MIS EVENTOS -->
+    <div id="mis-eventos" class="content-section">
+      <div class="container-fluid py-3">
+        <div class="row align-items-center mb-4">
+          <div class="col-md-8">
+            <h2 class="section-title">Mis Eventos</h2>
+            <p class="small-muted">Gestiona todos tus eventos activos y pasados</p>
+          </div>
+          <div class="col-md-4 text-end">
+            <button class="btn btn-primary" onclick="mostrarFormularioAgregar()"><i class="fas fa-plus me-1"></i> Crear Nuevo Evento</button>
+          </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters-container">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Buscar evento</label>
+              <input type="text" class="form-control" id="searchMisEventos" placeholder="Nombre del evento...">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Filtrar por estado</label>
+              <select class="form-select" id="filterEstado">
+                <option value="">Todos los eventos</option>
+                <option value="activo">Activos</option>
+                <option value="proximo">Próximos</option>
+                <option value="finalizado">Finalizados</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Ordenar por</label>
+              <select class="form-select" id="sortEventos">
+                <option value="fecha">Fecha (más reciente)</option>
+                <option value="participacion">Participación</option>
+                <option value="nombre">Nombre (A-Z)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estadísticas rápidas -->
+        <div class="quick-stats">
+          <div class="quick-stat-item">
+            <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+            <div class="stat-value" id="total-eventos">0</div>
+            <div class="stat-label">Total Eventos</div>
+          </div>
+          <div class="quick-stat-item">
+            <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+            <div class="stat-value" id="eventos-activos">0</div>
+            <div class="stat-label">Eventos Activos</div>
+          </div>
+          <div class="quick-stat-item">
+            <div class="stat-icon"><i class="fas fa-calendar-times"></i></div>
+            <div class="stat-value" id="eventos-finalizados">0</div>
+            <div class="stat-label">Eventos Finalizados</div>
+          </div>
+          <div class="quick-stat-item">
+            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="stat-value" id="participacion-promedio">0%</div>
+            <div class="stat-label">Participación Promedio</div>
+          </div>
+        </div>
+
+        <!-- Tabla de eventos -->
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="m-0">Lista de Mis Eventos</h5>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-secondary" onclick="actualizarListaEventos()"><i class="fas fa-sync-alt"></i></button>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">Acciones</button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#" onclick="exportarMisEventos('excel')"><i class="fas fa-file-excel me-2"></i>Exportar Excel</a></li>
+                  <li><a class="dropdown-item" href="#" onclick="exportarMisEventos('pdf')"><i class="fas fa-file-pdf me-2"></i>Exportar PDF</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item" href="#" onclick="enviarRecordatorioTodos()"><i class="fas fa-envelope me-2"></i>Enviar Recordatorios</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre del Evento</th>
+                    <th>Fecha</th>
+                    <th>Lugar</th>
+                    <th>Participación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tabla-mis-eventos">
+                  <!-- Los eventos se cargarán aquí dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detalles del evento seleccionado -->
+        <div class="card mt-4" id="evento-detalle-card" style="display: none;">
+          <div class="card-header">
+            <h5 class="m-0">Detalles del Evento</h5>
+          </div>
+          <div class="card-body" id="evento-detalle-content">
+            <!-- Los detalles se cargarán aquí dinámicamente -->
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Sección PARTICIPANTES -->
     <div id="participantes" class="content-section">
