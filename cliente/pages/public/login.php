@@ -1,5 +1,4 @@
 <?php
-session_start();
 $errores = $_SESSION['errors'] ?? [];
 $old = $_SESSION['old'] ?? [];
 
@@ -30,7 +29,7 @@ unset($_SESSION['errors'], $_SESSION['old']);
                 <form action="<?php url('/login') ?>" method="POST">
                     <div class="mb-3">
                         <label for="exampleInputEmail" class="form-label">Correo:</label>
-                        <input type="email" class="form-control border border-primary <?= isset($errores['txtemail']) ? 'is-invalid' : '' ?>" name="txtemail" value="<?= htmlspecialchars($old['txtemail'] ?? '') ?>">
+                        <input type="email" class="form-control border border-primary <?= isset($errores['txtemail']) ? 'is-invalid' : '' ?>" name="txtemail" value="<?= htmlspecialchars($old['txtemail'] ?? '') ?>" required>
                         <?php if (isset($errores['txtemail'])): ?>
                             <div class="text-danger mt-1">
                                 <?= htmlspecialchars($errores['txtemail']) ?>
@@ -40,7 +39,7 @@ unset($_SESSION['errors'], $_SESSION['old']);
 
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Password:</label>
-                        <input type="password" class="form-control border border-primary <?= isset($errores['txtpassword']) ? 'is-invalid' : '' ?>" name="txtpassword">
+                        <input type="password" class="form-control border border-primary <?= isset($errores['txtpassword']) ? 'is-invalid' : '' ?>" name="txtpassword" required>
                         <?php if (isset($errores['txtpassword'])): ?>
                             <div class="text-danger mt-1">
                                 <?= htmlspecialchars($errores['txtpassword']) ?>

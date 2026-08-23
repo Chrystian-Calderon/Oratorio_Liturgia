@@ -1,3 +1,8 @@
+<?php
+$errores = $_SESSION['errors'] ?? [];
+$old = $_SESSION['old'] ?? [];
+unset($_SESSION['errors'], $_SESSION['old']);
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -82,16 +87,26 @@
         <form action="<?php url('/login-admin') ?>" method="POST">
             <div class="mb-3">
                 <label for="correo" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" id="correo" name="txtcorreo" placeholder="ejemplo@correo.com" required>
+                <input type="email" class="form-control <?= isset($errores['txtemail']) ? 'is-invalid' : '' ?>" id="correo" name="txtcorreo" placeholder="ejemplo@correo.com" value="<?= htmlspecialchars($old['txtemail'] ?? '') ?>" required>
+                <?php if (isset($errores['txtemail'])): ?>
+                    <div class="text-danger mt-1">
+                        <?= htmlspecialchars($errores['txtemail']) ?>
+                    </div>
+                <?php endif; ?>
             </div>
             <div class="mb-3">
                 <label for="contraseña" class="form-label">Contraseña</label>
                 <div class="input-group">
-                    <input type="password" class="form-control" id="contraseña" name="txtpassword" placeholder="********" required>
+                    <input type="password" class="form-control <?= isset($errores['txtpassword']) ? 'is-invalid' : '' ?>" id="contraseña" name="txtpassword" placeholder="********" required>
                     <span class="input-group-text" id="ojo-contraseña">
                         <i class="fas fa-eye" id="icono-ojo"></i>
                     </span>
                 </div>
+                <?php if (isset($errores['txtpassword'])): ?>
+                    <div class="text-danger mt-1">
+                        <?= htmlspecialchars($errores['txtpassword']) ?>
+                    </div>
+                <?php endif; ?>
             </div>
             <button type="submit" class="btn btn-primary w-100" id="boton-iniciar-sesion">Iniciar Sesión</button>
         </form>
