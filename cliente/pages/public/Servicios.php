@@ -235,43 +235,6 @@ $pageStyles = [
         </div>
       </div>
     </div>
-
-    <script>
-        // Animaciones de scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.service-card').forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                observer.observe(card);
-            });
-
-            // Suavizar desplazamiento para enlaces internos
-            document.querySelectorAll('a[href^="#"]').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        e.preventDefault();
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 100,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
 <?php
 $content = ob_get_clean();
 require appPath('cliente/layouts/PublicLayout.php');
