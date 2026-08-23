@@ -5,7 +5,6 @@ $pageStyles = [
     'cliente/assets/css/acerca_nosotros.css',
 ];
 ?>
-
     <!-- Header -->
     <header class="text-center py-5 shadow-lg">
       <h1 class="fw-bold">
@@ -154,34 +153,6 @@ $pageStyles = [
         </div>
       </section>
     </main>
-
-    <!-- Footer profesional con redes sociales y colores -->
-    <footer class="bg-dark text-white pt-5 pb-3">
-      <div class="container">
-        <div class="row align-items-center">
-          <!-- Información -->
-          <div class="col-md-6 mb-3 mb-md-0 text-center text-md-start">
-            <p class="mb-1">&copy; 2026 Oratorio y Liturgia - Universidad Salesiana de Bolivia</p>
-          </div>
-
-          <!-- Redes Sociales -->
-          <div class="col-md-6 text-center text-md-end">
-            <a href="#" class="fs-4 mx-2 social-icon whatsapp" aria-label="WhatsApp">
-              <i class="fab fa-whatsapp"></i>
-            </a>
-            <a href="https://www.tiktok.com/@pastoraluniversitariausb?_t=ZM-8zZknjhgwL8&_r=1" class="fs-4 mx-2 social-icon tiktok" aria-label="TikTok">
-              <i class="fab fa-tiktok"></i>
-            </a>
-            <a href="https://www.facebook.com/share/19hQUo9Yht/" class="fs-4 mx-2 social-icon facebook" aria-label="Facebook">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://www.instagram.com/pastoraluniversitariausb?igsh=YzVlcW9uNDM3aHJm" class="fs-4 mx-2 social-icon instagram" aria-label="Instagram">
-              <i class="fab fa-instagram"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
 <?php
 $content = ob_get_clean();
 require appPath('cliente/layouts/PublicLayout.php');

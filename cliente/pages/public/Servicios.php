@@ -121,30 +121,6 @@ $pageStyles = [
         </div>
     </section>
 
-    <!-- Footer simplificado -->
-    <footer class="simple-footer">
-        <div class="container">
-            <h5>Oratorio y Liturgia</h5>
-            <p>Un espacio dedicado al crecimiento espiritual, la comunidad y el servicio.</p>
-            
-            <div class="footer-contact">
-                <div><i class="fas fa-map-marker-alt me-2"></i> La Paz: Av.Chacaltaya Nro.1258, Zona Achachicala.</div>
-                <div><i class="fas fa-phone me-2"></i> Celular: (591) 72002192</div>
-                <div><i class="fas fa-envelope me-2"></i> www.usalesiana.edu.bo</div>
-            </div>
-            
-            <div class="social-links">
-                <a href="https://www.facebook.com/share/19hQUo9Yht/"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/pastoraluniversitariausb?igsh=YzVlcW9uNDM3aHJm"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@pastoraluniversitariausb?_t=ZM-8zZknjhgwL8&_r=1"><i class= "fab fa-tiktok"></i></a> 
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2026 Oratorio y Liturgia. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
     <!-- Modales de cada servicio -->
     <!-- Formación Sacramental -->
     <div class="modal fade" id="modalFormacion" tabindex="-1" aria-hidden="true">
