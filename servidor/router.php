@@ -36,6 +36,12 @@ switch ($uri) {
         );
         break;
 
+    case '/participar':
+        require appPath(
+            'cliente/pages/public/Participar.php'
+        );
+        break;
+
     case '/dashboard':
         require appPath(
             'cliente/Dashboard.php'
