@@ -1,0 +1,172 @@
+/* ========================= */
+/* NAVBAR ULTRA COMPACTA */
+/* ========================= */
+
+.navbar-modern{
+
+    background: rgba(3, 62, 160, 0.94);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    /* MÁS DELGADO */
+    padding: 2px 0;
+    min-height: 54px;
+    transition: all .3s ease;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+/* SCROLL */
+
+.navbar-modern.scrolled{
+
+    background: rgba(3, 52, 130, 0.97);
+    padding: 1px 0;
+    min-height: 48px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.12);
+}
+
+/* ========================= */
+/* LOGO */
+/* ========================= */
+
+.navbar-brand{
+
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand i{
+
+    font-size: 1rem;
+}
+
+/* ========================= */
+/* LINKS */
+/* ========================= */
+
+.nav-hover{
+
+    color: rgba(255,255,255,.90) !important;
+    font-size: .88rem;
+    font-weight: 500;
+    padding: 6px 10px !important;
+    transition: .25s ease;
+    position: relative;
+}
+
+.nav-hover:hover{
+
+    color: #ffe66d !important;
+}
+
+/* SUBRAYADO */
+
+.nav-hover::after{
+
+    content: "";
+
+    position: absolute;
+    left: 10px;
+    bottom: 3px;
+    width: 0;
+    height: 2px;
+    background: #ffe66d;
+    transition: .25s;
+}
+
+.nav-hover:hover::after{
+
+    width: calc(100% - 20px);
+}
+
+/* ========================= */
+/* BOTONES */
+/* ========================= */
+
+.navbar .btn{
+
+    padding: 4px 12px;
+
+    font-size: .80rem;
+
+    border-radius: 40px;
+
+    line-height: 1.2;
+
+    transition: .25s;
+}
+
+.navbar .btn:hover{
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 3px 8px rgba(0,0,0,.15);
+}
+
+/* ========================= */
+/* USER BOX */
+/* ========================= */
+
+.user-box{
+
+    background: rgba(255,255,255,.07);
+
+    padding: 3px 8px;
+
+    border-radius: 8px;
+
+    line-height: 1;
+
+    backdrop-filter: blur(5px);
+}
+
+.user-name{
+
+    font-size: .78rem;
+}
+
+.user-box small{
+
+    font-size: .65rem;
+}
+
+/* ========================= */
+/* NAV ITEMS */
+/* ========================= */
+
+.navbar-nav{
+
+    gap: 2px;
+}
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+
+@media(max-width:991px){
+
+    .navbar-modern{
+
+        padding: 6px 0;
+    }
+
+    .nav-item.d-flex{
+
+        flex-direction: column;
+
+        gap: 6px;
+    }
+
+    .navbar .btn{
+
+        width: 100%;
+    }
+
+    .user-box{
+
+        text-align: center;
+    }
+}

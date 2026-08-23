@@ -1,0 +1,222 @@
+:root {
+  --blue: #2563eb;
+  --blue-dark: #1e40af;
+  --yellow: #facc15;
+  --yellow-dark: #eab308;
+  --bg: #0b1220;
+  --card: rgba(255, 255, 255, 0.06);
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0b1220, #111827);
+  color: var(--text);
+  line-height: 1.6;
+  padding: 15px;
+}
+
+/* TITLE */
+.section-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+}
+
+.section-title:after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  margin: 10px auto;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--blue), var(--yellow));
+}
+
+/* CALENDAR CARD */
+.calendar-section {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+/* HEADER */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.calendar-header h2 {
+  font-size: 20px;
+}
+
+/* ================= BOTONES MODERNOS ================= */
+
+.btn {
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.4);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* GRID */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* DAYS */
+.calendar-day {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* DATE BOX */
+.calendar-date {
+  min-height: 85px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+  overflow: hidden;
+}
+
+.calendar-date:hover {
+  transform: scale(1.03);
+  border-color: var(--yellow);
+  background: rgba(37, 99, 235, 0.12);
+}
+
+.calendar-date.today {
+  border: 2px solid var(--yellow);
+  background: rgba(250, 204, 21, 0.12);
+}
+
+.calendar-date.other-month {
+  opacity: 0.3;
+}
+
+/* EVENT LABEL */
+.event-indicator {
+  font-size: 10px;
+  background: linear-gradient(135deg, var(--yellow), var(--blue));
+  color: #111;
+  padding: 2px 5px;
+  border-radius: 6px;
+  margin-top: 3px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* EVENTS LIST */
+.events-list {
+  margin-top: 20px;
+}
+
+.event-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.modal-content {
+  background: #0f172a;
+  border-radius: 14px;
+  padding: 15px;
+  width: 100%;
+  max-width: 420px;
+}
+
+/* INPUTS */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--yellow);
+}
+
+/* RESPONSIVE */
+@media (max-width:768px) {
+
+  .calendar-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .calendar-date {
+    min-height: 70px;
+    font-size: 11px;
+  }
+
+  .event-item {
+    flex-direction: column;
+  }
+}
