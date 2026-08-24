@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Actividades</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-</head>
-
-<body class="bg-light">
-
+<?php
+$pageTitle = "Panel de Actividades";
+ob_start();
+?>
     <div class="container py-4">
         <h1 class="text-center mb-4">Panel de Actividades</h1>
 
@@ -339,6 +327,6 @@
         cargarInscripciones();
         cargarResumen();
     </script>
-</body>
-
-</html>
+<?php
+$content = ob_get_clean();
+require_once appPath('cliente/layouts/AdminLayout.php');

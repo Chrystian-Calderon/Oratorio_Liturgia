@@ -42,12 +42,6 @@ switch ($uri) {
         );
         break;
 
-    case '/dashboard':
-        require appPath(
-            'cliente/Dashboard.php'
-        );
-        break;
-
     case '/login':
         if ($method === 'POST') {
             require appPath(
@@ -81,6 +75,24 @@ switch ($uri) {
 
         http_response_code(405);
         echo 'Método no permitido';
+        break;
+
+    case '/dashboard':
+        require appPath(
+            'cliente/pages/admin/Dashboard.php'
+        );
+        break;
+
+    case '/panel-actividades':
+        require appPath(
+            'cliente/pages/admin/Panel_actividades.php'
+        );
+        break;
+
+    case '/panel-eventos':
+        require appPath(
+            'cliente/pages/admin/Panel_Eventos.php'
+        );
         break;
 
     default:

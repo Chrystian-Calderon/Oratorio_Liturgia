@@ -31,116 +31,6 @@ body {
   background: var(--card-bg);
 }
 
-/* SIDEBAR */
-#sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 250px;
-  background: var(--sidebar-bg);
-  color: #fff;
-  z-index: 1100;
-  transition:
-    transform 0.28s ease,
-    box-shadow 0.28s;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
-}
-
-#sidebar.hidden {
-  transform: translateX(-260px);
-}
-
-#sidebar .sidebar-header {
-  padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-#sidebar .sidebar-header h3 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-#sidebar .close-sidebar {
-  background: transparent;
-  border: 0;
-  color: inherit;
-}
-
-#sidebar .components {
-  padding: 12px 0;
-  overflow: auto;
-  height: calc(100vh - 220px);
-}
-
-#sidebar .components li a {
-  display: block;
-  padding: 10px 18px;
-  color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
-  border-left: 3px solid transparent;
-  transition: all 0.18s ease;
-}
-
-#sidebar .components li a i {
-  width: 20px;
-  margin-right: 10px;
-  text-align: center;
-}
-
-#sidebar .components li a:hover {
-  background: var(--sidebar-hover);
-  color: #fff;
-  border-left: 3px solid var(--sidebar-active);
-}
-
-#sidebar .components li.active > a {
-  background: var(--sidebar-active);
-  color: #fff;
-  border-left: 3px solid #fff;
-}
-
-/* Submenu improved */
-.has-submenu > .submenu-toggle {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 18px;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.submenu {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.28s ease;
-  padding-left: 0;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.submenu.show {
-  max-height: 1000px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-}
-
-.submenu li a {
-  padding: 10px 45px;
-  display: block;
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.rotate-icon {
-  transition: transform 0.28s ease;
-}
-
-.has-submenu.open .rotate-icon {
-  transform: rotate(90deg);
-}
-
 /* overlay */
 #overlaySidebar {
   position: fixed;
@@ -161,7 +51,6 @@ body {
 
 /* main content */
 #content {
-  margin-left: 250px;
   padding: 18px;
   transition: margin-left 0.28s ease;
   min-height: 100vh;
