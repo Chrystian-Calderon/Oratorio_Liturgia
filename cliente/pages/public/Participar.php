@@ -34,7 +34,7 @@ ob_start();
                         <div class="mb-3">
                             <i class="bi bi-calendar-check text-success fs-1"></i>
                         </div>
-                        <h5 class="card-title">Formulario de Actividades</h5>
+                        <h5 class="card-title">Nuestras Actividades</h5>
                         <p class="card-text">
                             Inscríbase en actividades parroquiales como retiros, encuentros juveniles,
                             grupos de oración y eventos comunitarios.
