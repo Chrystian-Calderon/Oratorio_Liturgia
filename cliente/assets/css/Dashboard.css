@@ -129,32 +129,6 @@ body {
   }
 }
 
-/* responsive toggles - MEJORADO */
-#sidebarToggle {
-  background: transparent;
-  border: 0;
-  color: var(--sidebar-bg);
-  font-size: 1.15rem;
-}
-
-@media (max-width: 992px) {
-  #sidebar {
-    transform: translateX(-260px);
-  }
-
-  #sidebar.visible {
-    transform: translateX(0);
-  }
-
-  #content {
-    margin-left: 0;
-  }
-
-  #overlaySidebar {
-    display: block;
-  }
-}
-
 .table th {
   background-color: #4e73df;
   color: #fff;
@@ -206,19 +180,6 @@ input:focus {
 .export-dropdown .dropdown-item i {
   width: 16px;
   text-align: center;
-}
-
-/* Mejoras adicionales */
-.sidebar-toggle-desktop {
-  background: transparent;
-  border: 0;
-  color: var(--sidebar-bg);
-  font-size: 1.15rem;
-  transition: transform 0.3s ease;
-}
-
-.sidebar-toggle-desktop.rotated {
-  transform: rotate(90deg);
 }
 
 .btn-action {

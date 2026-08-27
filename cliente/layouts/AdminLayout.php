@@ -40,6 +40,11 @@ $sidebarVisible = $_SESSION['sidebar_visible'] ?? true;
     .grid > section {
       min-width: 0;
       overflow-x: hidden;
+      background: #eef1f6;
+    }
+
+    body.dark .grid > section {
+      background: #0b0d0f;
     }
   </style>
 </head>
