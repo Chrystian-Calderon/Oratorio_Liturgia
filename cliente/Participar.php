@@ -117,7 +117,7 @@
             </div>
 
             <!-- Formulario de Usuarios -->
-            <div class="col-lg-4 col-md-6">
+            <!-- <div class="col-lg-4 col-md-6">
                 <div class="card shadow-sm h-100 text-center">
                     <div class="card-body">
                         <div class="mb-3">
@@ -133,7 +133,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Formulario de Formación Sacramental -->
             <div class="col-lg-4 col-md-6">
@@ -162,7 +162,7 @@
             </div>
 
             <!-- Formulario de Inscripción -->
-            <div class="col-lg-4 col-md-6">
+            <!-- <div class="col-lg-4 col-md-6">
                 <div class="card shadow-sm h-100 text-center border-0">
 
                     <div class="card-body">
@@ -188,10 +188,10 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Formulario de Registro de Participantes - Universidades -->
-            <div class="col-lg-4 col-md-6">
+            <!-- <div class="col-lg-4 col-md-6">
                 <div class="card shadow-sm h-100 text-center">
 
                     <div class="card-body">
@@ -217,7 +217,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Formulario de Asistencia -->
            <!-- */ <div class="col-lg-4 col-md-6">
@@ -281,7 +281,7 @@
             </div>   -->
 
             <!-- Formulario de Pagos -->
-            <div class="col-lg-4 col-md-6">
+            <!-- <div class="col-lg-4 col-md-6">
                 <div class="card shadow-sm h-100 text-center border-0">
 
                     <div class="card-body">
@@ -309,7 +309,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
         <!-- INFORMACIÓN -->

@@ -26,7 +26,7 @@ if(mysqli_num_rows($resultado) > 0){
             $_SESSION['tipo_persona'] = $usuario['tipo_persona'];
 
             // Redireccionar
-            header("Location: ../cliente/Dashboard.php");
+            header("Location: ../cliente/Panel_Eventos.php");
             exit();
 
         }else{
