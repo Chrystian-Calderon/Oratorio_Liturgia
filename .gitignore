@@ -3,5 +3,5 @@
 .vercel
 
 .vercel
-.vscode
-.github
+.vscode/
+.github/
