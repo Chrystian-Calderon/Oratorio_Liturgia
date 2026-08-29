@@ -1,5 +1,7 @@
 <?php
-require_once appPath('servidor/conexionBD.php');
+require_once appPath('servidor/config/database.php');
+
+$conexion = conectar();
 
 $email = trim($_POST['txtemail'] ?? '');
 $password = trim($_POST['txtpassword'] ?? '');
@@ -36,11 +38,6 @@ $stmt->execute();
 $resultado = $stmt->get_result();
 
 if ($usuario = $resultado->fetch_assoc()) {
-
-    // =================================================
-    // VERIFICAR CONTRASEÑA
-    // =================================================
-
     if (password_verify($password, $usuario['password'])) {
         session_regenerate_id(true);
         $_SESSION['correo'] = $usuario['correo'];

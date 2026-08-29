@@ -18,7 +18,6 @@ if (isset($_SESSION['notificacion'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <!--CDn CSS Bootrap-->
-    <link rel="stylesheet" href="../assets/librerias/bootstrap.min.css">
     <link rel="stylesheet" href="../css/login.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= url('cliente/assets/css/notificacion.css') ?>">
@@ -29,7 +28,7 @@ if (isset($_SESSION['notificacion'])) {
         bg-white">
         <!-- Logo -->
             <div class="text-center mb-3">
-                <img src="../portafolio/img/logo.jpg" alt="Logo Oratorio y Liturgia" class="logo-form">
+                <img src="<?= url('cliente/assets/img/logo.jpg') ?>" alt="Logo Oratorio y Liturgia" class="logo-form">
             </div>
             <h2 class="text-center mb-4 text-primary">ORATORIO Y LITURGIA</h2>
 
@@ -66,6 +65,6 @@ if (isset($_SESSION['notificacion'])) {
                 </div>
     <script src="<?= url('cliente/assets/js/notificacion.js') ?>"></script>
     <!--CDN JS Bootrap-->
-    <script src="../assets/librerias/bootstrap.bundle.min.js"></script>
+    <script src="<?= url('cliente/assets/js/bootstrap.bundle.min.js') ?>"></script>
 </body>
 </html>
