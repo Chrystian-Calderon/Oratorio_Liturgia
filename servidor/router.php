@@ -58,6 +58,23 @@ switch ($uri) {
         http_response_code(405);
         echo 'Método no permitido';
         break;
+    
+    case '/registrarse':
+        if ($method === 'POST') {
+            require appPath(
+                'servidor/registrar_usuario.php'
+            );
+            break;
+        }
+        if ($method === 'GET') {
+          require appPath(
+              'cliente/pages/public/registrarse.php'
+          );
+          break;
+        }
+        http_response_code(405);
+        echo 'Método no permitido';
+        break;
 
     case '/login-admin':
         if ($method === 'POST') {
