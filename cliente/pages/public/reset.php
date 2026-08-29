@@ -1,135 +1,71 @@
 <?php
-include("../servidor/conexionBD.php");
-
-// ======================================
-// OBTENER TOKEN
-// ======================================
+$resultado = $_SESSION['reset'] ?? null;
+unset($_SESSION['reset']);
 
 $token = $_GET['token'] ?? '';
-
-if(empty($token)){
-    die("
-    <h2 style='
-        color:red;
-        text-align:center;
-        margin-top:50px;
-        font-family:Arial;
-    '>
-        Token no válido
-    </h2>
-    ");
-}
-
-// ======================================
-// VERIFICAR TOKEN
-// ======================================
-
-$stmt = $conexion->prepare("
-    SELECT * 
-    FROM personas 
-    WHERE token=? 
-    AND token_expira > NOW()
-");
-
-$stmt->bind_param("s", $token);
-$stmt->execute();
-
-$result = $stmt->get_result();
-
-if(!$usuario = $result->fetch_assoc()){
-
-    die("
-    <!DOCTYPE html>
-    <html lang='es'>
-    <head>
-
-        <meta charset='UTF-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-
-        <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
-
-        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css'>
-
-        <style>
-
-            body{
-                height:100vh;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                background:linear-gradient(135deg,#0f172a,#1e293b);
-                font-family:Arial;
-            }
-
-            .card-error{
-                width:100%;
-                max-width:420px;
-                background:#fff;
-                border-radius:25px;
-                padding:40px;
-                text-align:center;
-                box-shadow:0 10px 30px rgba(0,0,0,0.3);
-            }
-
-            .icon-error{
-                font-size:70px;
-                color:#dc3545;
-                margin-bottom:20px;
-            }
-
-        </style>
-
-    </head>
-
-    <body>
-
-        <div class='card-error'>
-
-            <i class='bi bi-x-circle-fill icon-error'></i>
-
-            <h2 class='text-danger fw-bold'>
-                Token inválido
-            </h2>
-
-            <p class='text-secondary mt-3'>
-                El enlace expiró o ya fue utilizado.
-            </p>
-
-        </div>
-
-    </body>
-    </html>
-    ");
-}
-
-// ======================================
-// ACTUALIZAR CONTRASEÑA
-// ======================================
-
-$actualizado = false;
-
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-    $password = trim($_POST['password']);
-
-    if(!empty($password)){
-
-        $nueva = password_hash($password, PASSWORD_BCRYPT);
-
-        $update = $conexion->prepare("
-            UPDATE personas 
-            SET password=?, token=NULL, token_expira=NULL
-            WHERE token=?
-        ");
-
-        $update->bind_param("ss", $nueva, $token);
-        $update->execute();
-
-        $actualizado = true;
-    }
-}
 ?>
+<?php if ($resultado && $resultado['tipo'] === 'error'): ?>
+<!DOCTYPE html>
+<html lang='es'>
+<head>
 
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css'>
+
+    <style>
+
+        body{
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#0f172a,#1e293b);
+            font-family:Arial;
+        }
+
+        .card-error{
+            width:100%;
+            max-width:420px;
+            background:#fff;
+            border-radius:25px;
+            padding:40px;
+            text-align:center;
+            box-shadow:0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .icon-error{
+            font-size:70px;
+            color:#dc3545;
+            margin-bottom:20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class='card-error'>
+
+        <i class='bi bi-x-circle-fill icon-error'></i>
+
+        <h2 class='text-danger fw-bold'>
+            Token inválido
+        </h2>
+
+        <p class='text-secondary mt-3'>
+            <?= htmlspecialchars($resultado['mensaje']) ?>
+        </p>
+
+    </div>
+
+</body>
+</html>
+<?php else: ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -266,7 +202,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <div class="card-reset">
 
-<?php if($actualizado): ?>
+<?php if ($resultado && $resultado['tipo'] === 'success'): ?>
 
     <!-- ÉXITO -->
 
@@ -292,7 +228,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         setTimeout(function(){
 
-            window.location.href='login.php';
+            window.location.href='<?= url('/login') ?>';
 
         },2500);
 
@@ -312,7 +248,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         Ingresa una contraseña segura para proteger tu cuenta.
     </p>
 
-    <form action="" method="POST">
+    <form action="<?= url('/reset-password') ?>" method="POST">
+
+        <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
 
         <div class="mb-4">
 
@@ -357,3 +295,4 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 </body>
 </html>
+<?php endif; ?>

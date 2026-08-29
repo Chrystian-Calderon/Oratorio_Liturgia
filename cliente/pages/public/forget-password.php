@@ -1,3 +1,7 @@
+<?php
+$resultado = $_SESSION['recuperar'] ?? null;
+unset($_SESSION['recuperar']);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,13 +21,43 @@
 
     <div class="card-recuperar">
 
+    <?php if ($resultado): ?>
+
+        <?php if ($resultado['tipo'] === 'success'): ?>
+
+            <i class="bi bi-check-circle-fill text-success icono"></i>
+            <h2 class="titulo text-success">Enlace generado</h2>
+            <p class="texto">
+                <?= htmlspecialchars($resultado['mensaje']) ?>
+            </p>
+            <a href="<?= htmlspecialchars($resultado['link']) ?>" class="btn btn-primary w-100 btn-recuperar">
+                <i class="bi bi-key-fill"></i>
+                Recuperar contraseña
+            </a>
+
+        <?php else: ?>
+
+            <i class="bi bi-x-circle-fill text-danger icono"></i>
+            <h2 class="titulo text-danger">Correo no encontrado</h2>
+            <p class="texto">
+                <?= htmlspecialchars($resultado['mensaje']) ?>
+            </p>
+            <a href="<?= url('/recuperar-password') ?>" class="btn btn-primary w-100 btn-recuperar">
+                <i class="bi bi-arrow-repeat"></i>
+                Intentar de nuevo
+            </a>
+
+        <?php endif; ?>
+
+    <?php else: ?>
+
         <i class="bi bi-shield-lock-fill icono"></i>
         <h2 class="titulo">Recuperar contraseña</h2>
         <p class="texto">
             Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
         </p>
 
-        <form action="../servidor/recuperar.php" method="POST">
+        <form action="<?= url('/recuperar-password') ?>" method="POST">
             <div class="mb-3">
                 <label class="form-label">Correo electrónico</label>
                 <div class="input-group">
@@ -46,6 +80,9 @@
                 Enviar enlace
             </button>
         </form>
+
+    <?php endif; ?>
+
     </div>
 </body>
 </html>

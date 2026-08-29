@@ -33,7 +33,7 @@ if (isset($_SESSION['notificacion'])) {
             <h2 class="text-center mb-4 text-primary">ORATORIO Y LITURGIA</h2>
 
             <!--Formulario de Login de Acceso-->
-                <form action="<?php url('/login') ?>" method="POST">
+                <form action="<?= url('/login') ?>" method="POST">
                     <div class="mb-3">
                         <label for="exampleInputEmail" class="form-label">Correo:</label>
                         <input type="email" class="form-control border border-primary <?= isset($errores['txtemail']) ? 'is-invalid' : '' ?>" name="txtemail" value="<?= htmlspecialchars($old['txtemail'] ?? '') ?>" required>
@@ -54,7 +54,7 @@ if (isset($_SESSION['notificacion'])) {
                         <?php endif; ?>
                     </div>
 
-                    <p class="small"><a class="text-primary" href="../cliente/forget-password.php">Has olvidado tu contraseña?</a></p>
+                    <p class="small"><a class="text-primary" href="<?= url('/recuperar-password') ?>">Has olvidado tu contraseña?</a></p>
 
                     <div class="d-grid">
                         <button class="btn btn-primary" type="submit">Acceso</button>
