@@ -3,6 +3,13 @@ $errores = $_SESSION['errors'] ?? [];
 $old = $_SESSION['old'] ?? [];
 
 unset($_SESSION['errors'], $_SESSION['old']);
+
+if (isset($_SESSION['notificacion'])) {
+    $notificacion = $_SESSION['notificacion'];
+    require_once appPath('cliente/components/Notificacion.php');
+    mostrarNotificacion($notificacion['mensaje'], $notificacion['tipo']);
+    unset($_SESSION['notificacion']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -10,10 +17,11 @@ unset($_SESSION['errors'], $_SESSION['old']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-<!--CDn CSS Bootrap-->
+    <!--CDn CSS Bootrap-->
     <link rel="stylesheet" href="../assets/librerias/bootstrap.min.css">
     <link rel="stylesheet" href="../css/login.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= url('cliente/assets/css/notificacion.css') ?>">
 </head>
 <body>
     <div class="vh-100 d-flex justify-content-center align-items-center ">
@@ -54,9 +62,10 @@ unset($_SESSION['errors'], $_SESSION['old']);
                     </div>
                 </form>
                 <div class="mt-3">
-                    <p class="mb-0 text-center"> No tienes una cuenta? <a href="registrarse.php" class="text-primary fw-bold">Regístrate</a></p>
+                    <p class="mb-0 text-center"> No tienes una cuenta? <a href="<?= url('/registrarse') ?>" class="text-primary fw-bold">Regístrate</a></p>
                 </div>
-<!--CDN JS Bootrap-->
+    <script src="<?= url('cliente/assets/js/notificacion.js') ?>"></script>
+    <!--CDN JS Bootrap-->
     <script src="../assets/librerias/bootstrap.bundle.min.js"></script>
 </body>
 </html>
