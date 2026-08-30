@@ -47,6 +47,7 @@ require_once appPath('cliente/components/footer/FooterPublic.php');
       }
     }
   ?>
+  <script src="<?= url('cliente/assets/js/navbar.js') ?>"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script src="<?= url('cliente/assets/js/navbar.js') ?>"></script>
 </body>

@@ -80,29 +80,22 @@ switch ($uri) {
         break;
     
     case '/reset-password':
-        if ($method === 'POST') {
-            require appPath(
-                'servidor/reset.php'
-            );
-            break;
-        }
-        if ($method === 'GET') {
-            require appPath(
-                'servidor/reset.php'
-            );
-            require appPath(
-                'cliente/pages/public/reset.php'
-            );
-            break;
-        }
-        http_response_code(405);
-        echo 'Método no permitido';
+        despachar($method, [
+            'POST' => 'servidor/reset.php',
+            'GET'  => 'cliente/pages/public/reset.php',
+        ]);
         break;
 
     case '/login-admin':
         despachar($method, [
             'POST' => 'servidor/validar_IniciarSesion.php',
             'GET'  => 'cliente/pages/private/IniciarSesion.php',
+        ]);
+        break;
+    
+    case '/logout':
+        despachar($method, [
+            'POST' => 'servidor/logout.php',
         ]);
         break;
 
