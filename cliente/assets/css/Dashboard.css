@@ -31,24 +31,6 @@ body {
   background: var(--card-bg);
 }
 
-/* overlay */
-#overlaySidebar {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 1050;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.18s ease,
-    visibility 0.18s;
-}
-
-#overlaySidebar.show {
-  opacity: 1;
-  visibility: visible;
-}
-
 /* main content */
 #content {
   padding: 18px;
@@ -122,6 +104,12 @@ body {
   }
 }
 
+@media (max-width: 992px) {
+  #content {
+    margin-left: 0;
+  }
+}
+
 .table th {
   background-color: #4e73df;
   color: #fff;
@@ -136,11 +124,6 @@ body {
 .small-muted {
   color: var(--muted);
   font-size: 0.9rem;
-}
-
-/* search boxes */
-.search-input {
-  max-width: 360px;
 }
 
 /* toast container */
@@ -383,6 +366,17 @@ input:focus {
   margin-top: 4px;
 }
 
+.stats-card {
+  min-height: 104px;
+  display: flex;
+  align-items: center;
+}
+
+.stats-card h6 {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 /* Accesos rápidos */
 .quick-access {
   display: block;
@@ -390,29 +384,181 @@ input:focus {
   border: none;
   text-decoration: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
 }
 
-.quick-access:hover {
+.quick-access:hover,
+.quick-access:focus-visible {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
   color: #fff;
+}
+
+.quick-access:focus-visible {
+  outline: 3px solid rgba(78, 115, 223, 0.4);
+  outline-offset: 2px;
 }
 
 .quick-access-body {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 18px;
+  padding: 20px;
+  height: 100%;
 }
 
-.quick-access small {
+.quick-access-body>i {
+  flex-shrink: 0;
   opacity: 0.9;
 }
 
+.quick-access small {
+  opacity: 0.92;
+  display: block;
+  margin-top: 2px;
+}
+
 /* Listas de próximos */
+#lista-proximos-eventos .list-group-item,
+#lista-proximas-actividades .list-group-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
 #lista-proximos-eventos .badge,
 #lista-proximas-actividades .badge {
   font-weight: 600;
   white-space: nowrap;
   border: 1px solid rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+
+/* Encabezados de tarjetas */
+.card-header h5 {
+  font-size: 1.05rem;
+}
+
+/* ============ RESPONSIVE ============ */
+
+/* Tablets pequeñas */
+@media (max-width: 767.98px) {
+  .stats-number {
+    font-size: 1.6rem;
+  }
+
+  .stats-card {
+    min-height: 92px;
+  }
+
+  .quick-access-body {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .quick-access-body>i {
+    font-size: 1.4rem;
+  }
+
+  .quick-access small {
+    font-size: 0.82rem;
+  }
+}
+
+/* Móviles */
+@media (max-width: 575.98px) {
+  .container-fluid.py-3 {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.15rem;
+  }
+
+  /* Tarjetas del resumen en 2 columnas en móviles */
+  .row>[class*="col-"].mb-3 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .stats-card {
+    min-height: 84px;
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .stats-card .stats-number {
+    font-size: 1.4rem;
+  }
+
+  .stats-card h6 {
+    font-size: 0.8rem;
+  }
+
+  .stats-card>.d-flex>i {
+    font-size: 1.2rem;
+  }
+
+  /* Listas de próximos: apilar fecha debajo del nombre */
+  #lista-proximos-eventos .list-group-item,
+  #lista-proximas-actividades .list-group-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  #lista-proximos-eventos .badge,
+  #lista-proximas-actividades .badge {
+    margin-left: 0;
+  }
+
+  /* Accesos rápidos apilados y más compactos */
+  .quick-access-body {
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .quick-access small {
+    font-size: 0.78rem;
+  }
+
+  .card-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .card-body {
+    padding: 0.9rem;
+  }
+}
+
+/* Pantallas muy pequeñas */
+@media (max-width: 380px) {
+  .stats-card {
+    min-height: 78px;
+    padding: 10px;
+  }
+
+  .stats-card .stats-number {
+    font-size: 1.25rem;
+  }
+
+  .stats-card h6 {
+    font-size: 0.75rem;
+  }
+}
+
+/* Ajuste de altura completa en laptops para las columnas de Próximos */
+@media (min-width: 992px) {
+  .h-100 .card-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #lista-proximos-eventos,
+  #lista-proximas-actividades {
+    flex: 1 1 auto;
+  }
 }

@@ -14,7 +14,7 @@
 }
 
 #sidebar .sidebar-header {
-  padding: 1.2rem 1rem;
+  padding: 0.5rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(0, 0, 0, 0.15);
   flex-shrink: 0;

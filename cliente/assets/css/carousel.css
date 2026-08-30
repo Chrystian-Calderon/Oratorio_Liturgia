@@ -19,194 +19,154 @@
 .hero-carousel {
 
     margin-top: 0;
+}
 
-    #heroCarousel {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
+
+/* IMAGENES */
+
+.hero-img {
+
+    height: 100vh;
+    object-fit: cover;
+    filter: brightness(.55);
+}
+
+/* CONTENIDO */
+
+.custom-caption {
+
+    bottom: 18%;
+    left: 8%;
+    right: auto;
+    text-align: left;
+    max-width: 650px;
+}
+
+
+/* TITULOS */
+
+.hero-carousel,
+#heroCarousel,
+#heroCarousel .carousel-inner,
+#heroCarousel .carousel-item,
+.hero-img {
+    border-radius: 0 !important;
+
+    .custom-caption h1 {
+
+        font-weight: 800;
+        line-height: 1.1;
     }
 
+    /* TEXTO */
 
-    /* =========================================================
-   CAROUSEL INNER
-   ========================================================= */
+    .custom-caption p {
 
-    #heroCarousel .carousel-inner {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
+        font-size: 1.1rem;
+        opacity: .9;
     }
 
-
-    /* =========================================================
-   SLIDES
-   ========================================================= */
-
-    #heroCarousel .carousel-item {
-        width: 100% !important;
-        position: relative;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-
-    /* IMAGENES */
-
-    .hero-img {
-        display: block;
-        width: 100% !important;
-        max-width: 100% !important;
-        height: 100vh;
-        object-fit: cover;
-        filter: brightness(.55);
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    /* CONTENIDO */
+    /* BOTONES */
 
     .custom-caption {
-        bottom: 10%;
-        left: 50%;
-        right: auto;
-        text-align: left;
-        max-width: 650px;
+
+        padding: 10px 24px;
+        font-weight: 600;
+        transition: .3s;
+
+        position: absolute;
+        left: 50vw;
+        bottom: -50px;
         transform: translateX(-50%);
     }
 
 
-    /* TITULOS */
+    /* Efecto al pasar el cursor */
 
-    .hero-carousel,
-    #heroCarousel,
-    #heroCarousel .carousel-inner,
-    #heroCarousel .carousel-item,
-    .hero-img {
-        border-radius: 0 !important;
+    .btn-leer:hover {
+        transform: translateX(-50%) translateY(-3px);
+    }
 
-        .custom-caption h1 {
+    /* INDICADORES */
 
-            font-weight: 800;
-            line-height: 1.1;
-        }
+    .carousel-indicators button {
 
-
-        /* =========================================================
-   BOTÓN LEER MÁS
-   ========================================================= */
-
-        .btn-leer {
-            width: 145px !important;
-            height: 48px !important;
-
-            font-size: 16px !important;
-            font-weight: 600 !important;
-
-            color: white !important;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            transition: all .3s ease;
-        }
+        width: 10px !important;
+        height: 10px !important;
+        border-radius: 50%;
+        margin: 0 6px;
+    }
 
 
-        /* Efecto al pasar el cursor */
-
-        .btn-leer:hover {
-            transform: translateX(-50%) translateY(-3px);
-        }
-
-
-        /* =========================================================
-   INDICADORES
-   ========================================================= */
-
-        .carousel-indicators {
-            z-index: 20;
-        }
-
-
-        .carousel-indicators button {
-            width: 10px !important;
-            height: 10px !important;
-            border-radius: 50%;
-            margin: 0 6px;
-        }
-
-
-        /* =========================================================
+    /* =========================================================
    FLECHAS
    ========================================================= */
 
-        .carousel-control-prev,
-        .carousel-control-next {
-            width: 5% !important;
-            z-index: 30;
-            opacity: 1;
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 5% !important;
+        z-index: 30;
+        opacity: 1;
+    }
+
+
+    /* Área de la flecha */
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 1;
+    }
+
+
+    /* Iconos de Bootstrap */
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        width: 3.5rem;
+        height: 3.5rem;
+        background-size: 70% 70%;
+    }
+
+
+    /* ========================= */
+    /* RESPONSIVE */
+    /* ========================= */
+
+    @media (min-width: 993px) {
+
+        .hero-img {
+            height: 100vh;
+            min-height: 600px;
         }
 
-
-        /* Área de la flecha */
-
-        .carousel-control-prev:hover,
-        .carousel-control-next:hover {
-            opacity: 1;
-        }
+    }
 
 
-        /* Iconos de Bootstrap */
-
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            width: 3.5rem;
-            height: 3.5rem;
-            background-size: 70% 70%;
-        }
-
-
-        /* ========================= */
-        /* RESPONSIVE */
-        /* ========================= */
-
-        @media (min-width: 993px) {
-
-            .hero-img {
-                height: 100vh;
-                min-height: 600px;
-            }
-
-        }
-
-
-        /* =========================================================
+    /* =========================================================
    TABLETS
    ========================================================= */
 
-        @media (max-width: 992px) {
+    @media (max-width: 992px) {
 
-            .hero-img {
-                height: 85vh;
-            }
+        .hero-img {
+            height: 85vh;
+        }
+    }
+
+    @media (max-width: 576px) {
+
+        .custom-caption h1 {
+
+            font-size: 1.8rem;
         }
 
-        @media(max-width: 576px) {
+        .custom-caption p {
 
-            .hero-img {
-                height: 75vh;
-            }
-
-            .carousel-control-prev,
-            .carousel-control-next {
-                width: 12% !important;
-            }
-
-            .carousel-control-prev-icon,
-            .carousel-control-next-icon {
-                width: 2.5rem;
-                height: 2.5rem;
-            }
-
+            font-size: .95rem;
         }
+
+        .hero-img {
+
+            height: 75vh;
+        }
+    }

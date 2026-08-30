@@ -10,7 +10,7 @@ function renderSidebar(): void {
             <div>
                 <button
                     id="themeToggle"
-                    class="btn btn-sm btn-outline-light me-2"
+                    class="btn btn-outline-light me-2"
                     title="Cambiar tema"
                 >
                     <i class="fas fa-sun"></i>

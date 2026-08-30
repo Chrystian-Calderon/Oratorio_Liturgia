@@ -7,6 +7,7 @@ if (
   exit();
 }
 
+$pageTitle = 'Dashboard';
 $pageStyles = [
   'cliente/assets/css/Dashboard.css',
 ];
@@ -17,21 +18,10 @@ ob_start();
   <div id="content">
     <div id="dashboard" class="content-section active">
       <div class="container-fluid">
-
-        <!-- TÍTULO -->
-        <div class="row mb-4">
-          <div class="col-12">
-            <h1 class="dashboard-title">
-              <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-            </h1>
-            <p class="small-muted">Bienvenido: <?= htmlspecialchars($_SESSION['usuario']) ?></p>
-          </div>
-        </div>
-
         <!-- ===================== RESUMEN GENERAL ===================== -->
         <h2 class="section-title">Resumen General</h2>
         <div class="row mb-4">
-          <div class="col-md-3 mb-3">
+          <div class="col-6 col-md-3 mb-3">
             <div class="card stats-card bg-custom-primary">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -42,7 +32,7 @@ ob_start();
               </div>
             </div>
           </div>
-          <div class="col-md-3 mb-3">
+          <div class="col-6 col-md-3 mb-3">
             <div class="card stats-card bg-custom-info">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -53,7 +43,7 @@ ob_start();
               </div>
             </div>
           </div>
-          <div class="col-md-3 mb-3">
+          <div class="col-6 col-md-3 mb-3">
             <div class="card stats-card bg-custom-success">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -64,7 +54,7 @@ ob_start();
               </div>
             </div>
           </div>
-          <div class="col-md-3 mb-3">
+          <div class="col-6 col-md-3 mb-3">
             <div class="card stats-card bg-custom-warning">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -143,7 +133,7 @@ ob_start();
         <!-- ===================== ACCESOS RÁPIDOS ===================== -->
         <h2 class="section-title">Accesos Rápidos</h2>
         <div class="row mb-3">
-          <div class="col-md-4 mb-3">
+          <div class="col-sm-6 col-md-4 mb-3">
             <a href="<?= url('/eventos') ?>" class="card quick-access bg-custom-info">
               <div class="quick-access-body">
                 <i class="fas fa-calendar-alt fa-2x"></i>
@@ -154,7 +144,7 @@ ob_start();
               </div>
             </a>
           </div>
-          <div class="col-md-4 mb-3">
+          <div class="col-sm-6 col-md-4 mb-3">
             <a href="<?= url('/actividades') ?>" class="card quick-access bg-custom-success">
               <div class="quick-access-body">
                 <i class="fas fa-tasks fa-2x"></i>
@@ -165,7 +155,7 @@ ob_start();
               </div>
             </a>
           </div>
-          <div class="col-md-4 mb-3">
+          <div class="col-sm-6 col-md-4 mb-3">
             <a href="<?= url('/inscripcion') ?>" class="card quick-access bg-custom-warning">
               <div class="quick-access-body">
                 <i class="fas fa-users fa-2x"></i>
