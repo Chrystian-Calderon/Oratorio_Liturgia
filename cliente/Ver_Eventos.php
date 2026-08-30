@@ -519,39 +519,81 @@ $estadosEventos = ['Próximo', 'En curso', 'Finalizado', 'Cancelado'];
 
     <main class="container pb-5">
 
-        <!-- =====================================================
+       ```php
+<!-- =====================================================
          CALENDARIO RÁPIDO (Próximos 7 días)
     ====================================================== -->
-        <section class="calendar-view mb-4" aria-label="Calendario rápido">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-bold mb-0">
-                    <i class="fa-regular fa-calendar me-2"></i>Próximos días
-                </h6>
-                <small class="text-secondary">
-                    <i class="fa-regular fa-clock me-1"></i>
-                    <?php echo date('d M Y'); ?> - <?php echo date('d M Y', strtotime('+6 days')); ?>
-                </small>
-            </div>
-            <div class="row g-2">
-                <?php for ($i = 0; $i < 7; $i++):
-                    $fecha = date('Y-m-d', strtotime("+$i days"));
-                    $diaNumero = date('d', strtotime($fecha));
-                    $diaNombre = date('D', strtotime($fecha));
-                    $esHoy = $i === 0;
-                ?>
-                    <div class="col">
-                        <div class="day-card <?php echo $esHoy ? 'active' : ''; ?>"
-                            onclick="window.location.href='?fecha=<?php echo $fecha; ?>'">
-                            <div class="day-number"><?php echo $diaNumero; ?></div>
-                            <div class="day-name"><?php echo $diaNombre; ?></div>
-                            <?php if ($esHoy): ?>
-                                <small class="d-block" style="font-size:0.6rem; opacity:0.7;">Hoy</small>
-                            <?php endif; ?>
-                        </div>
+
+<section class="calendar-view mb-4" aria-label="Calendario rápido">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h6 class="fw-bold mb-0">
+            <i class="fa-regular fa-calendar me-2"></i>Próximos días
+        </h6>
+
+        <small class="text-secondary">
+            <i class="fa-regular fa-clock me-1"></i>
+            <?php echo date('d M Y'); ?> -
+            <?php echo date('d M Y', strtotime('+6 days')); ?>
+        </small>
+
+    </div>
+
+    <div class="row g-2">
+
+        <?php
+        // Días de la semana en español
+        $diasEspanol = [
+            'Sun' => 'Dom',
+            'Mon' => 'Lun',
+            'Tue' => 'Mar',
+            'Wed' => 'Mié',
+            'Thu' => 'Jue',
+            'Fri' => 'Vie',
+            'Sat' => 'Sáb'
+        ];
+
+        for ($i = 0; $i < 7; $i++):
+
+            $fecha = date('Y-m-d', strtotime("+$i days"));
+            $diaNumero = date('d', strtotime($fecha));
+            $diaNombreIngles = date('D', strtotime($fecha));
+            $diaNombre = $diasEspanol[$diaNombreIngles];
+
+            $esHoy = $i === 0;
+        ?>
+
+            <div class="col">
+
+                <div class="day-card <?php echo $esHoy ? 'active' : ''; ?>"
+                    onclick="window.location.href='?fecha=<?php echo $fecha; ?>'">
+
+                    <div class="day-number">
+                        <?php echo $diaNumero; ?>
                     </div>
-                <?php endfor; ?>
+
+                    <div class="day-name">
+                        <?php echo $diaNombre; ?>
+                    </div>
+
+                    <?php if ($esHoy): ?>
+                        <small class="d-block" style="font-size:0.6rem; opacity:0.7;">
+                            Hoy
+                        </small>
+                    <?php endif; ?>
+
+                </div>
+
             </div>
-        </section>
+
+        <?php endfor; ?>
+
+    </div>
+
+</section>
+```
+
 
         <!-- =====================================================
          FILTROS
