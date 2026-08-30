@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 require_once "../servidor/conexionBD.php";
 
@@ -68,27 +67,28 @@ $estadosEventos = ['Próximo', 'En curso', 'Finalizado', 'Cancelado'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eventos | Oratorio y Liturgia</title>
-    
+
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%);
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
-            --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
-            --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
             --radius-lg: 24px;
             --radius-md: 16px;
             --radius-sm: 12px;
@@ -116,7 +116,7 @@ $estadosEventos = ['Próximo', 'En curso', 'Finalizado', 'Cancelado'];
             right: -10%;
             width: 500px;
             height: 500px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 50%;
             animation: float 20s ease-in-out infinite;
         }
@@ -128,15 +128,25 @@ $estadosEventos = ['Próximo', 'En curso', 'Finalizado', 'Cancelado'];
             left: -5%;
             width: 400px;
             height: 400px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 50%;
             animation: float 25s ease-in-out infinite reverse;
         }
 
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -20px) scale(1.1); }
-            66% { transform: translate(-20px, 30px) scale(0.9); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -20px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 30px) scale(0.9);
+            }
         }
 
         .page-header h1 {
@@ -145,20 +155,20 @@ $estadosEventos = ['Próximo', 'En curso', 'Finalizado', 'Cancelado'];
             color: #fff;
             position: relative;
             z-index: 1;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
 
         .page-header p {
-            color: rgba(255,255,255,0.9);
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 300;
             position: relative;
             z-index: 1;
         }
 
         .badge-header {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
             padding: 0.6rem 1.5rem;
             font-weight: 600;
@@ -174,7 +184,7 @@ $estadosEventos = ['Próximo', 'En curso', 'Finalizado', 'Cancelado'];
             padding: 1.5rem 2rem;
             box-shadow: var(--shadow-sm);
             margin-bottom: 2.5rem;
-            border: 1px solid rgba(0,0,0,0.03);
+            border: 1px solid rgba(0, 0, 0, 0.03);
         }
 
         .filters-section .form-control,
@@ -281,10 +291,21 @@ $estadosEventos = ['Próximo', 'En curso', 'Finalizado', 'Cancelado'];
             border-radius: var(--radius-lg) 0 0 var(--radius-lg);
         }
 
-        .event-card .status-indicator.proximo { background: #3b82f6; }
-        .event-card .status-indicator.en-curso { background: #f59e0b; }
-        .event-card .status-indicator.finalizado { background: #10b981; }
-        .event-card .status-indicator.cancelado { background: #ef4444; }
+        .event-card .status-indicator.proximo {
+            background: #3b82f6;
+        }
+
+        .event-card .status-indicator.en-curso {
+            background: #f59e0b;
+        }
+
+        .event-card .status-indicator.finalizado {
+            background: #10b981;
+        }
+
+        .event-card .status-indicator.cancelado {
+            background: #ef4444;
+        }
 
         /* Información del evento */
         .event-info {
@@ -460,387 +481,410 @@ $estadosEventos = ['Próximo', 'En curso', 'Finalizado', 'Cancelado'];
             .page-header {
                 padding: 2.5rem 0 2rem;
             }
-            
+
             .event-card .card-body {
                 padding: 1.25rem;
             }
-            
+
             .filters-section {
                 padding: 1rem;
             }
-            
+
             .calendar-view {
                 padding: 1rem;
             }
         }
     </style>
 </head>
+
 <body>
 
-<!-- =====================================================
+    <!-- =====================================================
      HEADER
 ====================================================== -->
-<header class="page-header">
-    <div class="container">
-        <div class="text-center">
-            <span class="badge-header d-inline-block px-4 py-2 rounded-pill mb-3">
-                <i class="fa-regular fa-calendar-plus me-2"></i>
-                EVENTOS
-            </span>
-            <h1 class="display-4 fw-bold mb-2">Calendario de eventos</h1>
-            <p class="fs-5 mb-0 mx-auto" style="max-width: 550px;">
-                Participa en nuestros eventos y vive experiencias únicas en comunidad
-            </p>
+    <header class="page-header">
+        <div class="container">
+            <div class="text-center">
+                <span class="badge-header d-inline-block px-4 py-2 rounded-pill mb-3">
+                    <i class="fa-regular fa-calendar-plus me-2"></i>
+                    EVENTOS
+                </span>
+                <h1 class="display-4 fw-bold mb-2">Calendario de eventos</h1>
+                <p class="fs-5 mb-0 mx-auto" style="max-width: 550px;">
+                    Participa en nuestros eventos y vive experiencias únicas en comunidad
+                </p>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<main class="container pb-5">
+    <main class="container pb-5">
 
-    <!-- =====================================================
+        <!-- =====================================================
          CALENDARIO RÁPIDO (Próximos 7 días)
     ====================================================== -->
-    <section class="calendar-view mb-4" aria-label="Calendario rápido">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="fw-bold mb-0">
-                <i class="fa-regular fa-calendar me-2"></i>Próximos días
-            </h6>
-            <small class="text-secondary">
-                <i class="fa-regular fa-clock me-1"></i>
-                <?php echo date('d M Y'); ?> - <?php echo date('d M Y', strtotime('+6 days')); ?>
-            </small>
-        </div>
-        <div class="row g-2">
-            <?php for ($i = 0; $i < 7; $i++): 
-                $fecha = date('Y-m-d', strtotime("+$i days"));
-                $diaNumero = date('d', strtotime($fecha));
-                $diaNombre = date('D', strtotime($fecha));
-                $esHoy = $i === 0;
-            ?>
-                <div class="col">
-                    <div class="day-card <?php echo $esHoy ? 'active' : ''; ?>" 
-                         onclick="window.location.href='?fecha=<?php echo $fecha; ?>'">
-                        <div class="day-number"><?php echo $diaNumero; ?></div>
-                        <div class="day-name"><?php echo $diaNombre; ?></div>
-                        <?php if ($esHoy): ?>
-                            <small class="d-block" style="font-size:0.6rem; opacity:0.7;">Hoy</small>
-                        <?php endif; ?>
+        <section class="calendar-view mb-4" aria-label="Calendario rápido">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold mb-0">
+                    <i class="fa-regular fa-calendar me-2"></i>Próximos días
+                </h6>
+                <small class="text-secondary">
+                    <i class="fa-regular fa-clock me-1"></i>
+                    <?php echo date('d M Y'); ?> - <?php echo date('d M Y', strtotime('+6 days')); ?>
+                </small>
+            </div>
+            <div class="row g-2">
+                <?php for ($i = 0; $i < 7; $i++):
+                    $fecha = date('Y-m-d', strtotime("+$i days"));
+                    $diaNumero = date('d', strtotime($fecha));
+                    $diaNombre = date('D', strtotime($fecha));
+                    $esHoy = $i === 0;
+                ?>
+                    <div class="col">
+                        <div class="day-card <?php echo $esHoy ? 'active' : ''; ?>"
+                            onclick="window.location.href='?fecha=<?php echo $fecha; ?>'">
+                            <div class="day-number"><?php echo $diaNumero; ?></div>
+                            <div class="day-name"><?php echo $diaNombre; ?></div>
+                            <?php if ($esHoy): ?>
+                                <small class="d-block" style="font-size:0.6rem; opacity:0.7;">Hoy</small>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                </div>
-            <?php endfor; ?>
-        </div>
-    </section>
+                <?php endfor; ?>
+            </div>
+        </section>
 
-    <!-- =====================================================
+        <!-- =====================================================
          FILTROS
     ====================================================== -->
-    <section class="filters-section" aria-label="Filtros de eventos">
-        <form method="GET" action="" class="row g-3 align-items-end">
-            <div class="col-12 col-md-4">
-                <label for="buscar" class="form-label">
-                    <i class="fa-solid fa-search me-1"></i> Buscar
-                </label>
-                <input 
-                    type="text" 
-                    name="buscar" 
-                    id="buscar"
-                    class="form-control" 
-                    placeholder="Nombre, descripción o lugar..." 
-                    value="<?php echo htmlspecialchars($filtroBusqueda); ?>"
-                >
-            </div>
-            
-            <div class="col-12 col-md-3">
-                <label for="estado" class="form-label">
-                    <i class="fa-solid fa-circle me-1"></i> Estado
-                </label>
-                <select name="estado" id="estado" class="form-select">
-                    <option value="">Todos los estados</option>
-                    <?php foreach ($estadosEventos as $estado): ?>
-                        <option value="<?php echo $estado; ?>" 
-                            <?php echo ($filtroEstado === $estado) ? 'selected' : ''; ?>>
-                            <?php echo $estado; ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            
-            <div class="col-12 col-md-3">
-                <label for="fecha" class="form-label">
-                    <i class="fa-regular fa-calendar me-1"></i> Fecha
-                </label>
-                <input 
-                    type="date" 
-                    name="fecha" 
-                    id="fecha"
-                    class="form-control" 
-                    value="<?php echo htmlspecialchars($filtroFecha); ?>"
-                >
-            </div>
-            
-            <div class="col-12 col-md-2">
-                <button type="submit" class="btn-primary-custom w-100">
-                    <i class="fa-solid fa-sliders me-2"></i> Filtrar
-                </button>
-            </div>
-        </form>
-        
-        <?php if (!empty($filtroBusqueda) || !empty($filtroEstado) || !empty($filtroFecha)): ?>
-            <div class="mt-3 pt-3 border-top">
-                <a href="eventos.php" class="text-decoration-none small">
-                    <i class="fa-solid fa-times-circle me-1"></i> Limpiar filtros
-                </a>
-            </div>
-        <?php endif; ?>
-    </section>
+        <section class="filters-section" aria-label="Filtros de eventos">
+            <form method="GET" action="" class="row g-3 align-items-end">
+                <div class="col-12 col-md-4">
+                    <label for="buscar" class="form-label">
+                        <i class="fa-solid fa-search me-1"></i> Buscar
+                    </label>
+                    <input
+                        type="text"
+                        name="buscar"
+                        id="buscar"
+                        class="form-control"
+                        placeholder="Nombre, descripción o lugar..."
+                        value="<?php echo htmlspecialchars($filtroBusqueda); ?>">
+                </div>
 
-    <!-- =====================================================
+                <div class="col-12 col-md-3">
+                    <label for="estado" class="form-label">
+                        <i class="fa-solid fa-circle me-1"></i> Estado
+                    </label>
+                    <select name="estado" id="estado" class="form-select">
+                        <option value="">Todos los estados</option>
+                        <?php foreach ($estadosEventos as $estado): ?>
+                            <option value="<?php echo $estado; ?>"
+                                <?php echo ($filtroEstado === $estado) ? 'selected' : ''; ?>>
+                                <?php echo $estado; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <label for="fecha" class="form-label">
+                        <i class="fa-regular fa-calendar me-1"></i> Fecha
+                    </label>
+                    <input
+                        type="date"
+                        name="fecha"
+                        id="fecha"
+                        class="form-control"
+                        value="<?php echo htmlspecialchars($filtroFecha); ?>">
+                </div>
+
+                <div class="col-12 col-md-2">
+                    <button type="submit" class="btn-primary-custom w-100">
+                        <i class="fa-solid fa-sliders me-2"></i> Filtrar
+                    </button>
+                </div>
+            </form>
+
+            <?php if (!empty($filtroBusqueda) || !empty($filtroEstado) || !empty($filtroFecha)): ?>
+                <div class="mt-3 pt-3 border-top">
+                    <a href="eventos.php" class="text-decoration-none small">
+                        <i class="fa-solid fa-times-circle me-1"></i> Limpiar filtros
+                    </a>
+                </div>
+            <?php endif; ?>
+        </section>
+
+        <!-- =====================================================
          RESULTADOS
     ====================================================== -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <span class="fw-semibold"><?php echo $totalRegistros; ?></span>
-            <span class="text-secondary">eventos encontrados</span>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="fw-semibold"><?php echo $totalRegistros; ?></span>
+                <span class="text-secondary">eventos encontrados</span>
+            </div>
+            <?php if ($totalPaginas > 1): ?>
+                <small class="text-secondary">
+                    Página <?php echo $paginaActual; ?> de <?php echo $totalPaginas; ?>
+                </small>
+            <?php endif; ?>
         </div>
-        <?php if ($totalPaginas > 1): ?>
-            <small class="text-secondary">
-                Página <?php echo $paginaActual; ?> de <?php echo $totalPaginas; ?>
-            </small>
-        <?php endif; ?>
-    </div>
 
-    <!-- =====================================================
+        <!-- =====================================================
          TARJETAS DE EVENTOS
     ====================================================== -->
-    <div class="row g-4">
-        <?php if (mysqli_num_rows($resultado) > 0): ?>
-            <?php while ($evento = mysqli_fetch_assoc($resultado)): ?>
-                <?php
-                // Clases para el estado
-                $estadoClase = strtolower(str_replace(' ', '-', $evento['estado']));
-                $estadoIcono = [
-                    'Próximo' => 'fa-clock',
-                    'En curso' => 'fa-play-circle',
-                    'Finalizado' => 'fa-check-circle',
-                    'Cancelado' => 'fa-circle-xmark'
-                ][$evento['estado']] ?? 'fa-circle';
-                
-                // Formatear fecha y hora
-                $fechaEvento = date('d M Y', strtotime($evento['fecha_evento']));
-                $horaEvento = date('H:i', strtotime($evento['hora_evento']));
-                
-                // Descripción corta
-                $descripcion = $evento['descripcion'];
-                if (strlen($descripcion) > 120) {
-                    $descripcion = substr($descripcion, 0, 120) . "...";
-                }
-                
-                // Días hasta el evento
-                $diasPara = '';
-                if ($evento['estado'] === 'Próximo') {
-                    $fechaEventoObj = new DateTime($evento['fecha_evento']);
-                    $hoy = new DateTime();
-                    $diff = $hoy->diff($fechaEventoObj);
-                    $dias = $diff->days;
-                    if ($dias == 0) {
-                        $diasPara = '<span class="text-warning fw-bold">¡Hoy!</span>';
-                    } elseif ($dias == 1) {
-                        $diasPara = 'Mañana';
+        <div class="row g-4">
+            <?php if (mysqli_num_rows($resultado) > 0): ?>
+                <?php while ($evento = mysqli_fetch_assoc($resultado)): ?>
+                    <?php
+                    // Clases para el estado
+                    $estadoClase = strtolower(str_replace(' ', '-', $evento['estado']));
+                    $estadoIcono = [
+                        'Próximo' => 'fa-clock',
+                        'En curso' => 'fa-play-circle',
+                        'Finalizado' => 'fa-check-circle',
+                        'Cancelado' => 'fa-circle-xmark'
+                    ][$evento['estado']] ?? 'fa-circle';
+
+
+                    // Formatear fecha
+                    if (!empty($evento['fecha_evento'])) {
+                        $fechaEvento = date('d/m/Y', strtotime($evento['fecha_evento']));
                     } else {
-                        $diasPara = "En $dias días";
+                        $fechaEvento = 'Fecha no definida';
                     }
-                }
-                ?>
-                
-                <div class="col-12 col-md-6 col-xl-4">
-                    <article class="event-card">
-                        <!-- Indicador de estado -->
-                        <div class="status-indicator <?php echo $estadoClase; ?>"></div>
-                        
-                        <div class="card-body d-flex flex-column">
-                            
-                            <!-- Cabecera -->
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <span class="status-badge <?php echo $estadoClase; ?>">
-                                    <i class="fa-regular <?php echo $estadoIcono; ?>"></i>
-                                    <?php echo htmlspecialchars($evento['estado']); ?>
-                                </span>
-                                
-                                <?php if (!empty($diasPara)): ?>
-                                    <span class="badge bg-primary bg-opacity-10 text-primary border-0">
-                                        <i class="fa-regular fa-hourglass-half me-1"></i>
-                                        <?php echo $diasPara; ?>
+
+                    // Formatear hora
+                    if (!empty($evento['hora_evento'])) {
+                        $horaEvento = date('H:i', strtotime($evento['hora_evento']));
+                    } else {
+                        $horaEvento = 'Hora no definida';
+                    }
+
+
+
+                    // Descripción corta
+                    $descripcion = $evento['descripcion'];
+                    if (strlen($descripcion) > 120) {
+                        $descripcion = substr($descripcion, 0, 120) . "...";
+                    }
+
+                    // Días hasta el evento
+                    $diasPara = '';
+                    if ($evento['estado'] === 'Próximo') {
+                        $fechaEventoObj = new DateTime($evento['fecha_evento']);
+                        $hoy = new DateTime();
+                        $diff = $hoy->diff($fechaEventoObj);
+                        $dias = $diff->days;
+                        if ($dias == 0) {
+                            $diasPara = '<span class="text-warning fw-bold">¡Hoy!</span>';
+                        } elseif ($dias == 1) {
+                            $diasPara = 'Mañana';
+                        } else {
+                            $diasPara = "En $dias días";
+                        }
+                    }
+                    ?>
+
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <article class="event-card">
+                            <!-- Indicador de estado -->
+                            <div class="status-indicator <?php echo $estadoClase; ?>"></div>
+
+                            <div class="card-body d-flex flex-column">
+
+                                <!-- Cabecera -->
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <span class="status-badge <?php echo $estadoClase; ?>">
+                                        <i class="fa-regular <?php echo $estadoIcono; ?>"></i>
+                                        <?php echo htmlspecialchars($evento['estado']); ?>
                                     </span>
-                                <?php endif; ?>
-                            </div>
-                            
-                            <!-- Título -->
-                            <h4 class="fw-bold mb-2">
-                                <?php echo htmlspecialchars($evento['nombre_evento']); ?>
-                            </h4>
-                            
-                            <!-- Descripción -->
-                            <p class="text-secondary small mb-3">
-                                <?php echo htmlspecialchars($descripcion); ?>
-                            </p>
-                            
-                            <!-- Información -->
-                            <div class="bg-light rounded-3 p-3 mb-3">
-                                
-                                <div class="event-info">
-                                    <div class="icon-wrapper">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </div>
-                                    <div>
-                                        <div class="label">Fecha</div>
-                                        <div class="value"><?php echo $fechaEvento; ?></div>
-                                    </div>
+
+                                    <?php if (!empty($diasPara)): ?>
+                                        <span class="badge bg-primary bg-opacity-10 text-primary border-0">
+                                            <i class="fa-regular fa-hourglass-half me-1"></i>
+                                            <?php echo $diasPara; ?>
+                                        </span>
+                                    <?php endif; ?>
                                 </div>
-                                
-                                <div class="event-info">
-                                    <div class="icon-wrapper">
-                                        <i class="fa-regular fa-clock"></i>
-                                    </div>
-                                    <div>
-                                        <div class="label">Hora</div>
-                                        <div class="value"><?php echo $horaEvento; ?></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="event-info mb-0">
-                                    <div class="icon-wrapper">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                    </div>
-                                    <div>
-                                        <div class="label">Lugar</div>
-                                        <div class="value">
-                                            <span class="event-location">
-                                                <i class="fa-solid fa-map-pin text-primary"></i>
-                                                <?php echo htmlspecialchars($evento['lugar']); ?>
-                                            </span>
+
+                                <!-- Título -->
+                                <h4 class="fw-bold mb-2">
+                                    <?php echo htmlspecialchars($evento['nombre_evento']); ?>
+                                </h4>
+
+                                <!-- Descripción -->
+                                <p class="text-secondary small mb-3">
+                                    <?php echo htmlspecialchars($descripcion); ?>
+                                </p>
+
+                                <!-- Información -->
+                                <div class="bg-light rounded-3 p-3 mb-3">
+
+                                    <div class="event-info">
+                                        <div class="icon-wrapper">
+                                            <i class="fa-regular fa-calendar"></i>
+                                        </div>
+                                        <div>
+                                            <div class="label">Fecha</div>
+                                            <div class="value"><?php echo $fechaEvento; ?></div>
                                         </div>
                                     </div>
+
+                                    <div class="event-info">
+                                        <div class="icon-wrapper">
+                                            <i class="fa-regular fa-clock"></i>
+                                        </div>
+                                        <div>
+                                            <div class="label">Hora</div>
+                                            <div class="value"><?php echo $horaEvento; ?></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="event-info mb-0">
+                                        <div class="icon-wrapper">
+                                            <i class="fa-solid fa-location-dot"></i>
+                                        </div>
+
+                                        <div>
+                                            <div class="label">Lugar</div>
+
+                                            <div class="value">
+                                                <span class="event-location">
+                                                    <i class="fa-solid fa-map-pin text-primary"></i>
+
+                                                    <?php
+                                                    if (!empty($evento['lugar'])) {
+                                                        echo htmlspecialchars($evento['lugar']);
+                                                    } else {
+                                                        echo 'Lugar no definido';
+                                                    }
+                                                    ?>
+
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                
-                            </div>
-                            
-                            <!-- Metadatos adicionales -->
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <small class="text-secondary">
-                                    <i class="fa-regular fa-calendar-plus me-1"></i>
-                                    Creado: <?php echo date('d M Y', strtotime($evento['fecha_creacion'])); ?>
-                                </small>
-                                <?php if ($evento['fecha_actualizacion']): ?>
+
+                                <!-- Metadatos adicionales -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
                                     <small class="text-secondary">
-                                        <i class="fa-regular fa-pen-to-square me-1"></i>
-                                        Actualizado
+                                        <i class="fa-regular fa-calendar-plus me-1"></i>
+                                        Creado: <?php echo date('d M Y', strtotime($evento['fecha_creacion'])); ?>
                                     </small>
-                                <?php endif; ?>
+                                    <?php if ($evento['fecha_actualizacion']): ?>
+                                        <small class="text-secondary">
+                                            <i class="fa-regular fa-pen-to-square me-1"></i>
+                                            Actualizado
+                                        </small>
+                                    <?php endif; ?>
+                                </div>
+
+                                <!-- Botón -->
+                                <a href="detalle_evento.php?id=<?php echo $evento['id_evento']; ?>"
+                                    class="btn-detail-event mt-auto">
+                                    Ver evento
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+
                             </div>
-                            
-                            <!-- Botón -->
-                            <a href="detalle_evento.php?id=<?php echo $evento['id_evento']; ?>" 
-                               class="btn-detail-event mt-auto">
-                                Ver evento
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                            
-                        </div>
-                    </article>
-                </div>
-                
-            <?php endwhile; ?>
-            
-        <?php else: ?>
-            
-            <!-- =====================================================
+                        </article>
+                    </div>
+
+                <?php endwhile; ?>
+
+            <?php else: ?>
+
+                <!-- =====================================================
                  SIN EVENTOS
             ====================================================== -->
-            <div class="col-12">
-                <div class="empty-state">
-                    <div class="empty-icon">
-                        <i class="fa-regular fa-calendar-xmark"></i>
+                <div class="col-12">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fa-regular fa-calendar-xmark"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2">No hay eventos disponibles</h4>
+                        <p class="text-secondary mb-0">
+                            <?php if (!empty($filtroBusqueda) || !empty($filtroEstado) || !empty($filtroFecha)): ?>
+                                No encontramos eventos que coincidan con tu búsqueda.
+                                <br>
+                                <a href="#" class="btn btn-link text-primary">
+                                    <i class="fa-solid fa-arrow-left me-1"></i> Ver todos los eventos
+                                </a>
+                            <?php else: ?>
+                                Pronto tendremos nuevos eventos para ti.
+                                <br>
+                                <span class="text-secondary">¡No olvides visitarnos nuevamente!</span>
+                            <?php endif; ?>
+                        </p>
                     </div>
-                    <h4 class="fw-bold mb-2">No hay eventos disponibles</h4>
-                    <p class="text-secondary mb-0">
-                        <?php if (!empty($filtroBusqueda) || !empty($filtroEstado) || !empty($filtroFecha)): ?>
-                            No encontramos eventos que coincidan con tu búsqueda.
-                            <br>
-                            <a href="#" class="btn btn-link text-primary">
-                                <i class="fa-solid fa-arrow-left me-1"></i> Ver todos los eventos
-                            </a>
-                        <?php else: ?>
-                            Pronto tendremos nuevos eventos para ti.
-                            <br>
-                            <span class="text-secondary">¡No olvides visitarnos nuevamente!</span>
-                        <?php endif; ?>
-                    </p>
                 </div>
-            </div>
-            
-        <?php endif; ?>
-    </div>
-    
-    <!-- =====================================================
+
+            <?php endif; ?>
+        </div>
+
+        <!-- =====================================================
          PAGINACIÓN
     ====================================================== -->
-    <?php if ($totalPaginas > 1): ?>
-        <nav aria-label="Navegación de páginas" class="mt-5">
-            <ul class="pagination justify-content-center pagination-custom">
-                <?php if ($paginaActual > 1): ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $paginaActual - 1; ?>&buscar=<?php echo urlencode($filtroBusqueda); ?>&estado=<?php echo urlencode($filtroEstado); ?>&fecha=<?php echo urlencode($filtroFecha); ?>">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                
-                <?php
-                $rango = 2;
-                $inicio = max(1, $paginaActual - $rango);
-                $fin = min($totalPaginas, $paginaActual + $rango);
-                
-                if ($inicio > 1) {
-                    echo '<li class="page-item"><a class="page-link" href="?pagina=1&buscar=' . urlencode($filtroBusqueda) . '&estado=' . urlencode($filtroEstado) . '&fecha=' . urlencode($filtroFecha) . '">1</a></li>';
-                    if ($inicio > 2) {
-                        echo '<li class="page-item disabled"><span class="page-link">…</span></li>';
-                    }
-                }
-                
-                for ($i = $inicio; $i <= $fin; $i++):
-                ?>
-                    <li class="page-item <?php echo $i === $paginaActual ? 'active' : ''; ?>">
-                        <a class="page-link" href="?pagina=<?php echo $i; ?>&buscar=<?php echo urlencode($filtroBusqueda); ?>&estado=<?php echo urlencode($filtroEstado); ?>&fecha=<?php echo urlencode($filtroFecha); ?>">
-                            <?php echo $i; ?>
-                        </a>
-                    </li>
-                <?php endfor; ?>
-                
-                <?php if ($fin < $totalPaginas): ?>
-                    <?php if ($fin < $totalPaginas - 1): ?>
-                        <li class="page-item disabled"><span class="page-link">…</span></li>
+        <?php if ($totalPaginas > 1): ?>
+            <nav aria-label="Navegación de páginas" class="mt-5">
+                <ul class="pagination justify-content-center pagination-custom">
+                    <?php if ($paginaActual > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?pagina=<?php echo $paginaActual - 1; ?>&buscar=<?php echo urlencode($filtroBusqueda); ?>&estado=<?php echo urlencode($filtroEstado); ?>&fecha=<?php echo urlencode($filtroFecha); ?>">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </a>
+                        </li>
                     <?php endif; ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $totalPaginas; ?>&buscar=<?php echo urlencode($filtroBusqueda); ?>&estado=<?php echo urlencode($filtroEstado); ?>&fecha=<?php echo urlencode($filtroFecha); ?>">
-                            <?php echo $totalPaginas; ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                
-                <?php if ($paginaActual < $totalPaginas): ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $paginaActual + 1; ?>&buscar=<?php echo urlencode($filtroBusqueda); ?>&estado=<?php echo urlencode($filtroEstado); ?>&fecha=<?php echo urlencode($filtroFecha); ?>">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-    <?php endif; ?>
 
-</main>
+                    <?php
+                    $rango = 2;
+                    $inicio = max(1, $paginaActual - $rango);
+                    $fin = min($totalPaginas, $paginaActual + $rango);
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+                    if ($inicio > 1) {
+                        echo '<li class="page-item"><a class="page-link" href="?pagina=1&buscar=' . urlencode($filtroBusqueda) . '&estado=' . urlencode($filtroEstado) . '&fecha=' . urlencode($filtroFecha) . '">1</a></li>';
+                        if ($inicio > 2) {
+                            echo '<li class="page-item disabled"><span class="page-link">…</span></li>';
+                        }
+                    }
+
+                    for ($i = $inicio; $i <= $fin; $i++):
+                    ?>
+                        <li class="page-item <?php echo $i === $paginaActual ? 'active' : ''; ?>">
+                            <a class="page-link" href="?pagina=<?php echo $i; ?>&buscar=<?php echo urlencode($filtroBusqueda); ?>&estado=<?php echo urlencode($filtroEstado); ?>&fecha=<?php echo urlencode($filtroFecha); ?>">
+                                <?php echo $i; ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <?php if ($fin < $totalPaginas): ?>
+                        <?php if ($fin < $totalPaginas - 1): ?>
+                            <li class="page-item disabled"><span class="page-link">…</span></li>
+                        <?php endif; ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?pagina=<?php echo $totalPaginas; ?>&buscar=<?php echo urlencode($filtroBusqueda); ?>&estado=<?php echo urlencode($filtroEstado); ?>&fecha=<?php echo urlencode($filtroFecha); ?>">
+                                <?php echo $totalPaginas; ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php if ($paginaActual < $totalPaginas): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?pagina=<?php echo $paginaActual + 1; ?>&buscar=<?php echo urlencode($filtroBusqueda); ?>&estado=<?php echo urlencode($filtroEstado); ?>&fecha=<?php echo urlencode($filtroFecha); ?>">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
+
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

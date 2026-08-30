@@ -75,15 +75,58 @@ ob_start();
         </div>
     </div>
 
-    <!--CAROUSEL - MEJORADO PARA MÓVILES Y EXPANSIBLE EN PC -->
-    <section class="hero-carousel container-fluid p-0">
-        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+    <!-- =========================================================
+     CAROUSEL PRINCIPAL
+     ========================================================= -->
+
+    <link rel="stylesheet" href="../css/carousel.css">
+
+    <section class="hero-carousel p-0">
+
+        <div id="heroCarousel"
+            class="carousel slide carousel-fade"
+            data-bs-ride="carousel"
+            data-bs-interval="5000">
+
+            <!-- =====================================================
+             INDICADORES
+             ===================================================== -->
+
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+
+                <button type="button"
+                    data-bs-target="#heroCarousel"
+                    data-bs-slide-to="0"
+                    class="active"
+                    aria-current="true"
+                    aria-label="Slide 1">
+                </button>
+
+                <button type="button"
+                    data-bs-target="#heroCarousel"
+                    data-bs-slide-to="1"
+                    aria-label="Slide 2">
+                </button>
+
+                <button type="button"
+                    data-bs-target="#heroCarousel"
+                    data-bs-slide-to="2"
+                    aria-label="Slide 3">
+                </button>
+
+                <button type="button"
+                    data-bs-target="#heroCarousel"
+                    data-bs-slide-to="3"
+                    aria-label="Slide 4">
+                </button>
+
             </div>
+
+
+            <!-- =====================================================
+             ÚNICO CAROUSEL INNER
+             ===================================================== -->
+
             <div class="carousel-inner">
                 <!-- SLIDE 1 -->
                 <div class="carousel-item active">
@@ -132,11 +175,30 @@ ob_start();
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Anterior</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Siguiente</span>
+
+
+            <!-- =====================================================
+             FLECHA SIGUIENTE
+             ===================================================== -->
+
+            <button class="carousel-control-next"
+                type="button"
+                data-bs-target="#heroCarousel"
+                data-bs-slide="next">
+
+                <span class="carousel-control-next-icon"
+                    aria-hidden="true">
+                </span>
+
+                <span class="visually-hidden">
+                    Siguiente
+                </span>
+
             </button>
+
+
         </div>
+
     </section>
 
 
@@ -164,6 +226,7 @@ ob_start();
                         <a href="https://www.youtube.com/watch?v=RpIq4r9UJtw" class="btn btn-outline-success btn-lg rounded-pill px-4 shadow-sm">
                             <i class="fas fa-circle-play me-2"></i>
                             Conócenos
+
                         </a>
 
                         <!--Ver Noticias -->
@@ -173,6 +236,7 @@ ob_start();
                             Ver Noticias
                         </a>
                     </div>
+
 
                     <!-- Mini estadísticas -->
                     <div class="row mt-5 g-4 text-center">
