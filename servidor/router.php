@@ -118,9 +118,12 @@ switch ($uri) {
         );
         break;
 
+    // usuarios 
     case '/usuarios':
         despachar($method, [
             'GET' => 'servidor/usuarios/listar.php',
+            'PUT' => 'servidor/usuarios/actualizar.php',
+            'DELETE' => 'servidor/usuarios/eliminar.php',
         ]);
         break;
 
