@@ -1,6 +1,6 @@
 <?php
-
-include("../servidor/conexionBD.php");
+require_once appPath('servidor/config/database.php');
+$conexion = conectar();
 
 // Cargar eventos disponibles
 $sqlEventos = "SELECT id_evento, nombre_evento, fecha_evento
