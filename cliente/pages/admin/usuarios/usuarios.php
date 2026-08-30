@@ -43,7 +43,7 @@ ob_start();
                         </thead>
                         <tbody>
                             <?php foreach ($usuarios as $fila) { ?>
-                                <tr>
+                                <tr id="usuario-<?= $fila['id_usuario']; ?>">
                                     <td><?= $fila['id_usuario']; ?></td>
                                     <td><?= $fila['rol']; ?></td>
                                     <td><?= $fila['permisos']; ?></td>
@@ -84,13 +84,14 @@ ob_start();
                                                 <i class="fas fa-edit"></i>
                                                 Editar
                                             </button>
-                                            <a
-                                                href="../servidor/eliminar_usuario.php?id=<?= $fila['id_usuario']; ?>"
+                                            <button
+                                                type="button"
                                                 class="btn btn-danger btn-sm"
-                                                onclick="return confirm('¿Desea eliminar este usuario?');">
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#eliminar<?= $fila['id_usuario']; ?>">
                                                 <i class="fas fa-trash"></i>
                                                 Eliminar
-                                            </a>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -98,7 +99,7 @@ ob_start();
                                 <div class="modal fade" id="editar<?= $fila['id_usuario']; ?>" tabindex="-1">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
-                                            <form action="../servidor/actualizar_usuario.php" method="POST">
+                                            <form class="formEditarUsuario">
                                                 <input
                                                     type="hidden"
                                                     name="id_usuario"
@@ -121,12 +122,15 @@ ob_start();
                                                             <label class="form-label">
                                                                 Rol
                                                             </label>
-                                                            <input
-                                                                type="text"
-                                                                class="form-control"
-                                                                name="rol"
-                                                                value="<?= $fila['rol']; ?>"
-                                                                required>
+                                                            <select name="rol" id="rol" class="form-select" required>
+                                                                <option value="Administrador" <?= ($fila['rol'] === 'Administrador') ? 'selected' : ''; ?>>Administrador</option>
+                                                                <option value="Coordinador" <?= ($fila['rol'] === 'Coordinador') ? 'selected' : ''; ?>>Coordinador</option>
+                                                                <option value="Estudiante" <?= ($fila['rol'] === 'Estudiante') ? 'selected' : ''; ?>>Estudiante</option>
+                                                                <option value="Docente" <?= ($fila['rol'] === 'Docente') ? 'selected' : ''; ?>>Docente</option>
+                                                                <option value="Voluntario" <?= ($fila['rol'] === 'Voluntario') ? 'selected' : ''; ?>>Voluntario</option>
+                                                                <option value="Sacerdote" <?= ($fila['rol'] === 'Sacerdote') ? 'selected' : ''; ?>>Sacerdote</option>
+                                                                <option value="Externo" <?= ($fila['rol'] === 'Externo') ? 'selected' : ''; ?>>Externo</option>
+                                                            </select>
                                                         </div>
 
                                                         <div class="col-md-6 mb-3">
@@ -188,6 +192,55 @@ ob_start();
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Modal Eliminar Usuario -->
+                                <div
+                                    class="modal fade"
+                                    id="eliminar<?= $fila['id_usuario']; ?>"
+                                    tabindex="-1"
+                                    aria-labelledby="tituloEliminar<?= $fila['id_usuario']; ?>"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="tituloEliminar<?= $fila['id_usuario']; ?>">
+                                                    <i class="fas fa-trash"></i>
+                                                    Eliminar Usuario
+                                                </h5>
+                                                <button
+                                                    type="button"
+                                                    class="btn-close btn-close-white"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Cerrar">
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="mb-0">
+                                                    ¿Está seguro de que desea eliminar este usuario?
+                                                </p>
+                                                <p class="text-muted mb-0 mt-2">
+                                                    Esta acción no se puede deshacer.
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger btnEliminarUsuario"
+                                                    data-id="<?= $fila['id_usuario']; ?>">
+                                                    <i class="fas fa-trash"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             <?php } ?>
                         </tbody>
                     </table>
@@ -207,6 +260,115 @@ ob_start();
 
             });
 
+        });
+
+
+        const formsEdits = document.querySelectorAll(".formEditarUsuario");
+        formsEdits.forEach(formEditarUsuario => {
+            formEditarUsuario.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                const formData = new FormData(formEditarUsuario);
+                const datos = {
+                    id_usuario: Number(formData.get("id_usuario")),
+                    rol: formData.get("rol"),
+                    permisos: formData.get("permisos"),
+                    estado: formData.get("estado")
+                }
+                
+                try {
+                    const response = await fetch("<?= url('/usuarios') ?>", {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(datos)
+                    });
+
+                    const result = await response.json();
+                    if (!result.success) {
+                        mostrarNotificacion(result.message, "error");
+                        return;
+                    }
+                    actualizarFilaUsuario(datos);
+                    mostrarNotificacion(result.message, "success");
+                    const modalEditar = document.getElementById(`editar${datos.id_usuario}`);
+                    const modal = bootstrap.Modal.getOrCreateInstance(modalEditar);
+                    modal.hide();
+
+                    formEditarUsuario.reset();
+                    return;
+                } catch (error) {
+                    console.error("Error al actualizar el usuario:", error);
+                    mostrarNotificacion("Error al actualizar el usuario.", "error");
+                }
+            });
+        });
+
+        function actualizarFilaUsuario(usuario) {
+            const fila = document.getElementById(`usuario-${usuario.id_usuario}`);
+
+            if (!fila) {
+                return;
+            }
+
+            fila.querySelector('.usuario-nombre').textContent = usuario.usuario;
+            fila.querySelector('.usuario-rol').textContent = usuario.rol;
+            fila.querySelector('.usuario-estado').textContent = usuario.estado;
+        }
+
+        const botonesEliminar = document.querySelectorAll('.btnEliminarUsuario');
+
+        botonesEliminar.forEach((boton) => {
+            boton.addEventListener('click', async () => {
+                    const idUsuario = Number(boton.dataset.id);
+                    try {
+                        const response = await fetch("<?= url('/usuarios') ?>",
+                            {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type':
+                                        'application/json'
+                                },
+                                body: JSON.stringify({
+                                    id_usuario: idUsuario
+                                })
+                            }
+                        );
+
+                        const result = await response.json();
+                        if (!result.success) {
+                            mostrarNotificacion(
+                                result.message,
+                                'error'
+                            );
+                            return;
+                        }
+                        const fila = document.getElementById(`usuario-${idUsuario}`);
+                        if (fila) {
+                            fila.remove();
+                        }
+
+                        mostrarNotificacion(
+                            result.message,
+                            'success'
+                        );
+                        const modalEliminar = document.getElementById(`eliminar${idUsuario}`);
+                        const modal = bootstrap.Modal.getOrCreateInstance(modalEliminar);
+                        modal.hide();
+                        return;
+
+                    } catch (error) {
+                        console.error(
+                            'Error al eliminar el usuario:',
+                            error
+                        );
+                        mostrarNotificacion(
+                            'Error al eliminar el usuario.',
+                            'error'
+                        );
+                    }
+                }
+            );
         });
     </script>
 <?php
