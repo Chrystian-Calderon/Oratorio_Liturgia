@@ -88,158 +88,415 @@ $pageStyles = [
         </div>
     </div>
 
-    <script>
-        // Estado del calendario
-        let currentDate = new Date(2025, 0, 1); // Enero 2025
-        let events = JSON.parse(localStorage.getItem('liturgicalEvents2025')) || {};
-        
-        // Elementos del DOM
-        const calendarGrid = document.getElementById('calendar-grid');
-        const currentMonthYear = document.getElementById('current-month-year');
-        const monthEvents = document.getElementById('month-events');
-        const eventModal = document.getElementById('event-modal');
-        const eventForm = document.getElementById('event-form');
-        const modalTitle = document.getElementById('modal-title');
-        const closeModal = document.getElementById('close-modal');
-        const cancelEvent = document.getElementById('cancel-event');
-        const deleteEvent = document.getElementById('delete-event');
-        
-        // Inicializar el calendario
-        document.addEventListener('DOMContentLoaded', function() {
-            renderCalendar();
-            setupEventListeners();
+<script>
+
+/* ================================================================
+   EVENTOS PROCEDENTES DE PHP / MYSQL
+   ================================================================ */
+
+const events = <?php echo json_encode(
+    $eventos,
+    JSON_UNESCAPED_UNICODE |
+    JSON_UNESCAPED_SLASHES
+); ?>;
+
+
+/* ================================================================
+   FECHA ACTUAL
+   ================================================================ */
+
+let currentDate = new Date();
+
+
+/* ================================================================
+   ELEMENTOS
+   ================================================================ */
+
+const calendarGrid =
+    document.getElementById('calendar-grid');
+
+const currentMonthYear =
+    document.getElementById('current-month-year');
+
+const monthEvents =
+    document.getElementById('month-events');
+
+const eventModal =
+    document.getElementById('event-modal');
+
+const modalTitle =
+    document.getElementById('modal-title');
+
+const modalInfo =
+    document.getElementById('modal-info');
+
+const closeModal =
+    document.getElementById('close-modal');
+
+
+/* ================================================================
+   INICIAR
+   ================================================================ */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function() {
+
+        renderCalendar();
+
+        setupEventListeners();
+
+    }
+);
+
+
+/* ================================================================
+   BOTONES
+   ================================================================ */
+
+function setupEventListeners() {
+
+    document
+        .getElementById('prev-month')
+        .addEventListener(
+            'click',
+            prevMonth
+        );
+
+    document
+        .getElementById('next-month')
+        .addEventListener(
+            'click',
+            nextMonth
+        );
+
+    document
+        .getElementById('prev-year')
+        .addEventListener(
+            'click',
+            prevYear
+        );
+
+    document
+        .getElementById('next-year')
+        .addEventListener(
+            'click',
+            nextYear
+        );
+
+    document
+        .getElementById('today')
+        .addEventListener(
+            'click',
+            goToToday
+        );
+
+    closeModal.addEventListener(
+        'click',
+        closeEventModal
+    );
+
+    eventModal.addEventListener(
+        'click',
+        function(e) {
+
+            if (e.target === eventModal) {
+
+                closeEventModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ================================================================
+   RENDERIZAR CALENDARIO
+   ================================================================ */
+
+function renderCalendar() {
+
+    calendarGrid.innerHTML = '';
+
+
+    /* ------------------------------------------------------------
+       DIAS DE LA SEMANA
+       ------------------------------------------------------------ */
+
+    const daysOfWeek = [
+        'Dom',
+        'Lun',
+        'Mar',
+        'Mié',
+        'Jue',
+        'Vie',
+        'Sáb'
+    ];
+
+    daysOfWeek.forEach(day => {
+
+        const dayElement =
+            document.createElement('div');
+
+        dayElement.className =
+            'calendar-day';
+
+        dayElement.textContent =
+            day;
+
+        calendarGrid.appendChild(
+            dayElement
+        );
+
+    });
+
+
+    /* ------------------------------------------------------------
+       INFORMACION DEL MES
+       ------------------------------------------------------------ */
+
+    const year =
+        currentDate.getFullYear();
+
+    const month =
+        currentDate.getMonth();
+
+
+    currentMonthYear.textContent =
+        `${getMonthName(month)} ${year}`;
+
+
+    const firstDay =
+        new Date(year, month, 1);
+
+    const lastDay =
+        new Date(year, month + 1, 0);
+
+
+    const firstDayOfWeek =
+        firstDay.getDay();
+
+
+    const prevMonthLastDay =
+        new Date(year, month, 0).getDate();
+
+
+    /* ------------------------------------------------------------
+       DIAS DEL MES ANTERIOR
+       ------------------------------------------------------------ */
+
+    for (
+        let i = firstDayOfWeek - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const dateElement =
+            document.createElement('div');
+
+        dateElement.className =
+            'calendar-date other-month';
+
+        dateElement.textContent =
+            prevMonthLastDay - i;
+
+        calendarGrid.appendChild(
+            dateElement
+        );
+
+    }
+
+
+    /* ------------------------------------------------------------
+       DIAS DEL MES ACTUAL
+       ------------------------------------------------------------ */
+
+    const today =
+        new Date();
+
+
+    for (
+        let day = 1;
+        day <= lastDay.getDate();
+        day++
+    ) {
+
+        const dateElement =
+            document.createElement('div');
+
+        dateElement.className =
+            'calendar-date';
+
+
+        /* Numero del día */
+
+        const dayNumber =
+            document.createElement('div');
+
+        dayNumber.className =
+            'day-number';
+
+        dayNumber.textContent =
+            day;
+
+        dateElement.appendChild(
+            dayNumber
+        );
+
+
+        /* Marcar hoy */
+
+        if (
+            year === today.getFullYear() &&
+            month === today.getMonth() &&
+            day === today.getDate()
+        ) {
+
+            dateElement.classList.add(
+                'today'
+            );
+
+        }
+
+
+        /* Fecha en formato YYYY-MM-DD */
+
+        const dateKey =
+            `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+
+        /* Buscar eventos */
+
+        const dayEvents =
+            events.filter(
+                event => event.date === dateKey
+            );
+
+
+        /* Mostrar eventos */
+
+        dayEvents.forEach(event => {
+
+            const eventIndicator =
+                document.createElement('div');
+
+            eventIndicator.className =
+                'event-indicator';
+
+            eventIndicator.textContent =
+                event.title;
+
+            eventIndicator.title =
+                'Ver información del evento';
+
+
+            eventIndicator.addEventListener(
+                'click',
+                function(e) {
+
+                    e.stopPropagation();
+
+                    showEvent(event);
+
+                }
+            );
+
+
+            dateElement.appendChild(
+                eventIndicator
+            );
+
         });
-        
-        // Configurar event listeners
-        function setupEventListeners() {
-            document.getElementById('prev-month').addEventListener('click', prevMonth);
-            document.getElementById('next-month').addEventListener('click', nextMonth);
-            document.getElementById('prev-year').addEventListener('click', prevYear);
-            document.getElementById('next-year').addEventListener('click', nextYear);
-            document.getElementById('today').addEventListener('click', goToToday);
-            
-            closeModal.addEventListener('click', closeEventModal);
-            cancelEvent.addEventListener('click', closeEventModal);
-            eventForm.addEventListener('submit', saveEvent);
-            deleteEvent.addEventListener('click', deleteCurrentEvent);
-        }
-        
-        // Renderizar el calendario
-        function renderCalendar() {
-            // Limpiar el calendario
-            calendarGrid.innerHTML = '';
-            
-            // Añadir días de la semana
-            const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-            daysOfWeek.forEach(day => {
-                const dayElement = document.createElement('div');
-                dayElement.className = 'calendar-day';
-                dayElement.textContent = day;
-                calendarGrid.appendChild(dayElement);
-            });
-            
-            // Obtener información del mes actual
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            
-            // Actualizar el título
-            currentMonthYear.textContent = `${getMonthName(month)} ${year}`;
-            
-            // Obtener primer día del mes y último día del mes
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-            
-            // Obtener día de la semana del primer día (0 = Domingo, 6 = Sábado)
-            const firstDayOfWeek = firstDay.getDay();
-            
-            // Obtener último día del mes anterior
-            const prevMonthLastDay = new Date(year, month, 0).getDate();
-            
-            // Añadir días del mes anterior
-            for (let i = firstDayOfWeek - 1; i >= 0; i--) {
-                const dateElement = document.createElement('div');
-                dateElement.className = 'calendar-date other-month';
-                dateElement.textContent = prevMonthLastDay - i;
-                calendarGrid.appendChild(dateElement);
-            }
-            
-            // Añadir días del mes actual
-            const today = new Date();
-            for (let day = 1; day <= lastDay.getDate(); day++) {
-                const dateElement = document.createElement('div');
-                dateElement.className = 'calendar-date';
-                
-                // Marcar si es hoy
-                if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
-                    dateElement.classList.add('today');
-                }
-                
-                dateElement.textContent = day;
-                
-                // Añadir eventos si existen
-                const dateKey = `${year}-${month + 1}-${day}`;
-                if (events[dateKey]) {
-                    events[dateKey].forEach(event => {
-                        const eventIndicator = document.createElement('div');
-                        eventIndicator.className = 'event-indicator';
-                        eventIndicator.textContent = event.title;
-                        eventIndicator.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            editEvent(dateKey, event.id);
-                        });
-                        dateElement.appendChild(eventIndicator);
-                    });
-                }
-                
-                // Añadir evento para abrir modal al hacer clic
-                dateElement.addEventListener('click', () => {
-                    openEventModal(dateKey);
-                });
-                
-                calendarGrid.appendChild(dateElement);
-            }
-            
-            // Añadir días del siguiente mes para completar la cuadrícula
-            const totalCells = 42; // 6 filas de 7 días
-            const daysInCalendar = firstDayOfWeek + lastDay.getDate();
-            const nextMonthDays = totalCells - daysInCalendar;
-            
-            for (let day = 1; day <= nextMonthDays; day++) {
-                const dateElement = document.createElement('div');
-                dateElement.className = 'calendar-date other-month';
-                dateElement.textContent = day;
-                calendarGrid.appendChild(dateElement);
-            }
-            
-            // Actualizar lista de eventos del mes
-            renderMonthEvents();
-        }
-        
-        // Renderizar lista de eventos del mes
-        function renderMonthEvents() {
-            monthEvents.innerHTML = '';
-            
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth() + 1;
-            
-            // Obtener eventos del mes actual
-            const monthEventsList = [];
-            
-            for (const dateKey in events) {
-                const [eventYear, eventMonth, eventDay] = dateKey.split('-').map(Number);
-                
-                if (eventYear === year && eventMonth === month) {
-                    events[dateKey].forEach(event => {
-                        monthEventsList.push({
-                            date: dateKey,
-                            ...event
-                        });
-                    });
-                }
-            }
-            
-            // Ordenar eventos por fecha y hora
-            monthEventsList.sort((a, b) => {
+
+
+        calendarGrid.appendChild(
+            dateElement
+        );
+
+    }
+
+
+    /* ------------------------------------------------------------
+       COMPLETAR CALENDARIO
+       ------------------------------------------------------------ */
+
+    const totalCells = 42;
+
+    const daysInCalendar =
+        firstDayOfWeek +
+        lastDay.getDate();
+
+    const nextMonthDays =
+        totalCells -
+        daysInCalendar;
+
+
+    for (
+        let day = 1;
+        day <= nextMonthDays;
+        day++
+    ) {
+
+        const dateElement =
+            document.createElement('div');
+
+        dateElement.className =
+            'calendar-date other-month';
+
+        dateElement.textContent =
+            day;
+
+        calendarGrid.appendChild(
+            dateElement
+        );
+
+    }
+
+
+    /* ------------------------------------------------------------
+       LISTA DE EVENTOS
+       ------------------------------------------------------------ */
+
+    renderMonthEvents();
+
+}
+
+
+/* ================================================================
+   MOSTRAR EVENTOS DEL MES
+   ================================================================ */
+
+function renderMonthEvents() {
+
+    monthEvents.innerHTML = '';
+
+
+    const year =
+        currentDate.getFullYear();
+
+    const month =
+        currentDate.getMonth();
+
+
+    const monthEventsList =
+        events
+            .filter(event => {
+
+                const eventDate =
+                    new Date(
+                        event.date + 'T00:00:00'
+                    );
+
+                return (
+                    eventDate.getFullYear() === year &&
+                    eventDate.getMonth() === month
+                );
+
+            })
+            .sort((a, b) => {
+
                 if (a.date !== b.date) {
                     return a.date.localeCompare(b.date);
                 }
