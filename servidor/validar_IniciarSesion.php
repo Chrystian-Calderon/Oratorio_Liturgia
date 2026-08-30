@@ -1,7 +1,6 @@
 <?php
-session_start();
-
-require_once appPath('servidor/conexionBD.php');
+require_once appPath('servidor/config/database.php');
+$conexion = conectar();
 
 $correo = $_POST['txtcorreo'];
 $password = $_POST['txtpassword'];
@@ -47,7 +46,7 @@ if(mysqli_num_rows($resultado) > 0){
             $_SESSION['tipo_persona'] = $usuario['tipo_persona'];
 
             // Redireccionar
-            header("Location: " . url('/dashboard'));
+            header("Location: " . url('/panel-eventos'));
             exit();
 
         }else{
