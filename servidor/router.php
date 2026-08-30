@@ -148,9 +148,41 @@ switch ($uri) {
         break;
 
     case '/eventos':
-        pagina(
-            'cliente/pages/admin/eventos.php'
-        );
+        despachar($method, [
+            'GET' => 'servidor/eventos/listar.php',
+        ]);
+        break;
+
+    case '/eventos/nuevo':
+        despachar($method, [
+            'GET' => 'servidor/eventos/formulario.php',
+            'POST' => 'servidor/eventos/guardar.php',
+        ]);
+        break;
+
+    case '/eventos/editar':
+        despachar($method, [
+            'GET' => 'servidor/eventos/formulario.php',
+            'PUT' => 'servidor/eventos/actualizar.php',
+        ]);
+        break;
+
+    case '/eventos/guardar':
+        despachar($method, [
+            'POST' => 'servidor/eventos/guardar.php',
+        ]);
+        break;
+
+    case '/eventos/actualizar':
+        despachar($method, [
+            'PUT' => 'servidor/eventos/actualizar.php',
+        ]);
+        break;
+
+    case '/eventos/eliminar':
+        despachar($method, [
+            'DELETE' => 'servidor/eventos/eliminar.php',
+        ]);
         break;
 
     case '/inscripcion':
