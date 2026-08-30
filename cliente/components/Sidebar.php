@@ -30,8 +30,8 @@ function renderSidebar(): void {
           <i class="fas fa-chevron-right rotate-icon"></i>
         </div>
         <ul class="submenu list-unstyled">
-          <li><a href="../cliente/usuarios.php"><i class="fas fa-users me-2"></i> Usuarios</a></li>
-          <li><a href="../cliente/personas1.php"><i class="fas fa-id-card me-2"></i> Personas</a></li>
+          <li><a href="<?= url('/usuarios') ?>"><i class="fas fa-users me-2"></i> Usuarios</a></li>
+          <li><a href="<?= url('/personas') ?>"><i class="fas fa-id-card me-2"></i> Personas</a></li>
           <li><a href="#"><i class="fas fa-user-friends me-2"></i> Participantes</a></li>
         </ul>
       </li>
@@ -72,20 +72,20 @@ function renderSidebar(): void {
           <i class="fas fa-chevron-right rotate-icon"></i>
         </div>
         <ul class="submenu list-unstyled">
-          <li><a href="../cliente/actividades.php"><i class="fas fa-hands-helping me-2"></i> Actividades</a></li>
-          <li><a href="../cliente/asistencias.php"><i class="fas fa-user-check me-2"></i> Asistencias</a></li>
-          <li><a href="../cliente/eventos.php"><i class="fas fa-calendar-alt me-2"></i> Eventos</a></li>
-          <li><a href="../cliente/inscripcion.php"><i class="fas fa-clipboard-list me-2"></i> Inscripción</a></li>
-          <li><a href="../cliente/pagos.php"><i class="fas fa-credit-card me-2"></i> Pagos</a></li>
-          <li><a href="../cliente/personas.php"><i class="fas fa-user-friends me-2"></i> Personas</a></li>
-          <li><a href="../cliente/universidades.php"><i class="fas fa-university me-2"></i> Universidades</a></li>
-          <li><a href="../cliente/usuarios_sistema.php"><i class="fas fa-user-cog me-2"></i> Usuario</a></li>
-          <li><a href="../cliente/FormacionSacramental.php"><i class="fas fa-book-reader me-2"></i> Formación Sacramental</a></li>
+          <li><a href="<?= url('/actividades') ?>"><i class="fas fa-hands-helping me-2"></i> Actividades</a></li>
+          <li><a href="<?= url('/asistencias') ?>"><i class="fas fa-user-check me-2"></i> Asistencias</a></li>
+          <li><a href="<?= url('/eventos') ?>"><i class="fas fa-calendar-alt me-2"></i> Eventos</a></li>
+          <li><a href="<?= url('/inscripcion') ?>"><i class="fas fa-clipboard-list me-2"></i> Inscripción</a></li>
+          <li><a href="<?= url('/pagos') ?>"><i class="fas fa-credit-card me-2"></i> Pagos</a></li>
+          <li><a href="<?= url('/personas-form') ?>"><i class="fas fa-user-friends me-2"></i> Personas</a></li>
+          <li><a href="<?= url('/universidades') ?>"><i class="fas fa-university me-2"></i> Universidades</a></li>
+          <li><a href="<?= url('/usuarios-form') ?>"><i class="fas fa-user-cog me-2"></i> Usuario</a></li>
+          <li><a href="<?= url('/formacion-sacramental') ?>"><i class="fas fa-book-reader me-2"></i> Formación Sacramental</a></li>
         </ul>
       </li>
 
       <li>
-        <a href="../cliente/MisEventos.php"><i class="fas fa-calendar-check"></i> Mis Eventos</a>
+        <a href="<?= url('/mis-eventos') ?>"><i class="fas fa-calendar-check"></i> Mis Eventos</a>
       </li>
 
       <li data-section="participantes">

@@ -1,24 +1,8 @@
 <?php
-require_once("../servidor/conexionBD.php");
-
-$sql = "SELECT * FROM usuarios_sistema ORDER BY id_usuario ASC";
-$resultado = mysqli_query($conexion, $sql);
+declare(strict_types=1);
+$pageTitle = "Usuarios del Sistema";
+ob_start();
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Usuarios del Sistema</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-</head>
-
-<body class="bg-light">
     <div class="container py-4">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
@@ -40,6 +24,11 @@ $resultado = mysqli_query($conexion, $sql);
                     </div>
                 </div>
                 <div class="table-responsive shadow rounded">
+                    <?php if (empty($usuarios)): ?>
+                        <div class="alert alert-info text-center">
+                            No se encontraron usuarios en el sistema.
+                        </div>
+                    <?php else: ?>
                     <table class="table table-hover table-striped-bordered align-middle text-center mb-0" id="tablaUsuarios">
                         <thead class="table-dark">
                             <tr>
@@ -53,7 +42,7 @@ $resultado = mysqli_query($conexion, $sql);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($fila = mysqli_fetch_assoc($resultado)) { ?>
+                            <?php foreach ($usuarios as $fila) { ?>
                                 <tr>
                                     <td><?= $fila['id_usuario']; ?></td>
                                     <td><?= $fila['rol']; ?></td>
@@ -202,6 +191,7 @@ $resultado = mysqli_query($conexion, $sql);
                             <?php } ?>
                         </tbody>
                     </table>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -219,7 +209,6 @@ $resultado = mysqli_query($conexion, $sql);
 
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+<?php
+$content = ob_get_clean();
+require_once appPath('cliente/layouts/AdminLayout.php');

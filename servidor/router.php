@@ -11,8 +11,9 @@ function despachar(string $metodo, array $rutas): void
     echo 'Método no permitido';
 }
 
-function pagina(string $vista): void
+function pagina(string $vista, array $datos = []): void
 {
+    extract($datos);
     require appPath($vista);
 }
 
@@ -114,6 +115,80 @@ switch ($uri) {
     case '/panel-eventos':
         pagina(
             'cliente/pages/admin/Panel_Eventos.php'
+        );
+        break;
+
+    case '/usuarios':
+        despachar($method, [
+            'GET' => 'servidor/usuarios/listar.php',
+        ]);
+        break;
+
+    case '/personas':
+        pagina(
+            'cliente/pages/admin/personas1.php'
+        );
+        break;
+
+    // participantes
+
+    case '/actividades':
+        pagina(
+            'cliente/pages/admin/actividades.php'
+        );
+        break;
+
+    case '/asistencias':
+        pagina(
+            'cliente/pages/admin/asistencias.php'
+        );
+        break;
+
+    case '/eventos':
+        pagina(
+            'cliente/pages/admin/eventos.php'
+        );
+        break;
+
+    case '/inscripcion':
+        pagina(
+            'cliente/pages/admin/inscripcion.php'
+        );
+        break;
+
+    case '/pagos':
+        pagina(
+            'cliente/pages/admin/pagos.php'
+        );
+        break;
+
+    case '/personas-form':
+        pagina(
+            'cliente/pages/admin/personas.php'
+        );
+        break;
+
+    case '/universidades':
+        pagina(
+            'cliente/pages/admin/universidades.php'
+        );
+        break;
+    
+    case '/usuarios-form':
+        pagina(
+            'cliente/pages/admin/usuarios_sistema.php'
+        );
+        break;
+
+    case '/formacion-sacramental':
+        pagina(
+            'cliente/pages/admin/FormacionSacramental.php'
+        );
+        break;
+
+    case '/mis-eventos':
+        pagina(
+            'cliente/pages/admin/MisEventos.php'
         );
         break;
 

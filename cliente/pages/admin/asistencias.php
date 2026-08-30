@@ -51,7 +51,7 @@
                     <textarea class="form-control" id="observaciones" name="txtobservaciones" rows="2" placeholder="Ingrese observaciones si aplica"></textarea>
                 </div>
                 <?php
-                require '../servidor/conexionBD.php';
+                require_once appPath('servidor/conexionDB.php');
                 $query="SELECT id_persona,nombres FROM personas";
                 $resultado=$conexion->query($query);
                 ?>

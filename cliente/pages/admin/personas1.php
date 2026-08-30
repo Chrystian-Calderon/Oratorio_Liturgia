@@ -1,5 +1,5 @@
 <?php
-require_once("../servidor/conexionBD.php");
+require_once appPath("servidor/conexionBD.php");
 
 $sql = "SELECT
             p.id_persona,
