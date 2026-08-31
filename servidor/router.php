@@ -135,10 +135,43 @@ switch ($uri) {
 
     // participantes
 
+    // actividades
     case '/actividades':
-        pagina(
-            'cliente/pages/admin/actividades.php'
-        );
+        despachar($method, [
+            'GET' => 'servidor/actividades/listar.php',
+        ]);
+        break;
+
+    case '/actividades/nuevo':
+        despachar($method, [
+            'GET' => 'servidor/actividades/formulario.php',
+            'POST' => 'servidor/actividades/guardar.php',
+        ]);
+        break;
+
+    case '/actividades/editar':
+        despachar($method, [
+            'GET' => 'servidor/actividades/formulario.php',
+            'PUT' => 'servidor/actividades/actualizar.php',
+        ]);
+        break;
+
+    case '/actividades/guardar':
+        despachar($method, [
+            'POST' => 'servidor/actividades/guardar.php',
+        ]);
+        break;
+
+    case '/actividades/actualizar':
+        despachar($method, [
+            'PUT' => 'servidor/actividades/actualizar.php',
+        ]);
+        break;
+
+    case '/actividades/eliminar':
+        despachar($method, [
+            'DELETE' => 'servidor/actividades/eliminar.php',
+        ]);
         break;
 
     case '/asistencias':
