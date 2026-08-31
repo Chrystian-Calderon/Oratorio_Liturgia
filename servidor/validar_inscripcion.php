@@ -1,23 +1,156 @@
 <?php
-include("conexionBD.php");
-$id_actividad=$_POST['txtid_actividad'];
-$id_persona=$_POST['txtid_persona'];
-$id_pago=$_POST['txtid_pago'];
-$cumple_requisitos=$_POST['txtcumple_requisitos'];
-$estado=$_POST['txtestado'];
-$fecha_inscripcion=$_POST['txtfecha_inscripcion'];
-$fecha_actualizacion=$_POST['txtfecha_actualizacion'];
-$observaciones=$_POST['txtobservaciones'];
-$asistencia=$_POST['txtasistencia'];
-$calificacion=$_POST['txtcalificacion'];
-$consulta="INSERT INTO inscripcion (id_actividad,id_persona,id_pago,cumple_requisitos,estado,fecha_inscripcion,fecha_actualizacion,observaciones,asistencia, calificacion) VALUES ('$id_actividad','$id_persona','$id_pago','$cumple_requisitos','$estado','$fecha_inscripcion','$fecha_actualizacion','$observaciones','$asistencia', '$calificacion')";
-$resultado=mysqli_query($conexion,$consulta);
-if ($resultado) {
-    echo "<script>
-            alert('¡Registro exitoso!');
-            window.location='../cliente/PaginaInicio.php';
-        </script>";
-} else {
-    echo "Error al insertar: " . mysqli_error($conexion);
+require_once appPath('servidor/config/database.php');
+
+session_start();
+
+$conexion = conectar();
+
+// ==========================================================
+// 1. RECIBIR DATOS
+// ==========================================================
+
+$id_actividad = isset($_POST['id_actividad']) ? (int)$_POST['id_actividad'] : 0;
+$nombre = trim($_POST['nombre'] ?? '');
+$apellidos = trim($_POST['apellidos'] ?? '');
+$correo = trim($_POST['correo'] ?? '');
+$ci = trim($_POST['ci'] ?? '');
+$telefono = trim($_POST['telefono'] ?? '');
+$observacion = trim($_POST['observacion'] ?? '');
+
+// ==========================================================
+// 2. VALIDAR DATOS
+// ==========================================================
+
+if ($id_actividad <= 0) {
+    die("Actividad no válida.");
 }
-?>
+
+if ($nombre === '' || $apellidos === '' || $correo === '' || $ci === '') {
+    die("Complete todos los campos obligatorios.");
+}
+
+if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+    die("El correo electrónico no es válido.");
+}
+
+// ==========================================================
+// 3. VERIFICAR ACTIVIDAD
+// ==========================================================
+
+$stmtActividad = $conexion->prepare("SELECT id_actividad, nombre_actividad, cupo_disponible, costo, estado FROM actividades WHERE id_actividad = ? LIMIT 1");
+$stmtActividad->bind_param("i", $id_actividad);
+$stmtActividad->execute();
+$actividad = $stmtActividad->get_result()->fetch_assoc();
+$stmtActividad->close();
+
+if (!$actividad) {
+    die("La actividad no existe.");
+}
+
+if ($actividad['estado'] !== 'Activo') {
+    die("La actividad no está disponible.");
+}
+
+// ==========================================================
+// 4. VERIFICAR CUPOS
+// ==========================================================
+
+$cupoDisponible = (int)$actividad['cupo_disponible'];
+
+if ($cupoDisponible <= 0) {
+    header("Location: " . url('/detalle-actividad?id=' . $id_actividad));
+    exit;
+}
+
+// ==========================================================
+// 5. BUSCAR PERSONA POR CI
+// ==========================================================
+
+$stmtCI = $conexion->prepare("SELECT id_persona, nombres, apellidos, ci, correo, telefono FROM personas WHERE ci = ? LIMIT 1");
+$stmtCI->bind_param("s", $ci);
+$stmtCI->execute();
+$personaPorCI = $stmtCI->get_result()->fetch_assoc();
+$stmtCI->close();
+
+if ($personaPorCI) {
+    $id_persona = (int)$personaPorCI['id_persona'];
+} else {
+    // Buscar por correo
+    $stmtCorreo = $conexion->prepare("SELECT id_persona, nombres, apellidos, ci, correo, telefono FROM personas WHERE correo = ? LIMIT 1");
+    $stmtCorreo->bind_param("s", $correo);
+    $stmtCorreo->execute();
+    $personaPorCorreo = $stmtCorreo->get_result()->fetch_assoc();
+    $stmtCorreo->close();
+
+    if ($personaPorCorreo) {
+        $id_persona = (int)$personaPorCorreo['id_persona'];
+    } else {
+        // Crear persona nueva
+        $passwordHash = password_hash(bin2hex(random_bytes(8)), PASSWORD_DEFAULT);
+
+        $stmtInsert = $conexion->prepare("INSERT INTO personas (nombres, apellidos, ci, correo, telefono, password) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmtInsert->bind_param("ssssss", $nombre, $apellidos, $ci, $correo, $telefono, $passwordHash);
+
+        if (!$stmtInsert->execute()) {
+            die("Error al registrar persona: " . $stmtInsert->error);
+        }
+
+        $id_persona = $conexion->insert_id;
+        $stmtInsert->close();
+    }
+}
+
+// ==========================================================
+// 6. VERIFICAR INSCRIPCIÓN DUPLICADA
+// ==========================================================
+
+$stmtExiste = $conexion->prepare("SELECT id_inscripcion FROM inscripcion WHERE id_actividad = ? AND id_persona = ? LIMIT 1");
+$stmtExiste->bind_param("ii", $id_actividad, $id_persona);
+$stmtExiste->execute();
+$inscripcionExistente = $stmtExiste->get_result()->fetch_assoc();
+$stmtExiste->close();
+
+if ($inscripcionExistente) {
+    header("Location: " . url('/detalle-actividad?id=' . $id_actividad));
+    exit;
+}
+
+// ==========================================================
+// 7. INSERTAR INSCRIPCIÓN
+// ==========================================================
+
+$estado = 'Inscrito';
+$cumple_requisitos = 'Si';
+$asistencia = 1;
+$calificacion = null;
+$fecha_inscripcion = date('Y-m-d H:i:s');
+$fecha_actualizacion = date('Y-m-d H:i:s');
+$id_pago = null;
+
+$stmtIns = $conexion->prepare("INSERT INTO inscripcion (id_actividad, id_persona, id_pago, cumple_requisitos, estado, fecha_inscripcion, fecha_actualizacion, observaciones, asistencia, calificacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmtIns->bind_param("iiisssssis", $id_actividad, $id_persona, $id_pago, $cumple_requisitos, $estado, $fecha_inscripcion, $fecha_actualizacion, $observacion, $asistencia, $calificacion);
+
+if (!$stmtIns->execute()) {
+    die("Error al registrar inscripción: " . $stmtIns->error);
+}
+$stmtIns->close();
+
+// ==========================================================
+// 8. REDUCIR CUPO
+// ==========================================================
+
+$stmtCupo = $conexion->prepare("UPDATE actividades SET cupo_disponible = cupo_disponible - 1 WHERE id_actividad = ? AND cupo_disponible > 0");
+if ($stmtCupo) {
+    $stmtCupo->bind_param("i", $id_actividad);
+    $stmtCupo->execute();
+    $stmtCupo->close();
+}
+
+$conexion->close();
+
+// ==========================================================
+// 9. FINALIZAR
+// ==========================================================
+
+header("Location: " . url('/detalle-actividad?id=' . $id_actividad));
+exit;

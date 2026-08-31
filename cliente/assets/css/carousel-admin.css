@@ -1,0 +1,28 @@
+:root{--bg:#f0f2f5;--card:#fff;--text:#1a1a2e;--text-sec:#555;--primary:#2563eb;--primary-light:#dbeafe;--border:#dee2e6;--danger:#dc2626;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.08)}
+body.dark{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text-sec:#94a3b8;--primary:#3b82f6;--primary-light:#1e3a5f;--border:#334155;--danger:#ef4444;--shadow:0 2px 12px rgba(0,0,0,.4)}
+.carousel-admin-page{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:2rem}
+.carousel-admin-page .page-head h3{font-weight:700;color:var(--text)}
+/* === SLIDE CARD === */
+.slide-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;background:var(--card)}
+.slide-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.slide-card.slide-inactivo{opacity:.6;border-color:var(--danger)}
+/* === IMAGE AREA === */
+.slide-img-wrapper{position:relative;width:100%;height:200px;overflow:hidden;background:#e2e8f0}
+body.dark .slide-img-wrapper{background:#334155}
+.slide-img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.slide-card:hover .slide-img{transform:scale(1.05)}
+.slide-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-sec);gap:.5rem}
+.slide-placeholder i{font-size:2.5rem;opacity:.4}
+.slide-placeholder span{font-size:.85rem;opacity:.6}
+.slide-badge{position:absolute;top:10px;left:10px;background:var(--primary);color:#fff;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.5px}
+/* === CARD BODY === */
+.slide-card .card-body{padding:1rem}
+.slide-card .form-label{font-size:.8rem;color:var(--text-sec);margin-bottom:.3rem}
+.slide-card .form-control{font-size:.9rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+.slide-card .form-control:focus{border-color:var(--primary);box-shadow:0 0 0 .2rem var(--primary-light)}
+.slide-card .form-check-input:checked{background-color:var(--primary);border-color:var(--primary)}
+/* === BUTTONS === */
+.slide-card .btn-outline-primary{border-color:var(--primary);color:var(--primary);font-size:.8rem}
+.slide-card .btn-outline-primary:hover{background:var(--primary);color:#fff}
+.slide-card .btn-outline-danger{border-color:var(--danger);color:var(--danger);font-size:.8rem}
+.slide-card .btn-outline-danger:hover{background:var(--danger);color:#fff}

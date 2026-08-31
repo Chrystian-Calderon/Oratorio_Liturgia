@@ -1,0 +1,155 @@
+/* Header */
+header {
+  background: linear-gradient(135deg, #0066cc, #00bfff);
+  color: white;
+  border-bottom: 4px solid #004080;
+}
+
+header h1 {
+  font-size: 2.5rem;
+}
+
+header p {
+  font-size: 1.2rem;
+}
+
+/* Cards */
+.card {
+  border-radius: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.card-body h3 {
+  font-size: 1.8rem;
+}
+
+/* Dimensiones */
+.dim-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  background: linear-gradient(145deg, #f0f0f0, #ffffff);
+}
+
+.dim-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagen (organigrama) */
+.organigrama {
+  max-height: 500px;
+  border-radius: 20px;
+  border: 4px solid #0056b3;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.organigrama:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Iconos y colores */
+.text-primary {
+  color: #0056b3 !important;
+}
+
+.text-success {
+  color: #198754 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+/* Listas */
+ul li {
+  padding: 5px 0;
+}
+
+/* Footer */
+footer {
+  font-size: 0.95rem;
+}
+
+footer a.social-icon {
+  display: inline-block;
+  transition: transform 0.3s, filter 0.3s;
+}
+
+footer a.social-icon:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.2);
+}
+
+/* Colores de redes sociales */
+.social-icon.whatsapp {
+  color: #25D366;
+}
+
+.social-icon.tiktok {
+  color: #cac1c1;
+}
+
+.social-icon.facebook {
+  color: #1877F2;
+}
+
+.social-icon.instagram {
+  color: #E1306C;
+}
+
+/* Estilos para horario horizontal */
+.horario-horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #f0f0f0, #ffffff);
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.horario-item {
+  text-align: center;
+  flex: 1;
+}
+
+.horario-item i {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.horario-item .horario-texto {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Responsive ajustes */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 2rem;
+  }
+
+  .card-body h3 {
+    font-size: 1.5rem;
+  }
+
+  .organigrama {
+    max-height: 350px;
+  }
+
+  .horario-horizontal {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

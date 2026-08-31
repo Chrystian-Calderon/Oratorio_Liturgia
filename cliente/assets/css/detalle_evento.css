@@ -1,0 +1,295 @@
+/* =====================================================
+   DETALLE EVENTO - ESTILOS
+   ===================================================== */
+
+/* Encabezado */
+.event-header h1 {
+    font-size: 2rem;
+    color: #212529;
+}
+
+.event-desc {
+    font-size: 1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.badge-estado {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Chips info */
+.info-chip {
+    display: inline-flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #343a40;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* Contador */
+.contador {
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Badge titulo */
+.badge-titulo {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Tarjeta de actividad */
+.activity-card {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.activity-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #0d6efd, #6f42c1);
+}
+
+.activity-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    border-color: rgba(13, 110, 253, 0.20);
+}
+
+.activity-card .card-body {
+    padding: 25px;
+}
+
+/* Badge tipo */
+.badge-tipo-sm {
+    font-size: 0.73rem;
+    font-weight: 600;
+    border: 1px solid rgba(13, 110, 253, 0.08);
+}
+
+/* Cupos */
+.badge-cupo {
+    font-size: 0.70rem;
+    font-weight: 600;
+}
+
+/* Nombre */
+.activity-card h4 {
+    color: #212529;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    min-height: 52px;
+}
+
+/* Descripción */
+.activity-description {
+    color: #6c757d;
+    line-height: 1.6;
+    min-height: 51px;
+}
+
+/* Info */
+.activity-info {
+    background: #f8f9fa;
+    border: 1px solid #f0f0f0;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+.activity-info .info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 0;
+}
+
+.activity-info .info-item:not(:last-child) {
+    border-bottom: 1px solid #e9ecef;
+}
+
+.activity-info .icon-wrapper {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #0d6efd;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.activity-info .label {
+    font-size: 0.67rem;
+    text-transform: uppercase;
+    color: #8a8f98;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.activity-info .value {
+    font-size: 0.88rem;
+    color: #343a40;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* Precio */
+.activity-label {
+    font-size: 0.67rem;
+    text-transform: uppercase;
+    color: #8a8f98;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+}
+
+.activity-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #212529;
+}
+
+.activity-price .gratis {
+    color: #198754;
+}
+
+/* Duración */
+.activity-duration {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #343a40;
+}
+
+/* Botón */
+.activity-button {
+    border: none;
+    padding: 11px 18px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    border-radius: 12px;
+    box-shadow: 0 5px 12px rgba(13, 110, 253, 0.16);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.activity-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(13, 110, 253, 0.25);
+}
+
+.activity-button i {
+    transition: transform 0.25s ease;
+}
+
+.activity-button:hover i {
+    transform: translateX(4px);
+}
+
+/* Sin actividades */
+.empty-activities {
+    background: #f8f9fa;
+    border: 1px dashed #ced4da;
+    border-radius: 20px;
+    padding: 55px 25px;
+}
+
+.empty-icon {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+}
+
+.empty-icon i {
+    font-size: 2rem;
+    color: #adb5bd;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    .activity-card .card-body {
+        padding: 22px;
+    }
+    .activity-card h4 {
+        font-size: 1.15rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .event-header h1 {
+        font-size: 1.5rem;
+    }
+    .activity-card .card-body {
+        padding: 20px;
+    }
+    .activity-card {
+        border-radius: 17px;
+    }
+    .activity-card h4 {
+        min-height: auto;
+        font-size: 1.15rem;
+    }
+    .activity-description {
+        min-height: auto;
+    }
+    .activity-info {
+        padding: 12px;
+    }
+    .activity-info .info-item {
+        gap: 10px;
+    }
+    .activity-info .icon-wrapper {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contador {
+        display: inline-block;
+        margin-top: 12px;
+    }
+    .activity-card .card-body {
+        padding: 18px;
+    }
+    .activity-card .d-flex.justify-content-between {
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .activity-card .badge {
+        font-size: 0.67rem;
+    }
+    .activity-info .value {
+        font-size: 0.84rem;
+    }
+    .empty-activities {
+        padding: 40px 18px;
+    }
+}
