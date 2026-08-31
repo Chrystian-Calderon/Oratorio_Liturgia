@@ -1,0 +1,33 @@
+{
+    "max_slides": 4,
+    "slides": [
+        {
+            "id": 1,
+            "titulo": "Este espacio es para ti",
+            "subtitulo": "Un espacio de fe, comunidad y crecimiento espiritual.",
+            "imagen": "img1.jpg",
+            "activo": true
+        },
+        {
+            "id": 2,
+            "titulo": "Formación Sacramental",
+            "subtitulo": "Fortalece tu vida espiritual con nosotros.",
+            "imagen": "img2.jpg",
+            "activo": true
+        },
+        {
+            "id": 3,
+            "titulo": "Formación Sacramental",
+            "subtitulo": "Fortalece tu vida espiritual.",
+            "imagen": "img3.jpg",
+            "activo": true
+        },
+        {
+            "id": 4,
+            "titulo": "Eventos Culturales",
+            "subtitulo": "Vive nuestras tradiciones y cultura.",
+            "imagen": "img4.jpg",
+            "activo": true
+        }
+    ]
+}

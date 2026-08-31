@@ -54,6 +54,7 @@ try {
        LEFT JOIN actividades a ON a.id_evento = e.id_evento
        LEFT JOIN inscripcion i ON i.id_actividad = a.id_actividad
       GROUP BY e.id_evento, e.nombre_evento
+      HAVING total > 0
       ORDER BY total DESC"
   )->fetch_all(MYSQLI_ASSOC);
 

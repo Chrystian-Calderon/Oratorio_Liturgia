@@ -53,6 +53,7 @@ try {
        FROM actividades a
        LEFT JOIN inscripcion i ON i.id_actividad = a.id_actividad
       GROUP BY a.id_actividad, a.nombre_actividad
+      HAVING total > 0
       ORDER BY total DESC"
   )->fetch_all(MYSQLI_ASSOC);
 

@@ -59,6 +59,42 @@ switch ($uri) {
         );
         break;
 
+    case '/ver-actividades':
+        pagina(
+            'cliente/pages/public/Ver_Actividades.php'
+        );
+        break;
+
+    case '/ver-eventos':
+        pagina(
+            'cliente/pages/public/Ver_Eventos.php'
+        );
+        break;
+
+    case '/detalle-actividad':
+        pagina(
+            'cliente/pages/public/detalle_actividad.php'
+        );
+        break;
+
+    case '/detalle-evento':
+        pagina(
+            'cliente/pages/public/detalle_evento.php'
+        );
+        break;
+
+    case '/inscripcion/registrar':
+        pagina(
+            'cliente/pages/public/registrarse_actividad.php'
+        );
+        break;
+
+    case '/validar-inscripcion':
+        despachar($method, [
+            'POST' => 'servidor/validar_inscripcion.php',
+        ]);
+        break;
+
     case '/login':
         despachar($method, [
             'POST' => 'servidor/validar_login.php',
@@ -471,6 +507,50 @@ switch ($uri) {
         pagina(
             'cliente/pages/admin/ayuda.php'
         );
+        break;
+
+    // carrusel panel
+    case '/panel-carousel':
+        pagina(
+            'cliente/pages/admin/Panel_Carousel.php'
+        );
+        break;
+
+    case '/panel-carousel-data':
+        despachar($method, [
+            'GET' => 'servidor/carousel/listar.php',
+        ]);
+        break;
+
+    case '/panel-carousel/actualizar':
+        despachar($method, [
+            'PUT' => 'servidor/carousel/actualizar.php',
+        ]);
+        break;
+
+    case '/panel-carousel/subir-imagen':
+        despachar($method, [
+            'POST' => 'servidor/carousel/guardar-imagen.php',
+        ]);
+        break;
+
+    case '/panel-carousel/eliminar-imagen':
+        despachar($method, [
+            'DELETE' => 'servidor/carousel/eliminar-imagen.php',
+        ]);
+        break;
+
+    // perfil
+    case '/perfil':
+        pagina(
+            'cliente/pages/admin/perfil.php'
+        );
+        break;
+
+    case '/perfil/actualizar':
+        despachar($method, [
+            'PUT' => 'servidor/perfil/actualizar.php',
+        ]);
         break;
 
     default:
