@@ -112,25 +112,100 @@ switch ($uri) {
         );
         break;
 
+    case '/panel-actividades-data':
+        despachar($method, [
+            'GET' => 'servidor/panel/actividades.php',
+        ]);
+        break;
+
     case '/panel-eventos':
         pagina(
             'cliente/pages/admin/Panel_Eventos.php'
         );
         break;
 
-    // usuarios 
-    case '/usuarios':
+    case '/panel-eventos-data':
         despachar($method, [
-            'GET' => 'servidor/usuarios/listar.php',
-            'PUT' => 'servidor/usuarios/actualizar.php',
-            'DELETE' => 'servidor/usuarios/eliminar.php',
+            'GET' => 'servidor/panel/eventos.php',
         ]);
         break;
 
+    // roles (usuarios_sistema)
+    case '/roles':
+        despachar($method, [
+            'GET' => 'servidor/roles/listar.php',
+        ]);
+        break;
+
+    case '/roles/nuevo':
+        despachar($method, [
+            'GET' => 'servidor/roles/formulario.php',
+            'POST' => 'servidor/roles/guardar.php',
+        ]);
+        break;
+
+    case '/roles/editar':
+        despachar($method, [
+            'GET' => 'servidor/roles/formulario.php',
+            'PUT' => 'servidor/roles/actualizar.php',
+        ]);
+        break;
+
+    case '/roles/guardar':
+        despachar($method, [
+            'POST' => 'servidor/roles/guardar.php',
+        ]);
+        break;
+
+    case '/roles/actualizar':
+        despachar($method, [
+            'PUT' => 'servidor/roles/actualizar.php',
+        ]);
+        break;
+
+    case '/roles/eliminar':
+        despachar($method, [
+            'DELETE' => 'servidor/roles/eliminar.php',
+        ]);
+        break;
+
+    // personas
     case '/personas':
-        pagina(
-            'cliente/pages/admin/personas1.php'
-        );
+        despachar($method, [
+            'GET' => 'servidor/personas/listar.php',
+        ]);
+        break;
+
+    case '/personas/nuevo':
+        despachar($method, [
+            'GET' => 'servidor/personas/formulario.php',
+            'POST' => 'servidor/personas/guardar.php',
+        ]);
+        break;
+
+    case '/personas/editar':
+        despachar($method, [
+            'GET' => 'servidor/personas/formulario.php',
+            'PUT' => 'servidor/personas/actualizar.php',
+        ]);
+        break;
+
+    case '/personas/guardar':
+        despachar($method, [
+            'POST' => 'servidor/personas/guardar.php',
+        ]);
+        break;
+
+    case '/personas/actualizar':
+        despachar($method, [
+            'PUT' => 'servidor/personas/actualizar.php',
+        ]);
+        break;
+
+    case '/personas/eliminar':
+        despachar($method, [
+            'DELETE' => 'servidor/personas/eliminar.php',
+        ]);
         break;
 
     // participantes
@@ -218,10 +293,36 @@ switch ($uri) {
         ]);
         break;
 
+    // inscripcion
     case '/inscripcion':
-        pagina(
-            'cliente/pages/admin/inscripcion.php'
-        );
+        despachar($method, [
+            'GET' => 'servidor/inscripcion/listar.php',
+        ]);
+        break;
+
+    case '/inscripcion/editar':
+        despachar($method, [
+            'GET' => 'servidor/inscripcion/formulario.php',
+            'PUT' => 'servidor/inscripcion/actualizar.php',
+        ]);
+        break;
+
+    case '/inscripcion/actualizar':
+        despachar($method, [
+            'PUT' => 'servidor/inscripcion/actualizar.php',
+        ]);
+        break;
+
+    case '/inscripcion/eliminar':
+        despachar($method, [
+            'DELETE' => 'servidor/inscripcion/eliminar.php',
+        ]);
+        break;
+
+    case '/pagos/guardar':
+        despachar($method, [
+            'POST' => 'servidor/pagos/guardar.php',
+        ]);
         break;
 
     case '/pagos':
@@ -237,9 +338,41 @@ switch ($uri) {
         break;
 
     case '/universidades':
-        pagina(
-            'cliente/pages/admin/universidades.php'
-        );
+        despachar($method, [
+            'GET' => 'servidor/universidades/listar.php',
+        ]);
+        break;
+
+    case '/universidades/nuevo':
+        despachar($method, [
+            'GET' => 'servidor/universidades/formulario.php',
+            'POST' => 'servidor/universidades/guardar.php',
+        ]);
+        break;
+
+    case '/universidades/editar':
+        despachar($method, [
+            'GET' => 'servidor/universidades/formulario.php',
+            'PUT' => 'servidor/universidades/actualizar.php',
+        ]);
+        break;
+
+    case '/universidades/guardar':
+        despachar($method, [
+            'POST' => 'servidor/universidades/guardar.php',
+        ]);
+        break;
+
+    case '/universidades/actualizar':
+        despachar($method, [
+            'PUT' => 'servidor/universidades/actualizar.php',
+        ]);
+        break;
+
+    case '/universidades/eliminar':
+        despachar($method, [
+            'DELETE' => 'servidor/universidades/eliminar.php',
+        ]);
         break;
     
     case '/usuarios-form':
@@ -248,15 +381,95 @@ switch ($uri) {
         );
         break;
 
-    case '/formacion-sacramental':
-        pagina(
-            'cliente/pages/admin/FormacionSacramental.php'
-        );
+    // sacramentos
+    case '/sacramentos':
+        despachar($method, [
+            'GET' => 'servidor/sacramentos/listar.php',
+        ]);
+        break;
+
+    case '/sacramentos/nuevo':
+        despachar($method, [
+            'GET' => 'servidor/sacramentos/formulario.php',
+            'POST' => 'servidor/sacramentos/guardar.php',
+        ]);
+        break;
+
+    case '/sacramentos/editar':
+        despachar($method, [
+            'GET' => 'servidor/sacramentos/formulario.php',
+            'PUT' => 'servidor/sacramentos/actualizar.php',
+        ]);
+        break;
+
+    case '/sacramentos/guardar':
+        despachar($method, [
+            'POST' => 'servidor/sacramentos/guardar.php',
+        ]);
+        break;
+
+    case '/sacramentos/actualizar':
+        despachar($method, [
+            'PUT' => 'servidor/sacramentos/actualizar.php',
+        ]);
+        break;
+
+    case '/sacramentos/eliminar':
+        despachar($method, [
+            'DELETE' => 'servidor/sacramentos/eliminar.php',
+        ]);
+        break;
+
+    // reportes - vistas HTML
+    case '/reportes/eventos':
+        despachar($method, ['GET' => 'cliente/pages/admin/reportes/eventos.php']);
+        break;
+    case '/reportes/actividades':
+        despachar($method, ['GET' => 'cliente/pages/admin/reportes/actividades.php']);
+        break;
+    case '/reportes/participantes':
+        despachar($method, ['GET' => 'cliente/pages/admin/reportes/participantes.php']);
+        break;
+    case '/reportes/formacion-sacramental':
+        despachar($method, ['GET' => 'cliente/pages/admin/reportes/sacramentos.php']);
+        break;
+    case '/reportes/asistencias':
+        despachar($method, ['GET' => 'cliente/pages/admin/reportes/asistencias.php']);
+        break;
+    case '/reportes/pagos':
+        despachar($method, ['GET' => 'cliente/pages/admin/reportes/pagos.php']);
+        break;
+
+    // reportes - datos JSON
+    case '/reportes/eventos-data':
+        despachar($method, ['GET' => 'servidor/reportes/eventos.php']);
+        break;
+    case '/reportes/actividades-data':
+        despachar($method, ['GET' => 'servidor/reportes/actividades.php']);
+        break;
+    case '/reportes/participantes-data':
+        despachar($method, ['GET' => 'servidor/reportes/participantes.php']);
+        break;
+    case '/reportes/sacramentos-data':
+        despachar($method, ['GET' => 'servidor/reportes/sacramentos.php']);
+        break;
+    case '/reportes/asistencias-data':
+        despachar($method, ['GET' => 'servidor/reportes/asistencias.php']);
+        break;
+    case '/reportes/pagos-data':
+        despachar($method, ['GET' => 'servidor/reportes/pagos.php']);
         break;
 
     case '/mis-eventos':
         pagina(
             'cliente/pages/admin/MisEventos.php'
+        );
+        break;
+
+    // ayuda
+    case '/ayuda':
+        pagina(
+            'cliente/pages/admin/ayuda.php'
         );
         break;
 

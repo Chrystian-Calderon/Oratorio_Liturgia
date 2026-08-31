@@ -423,3 +423,107 @@ VALUES -- =========================
     'Auditorio - Universidad Salesiana de Bolivia',
     'Activo'
   );
+INSERT INTO eventos (
+    nombre_evento,
+    descripcion,
+    fecha_evento,
+    hora_evento,
+    lugar,
+    estado
+  )
+VALUES (
+    'Inicio del Semestre Académico 2026-II',
+    'Inicio de actividades académicas correspondientes al segundo semestre de la gestión 2026 en la Universidad Salesiana de Bolivia.',
+    '2026-08-03',
+    '08:00:00',
+    'Campus Universidad Salesiana de Bolivia',
+    'Activo'
+  ),
+  (
+    'Jornada de Bienvenida a Estudiantes',
+    'Jornada de bienvenida y orientación dirigida a estudiantes nuevos y regulares para el inicio del segundo semestre académico.',
+    '2026-08-05',
+    '09:00:00',
+    'Auditorio Principal',
+    'Activo'
+  ),
+  (
+    'Encuentro Universitario de Pastoral',
+    'Espacio de encuentro, reflexión y participación de la comunidad universitaria en actividades relacionadas con la pastoral salesiana.',
+    '2026-08-08',
+    '10:00:00',
+    'Capilla Universitaria',
+    'Activo'
+  ),
+  (
+    'Feria de Ciencia y Tecnología Universitaria',
+    'Presentación de proyectos académicos y tecnológicos desarrollados por estudiantes de las diferentes carreras de la Universidad Salesiana de Bolivia.',
+    '2026-08-12',
+    '09:00:00',
+    'Bloque Académico',
+    'Activo'
+  ),
+  (
+    'Taller de Innovación y Emprendimiento',
+    'Taller orientado al desarrollo de ideas innovadoras y capacidades emprendedoras en estudiantes universitarios.',
+    '2026-08-15',
+    '14:00:00',
+    'Sala de Conferencias',
+    'Activo'
+  ),
+  (
+    'Jornada de Integración Universitaria',
+    'Actividad institucional destinada a fortalecer la convivencia, integración y participación de estudiantes, docentes y personal administrativo.',
+    '2026-08-19',
+    '09:00:00',
+    'Campus Universitario',
+    'Activo'
+  ),
+  (
+    'Conferencia sobre Educación y Tecnología',
+    'Conferencia académica sobre los desafíos y oportunidades de la tecnología en los procesos educativos universitarios.',
+    '2026-08-21',
+    '18:00:00',
+    'Auditorio Principal',
+    'Activo'
+  ),
+  (
+    'Torneo Deportivo Universitario',
+    'Jornada deportiva universitaria con participación de estudiantes en diferentes disciplinas deportivas.',
+    '2026-08-22',
+    '08:30:00',
+    'Complejo Deportivo Universitario',
+    'Activo'
+  ),
+  (
+    'Semana de la Juventud Salesiana',
+    'Conjunto de actividades formativas, culturales y recreativas destinadas a promover la participación y liderazgo juvenil dentro de la comunidad universitaria.',
+    '2026-08-24',
+    '09:00:00',
+    'Campus Universidad Salesiana de Bolivia',
+    'Activo'
+  ),
+  (
+    'Seminario de Investigación Universitaria',
+    'Seminario académico dedicado a la investigación, presentación de proyectos y fortalecimiento de las competencias investigativas de los estudiantes.',
+    '2026-08-26',
+    '15:00:00',
+    'Auditorio Principal',
+    'Activo'
+  ),
+  (
+    'Encuentro Cultural Universitario',
+    'Actividad cultural con participación de estudiantes y grupos universitarios mediante presentaciones artísticas y culturales.',
+    '2026-08-28',
+    '17:00:00',
+    'Patio Central',
+    'Activo'
+  ),
+  (
+    'Cierre de Actividades Institucionales de Agosto',
+    'Jornada de cierre y evaluación de las actividades institucionales desarrolladas durante el mes de agosto.',
+    '2026-08-31',
+    '10:00:00',
+    'Auditorio Principal',
+    'Activo'
+  );
