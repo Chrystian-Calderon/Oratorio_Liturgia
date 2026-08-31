@@ -818,7 +818,7 @@ $ultimasPersonas = $conexion->query($sql);
         </div>
         <ul class="submenu list-unstyled">
           <li><a href="../cliente/usuarios.php"><i class="fas fa-users me-2"></i> Usuarios</a></li>
-          <li><a href="../cliente/personas1.php"><i class="fas fa-id-card me-2"></i> Personas</a></li>
+          <li><a href="/personas"><i class="fas fa-id-card me-2"></i> Personas</a></li>
           <li><a href="#"><i class="fas fa-user-friends me-2"></i> Participantes</a></li>
         </ul>
       </li>
