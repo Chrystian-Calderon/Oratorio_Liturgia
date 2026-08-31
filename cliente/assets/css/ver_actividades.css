@@ -1,0 +1,36 @@
+:root{--primary-gradient:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);--shadow-sm:0 2px 8px rgba(0,0,0,.06);--shadow-md:0 4px 20px rgba(0,0,0,.08);--shadow-lg:0 8px 40px rgba(0,0,0,.12);--radius-lg:20px;--radius-md:16px;--radius-sm:12px}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f8fafc;min-height:100vh}
+.page-header{background:var(--primary-gradient);padding:4rem 0 3.5rem;margin-bottom:3rem;position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;top:-50%;right:-10%;width:300px;height:300px;background:rgba(255,255,255,.05);border-radius:50%}
+.page-header::after{content:'';position:absolute;bottom:-60%;left:-5%;width:250px;height:250px;background:rgba(255,255,255,.05);border-radius:50%}
+.page-header h1{font-weight:800;letter-spacing:-.02em;color:#fff;position:relative;z-index:1}
+.page-header p{color:rgba(255,255,255,.85);font-weight:400;position:relative;z-index:1}
+.badge-header{background:rgba(255,255,255,.2);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);color:#fff;padding:.6rem 1.5rem;font-weight:500;letter-spacing:.5px;position:relative;z-index:1}
+.activity-card{background:#fff;border:none;border-radius:var(--radius-lg);transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow-sm);height:100%;overflow:hidden;position:relative}
+.activity-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.activity-card .card-body{padding:1.75rem}
+.badge-type{background:#f1f5f9;color:#475569;font-weight:500;padding:.35rem 1rem;border-radius:50px;font-size:.75rem}
+.badge-type i{color:#6366f1;margin-right:.4rem}
+.badge-status{font-weight:500;padding:.35rem 1rem;border-radius:50px;font-size:.75rem}
+.info-item{display:flex;align-items:flex-start;gap:.75rem;padding:.5rem 0}
+.info-item .icon-wrapper{width:32px;height:32px;background:#eef2ff;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#6366f1;flex-shrink:0;font-size:.9rem}
+.info-item .label{font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;font-weight:600}
+.info-item .value{font-weight:600;color:#1e293b;font-size:.95rem}
+.metric-box{background:#f8fafc;border-radius:var(--radius-sm);padding:.75rem 1rem;text-align:center;transition:all .2s}
+.metric-box:hover{background:#f1f5f9}
+.metric-box .metric-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.3px;color:#94a3b8;font-weight:600}
+.metric-box .metric-value{font-weight:700;font-size:1.1rem;color:#1e293b}
+.btn-detail{background:var(--primary-gradient);border:none;color:#fff;font-weight:600;padding:.7rem 1.5rem;border-radius:var(--radius-sm);transition:all .3s;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-detail:hover{transform:scale(1.02);box-shadow:0 4px 20px rgba(99,102,241,.4);color:#fff}
+.btn-detail i{transition:transform .3s}
+.btn-detail:hover i{transform:translateX(4px)}
+.filters-section{background:#fff;border-radius:var(--radius-md);padding:1.25rem 1.5rem;box-shadow:var(--shadow-sm);margin-bottom:2.5rem}
+.filters-section .form-control,.filters-section .form-select{border:2px solid #e2e8f0;border-radius:var(--radius-sm);padding:.6rem 1rem;font-size:.9rem;transition:all .2s}
+.filters-section .form-control:focus,.filters-section .form-select:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.1)}
+.filters-section .form-label{font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;color:#64748b}
+.pagination-custom .page-link{border:none;color:#475569;font-weight:500;border-radius:10px;padding:.5rem 1rem;margin:0 .2rem;transition:all .2s}
+.pagination-custom .page-link:hover{background:#eef2ff;color:#6366f1}
+.pagination-custom .page-item.active .page-link{background:var(--primary-gradient);color:#fff;box-shadow:0 4px 15px rgba(99,102,241,.3)}
+.empty-state{background:#fff;border-radius:var(--radius-lg);padding:4rem 2rem;text-align:center;box-shadow:var(--shadow-sm)}
+.empty-state .empty-icon{width:80px;height:80px;background:#f1f5f9;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2.5rem;color:#94a3b8}
+@media(max-width:768px){.page-header{padding:2.5rem 0 2rem}.activity-card .card-body{padding:1.25rem}.filters-section{padding:1rem}}

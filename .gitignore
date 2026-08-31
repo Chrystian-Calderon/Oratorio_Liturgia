@@ -3,4 +3,5 @@
 .vercel
 
 .vercel
-.env*
+.vscode/
+.github/

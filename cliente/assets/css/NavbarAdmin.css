@@ -1,0 +1,97 @@
+/* ========================= */
+/* NAVBAR ADMINISTRATIVO */
+/* ========================= */
+
+.navbar {
+  background: var(--card-bg, #ffffff) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  padding: 0.5rem 1rem;
+}
+
+.navbar-light .navbar-brand {
+  color: var(--primary, #0d6efd);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.navbar-light .navbar-brand:hover {
+  color: var(--primary, #0d6efd);
+}
+
+/* Botón de apertura/cierre del sidebar */
+.sidebar-toggle-desktop {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  color: #333;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+}
+
+.sidebar-toggle-desktop:hover {
+  color: var(--primary, #0d6efd);
+}
+
+.sidebar-toggle-desktop.rotated {
+  transform: rotate(90deg);
+}
+
+body.dark .sidebar-toggle-desktop {
+  color: #e0e0e0;
+}
+
+/* Búsqueda global */
+.search-input {
+  max-width: 360px;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.15);
+  border-color: var(--primary, #0d6efd);
+}
+
+/* Dropdown de exportación */
+.export-dropdown .dropdown-menu {
+  width: 200px;
+}
+
+.export-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.export-dropdown .dropdown-item i {
+  width: 16px;
+  text-align: center;
+}
+
+.export-dropdown .dropdown-item:hover {
+  background-color: rgba(78, 115, 223, 0.1);
+  color: var(--primary, #0d6efd);
+}
+
+/* Desplegables generales del navbar */
+.navbar .dropdown-menu {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+.navbar .nav-link {
+  color: #6c757d;
+}
+
+.navbar .nav-link:hover {
+  color: var(--primary, #0d6efd);
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+  .navbar {
+    padding: 0.5rem 0.75rem;
+  }
+}

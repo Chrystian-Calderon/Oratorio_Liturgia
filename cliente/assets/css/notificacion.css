@@ -1,0 +1,81 @@
+.notificacion {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  min-width: 280px;
+  max-width: 400px;
+
+  padding: 15px 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  border-radius: 8px;
+
+  color: white;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+
+  z-index: 9999;
+
+  animation: notificacionEntrada 0.4s ease forwards;
+}
+
+.notificacion-success {
+  background-color: #198754;
+}
+
+.notificacion-error {
+  background-color: #dc3545;
+}
+
+.notificacion-warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.notificacion-info {
+  background-color: #0dcaf0;
+  color: #212529;
+}
+
+.notificacion-cerrar {
+  border: none;
+  background: transparent;
+
+  font-size: 22px;
+
+  cursor: pointer;
+  color: inherit;
+}
+
+.notificacion.saliendo {
+  animation: notificacionSalida 0.4s ease forwards;
+}
+
+@keyframes notificacionEntrada {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes notificacionSalida {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}

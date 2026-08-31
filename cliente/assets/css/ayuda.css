@@ -1,0 +1,54 @@
+:root{--bg:#f0f2f5;--card:#fff;--text:#1a1a2e;--text-sec:#555;--primary:#2563eb;--primary-light:#dbeafe;--border:#dee2e6;--success:#16a34a;--warning:#eab308;--danger:#dc2626;--info:#0ea5e9;--radius:10px;--shadow:0 2px 8px rgba(0,0,0,.08)}
+body.dark{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text-sec:#94a3b8;--primary:#3b82f6;--primary-light:#1e3a5f;--border:#334155;--success:#22c55e;--warning:#facc15;--danger:#ef4444;--info:#38bdf8;--shadow:0 2px 8px rgba(0,0,0,.4)}
+.ayuda-page{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:2rem}
+.ayuda-page .page-head h3{font-weight:700;color:var(--text)}
+/* === NAV PILLS === */
+.ayuda-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.ayuda-nav .nav-link{padding:.45rem 1rem;border-radius:20px;font-size:.85rem;font-weight:500;border:1px solid var(--border);color:var(--text-sec);background:var(--card);transition:.2s}
+.ayuda-nav .nav-link:hover{border-color:var(--primary);color:var(--primary)}
+.ayuda-nav .nav-link.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+/* === SECCIONES === */
+.ayuda-seccion{display:none;animation:fadeUp .3s ease}
+.ayuda-seccion.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+.section-card h5{font-weight:700;color:var(--primary);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.section-card h5 i{font-size:1.1rem}
+.section-card p,.section-card li{color:var(--text-sec);line-height:1.7}
+.section-card ul{padding-left:1.2rem;margin:0}
+.section-card ul li{margin-bottom:.4rem}
+.section-card ul li strong{color:var(--text)}
+/* === PASO === */
+.paso{display:flex;gap:.75rem;margin-bottom:1rem;align-items:flex-start}
+.paso-num{min-width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+.paso-text{color:var(--text-sec);padding-top:2px}
+.paso-text strong{color:var(--text)}
+/* === FAQ === */
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.75rem;overflow:hidden;box-shadow:var(--shadow)}
+.faq-question{width:100%;background:none;border:none;padding:1rem 1.25rem;text-align:left;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:.95rem;transition:.2s}
+.faq-question:hover{background:var(--primary-light)}
+.faq-question i{transition:transform .3s;color:var(--primary)}
+.faq-question.open i{transform:rotate(180deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 1.25rem}
+.faq-answer.show{max-height:500px;padding-bottom:1rem}
+.faq-answer p{color:var(--text-sec);line-height:1.7;margin:0}
+/* === CONTACTO === */
+.contacto-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.contacto-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;text-align:center;box-shadow:var(--shadow);transition:transform .2s}
+.contacto-card:hover{transform:translateY(-3px)}
+.contacto-card .icono{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.4rem;color:#fff}
+.contacto-card .icono.bg-primary{background:var(--primary)}
+.contacto-card .icono.bg-success{background:var(--success)}
+.contacto-card .icono.bg-info{background:var(--info)}
+.contacto-card .icono.bg-warning{background:var(--warning)}
+.contacto-card h6{font-weight:700;color:var(--text);margin-bottom:.3rem}
+.contacto-card p{color:var(--text-sec);font-size:.85rem;margin:0}
+/* === ATAJOS === */
+.atajos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem}
+.atajo-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;text-align:center;box-shadow:var(--shadow);text-decoration:none;transition:.2s}
+.atajo-card:hover{border-color:var(--primary);transform:translateY(-2px)}
+.atajo-card i{font-size:1.5rem;color:var(--primary);margin-bottom:.5rem}
+.atajo-card h6{font-weight:600;color:var(--text);margin-bottom:.2rem;font-size:.85rem}
+.atajo-card p{color:var(--text-sec);font-size:.75rem;margin:0}
+/* === RESPONSIVE === */
+@media(max-width:768px){.contacto-grid{grid-template-columns:1fr}.atajos-grid{grid-template-columns:1fr 1fr}}
