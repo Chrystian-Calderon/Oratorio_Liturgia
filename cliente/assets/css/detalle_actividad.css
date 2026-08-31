@@ -1,0 +1,157 @@
+/* =====================================================
+   DETALLE ACTIVIDAD - ESTILOS
+   ===================================================== */
+
+/* Badge tipo */
+.badge-tipo {
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid rgba(13, 110, 253, 0.15);
+}
+
+/* Evento link */
+.event-link {
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.event-link:hover {
+    background: #0d6efd !important;
+    color: #fff !important;
+}
+
+/* Tarjeta */
+.detail-card {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+/* Info items */
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    height: 100%;
+}
+
+.info-item .icon-wrapper {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #0d6efd;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-item .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #8a8f98;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.info-item .value {
+    font-size: 0.9rem;
+    color: #343a40;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* Descripción */
+.description-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* Precio */
+.price-box {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+}
+
+.price-box .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #8a8f98;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.price-box .price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #212529;
+}
+
+.price-box .price.gratis {
+    color: #198754;
+}
+
+/* Cupos */
+.cupo-box {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cupo-box.agotado {
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+.cupo-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.cupo-fill {
+    height: 100%;
+    background: #198754;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.cupo-box.agotado .cupo-fill {
+    background: #dc3545;
+}
+
+.cupo-text {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #343a40;
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+    .detail-card .card-body {
+        padding: 20px;
+    }
+    .info-item {
+        padding: 10px;
+    }
+}

@@ -142,6 +142,12 @@ function renderSidebar(): void {
                         Panel de Actividades
                     </a>
                 </li>
+                <li>
+                    <a href="<?= url('/panel-carousel') ?>">
+                        <i class="fas fa-images me-2"></i>
+                        Carrusel
+                    </a>
+                </li>
             </ul>
         </li>
         <!-- ================= REPORTES ================= -->
@@ -206,22 +212,25 @@ function renderSidebar(): void {
     <!-- ================= FOOTER ================= -->
     <div class="sidebar-footer">
         <div class="d-flex align-items-center">
-            <img
-                src="https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&color=fff"
-                class="rounded-circle"
-                width="40"
-                height="40"
-                alt="Usuario"
-            >
-            <div class="ms-3">
-                <h6 class="mb-0">
-                    Administrador
-                </h6>
-                <small class="small-muted">
-                    Favio@gmail.com
-                </small>
+            <?php
+            $nombreUsuario = $_SESSION['usuario'] ?? 'Usuario';
+            $correoUsuario = $_SESSION['correo'] ?? '';
+            $iniciales = '';
+            $partes = explode(' ', $nombreUsuario);
+            foreach ($partes as $p) {
+                if ($p !== '') $iniciales .= strtoupper(substr($p, 0, 1));
+            }
+            $iniciales = substr($iniciales, 0, 2);
+            ?>
+            <div class="sidebar-avatar"><?= htmlspecialchars($iniciales) ?></div>
+            <div class="ms-3 overflow-hidden">
+                <h6 class="mb-0 text-truncate"><?= htmlspecialchars($nombreUsuario) ?></h6>
+                <small class="small-muted text-truncate d-block"><?= htmlspecialchars($correoUsuario) ?></small>
             </div>
         </div>
+        <a href="<?= url('/logout') ?>" class="sidebar-logout mt-3">
+            <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+        </a>
     </div>
 </nav>
 

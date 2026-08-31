@@ -76,58 +76,44 @@ ob_start();
     </div>
 
     <!-- =========================================================
-     CAROUSEL PRINCIPAL
+     CAROUSEL PRINCIPAL (DINÁMICO)
      ========================================================= -->
-
+<?php
+$carouselPath = appPath('servidor/data/carousel.json');
+$carouselSlides = [];
+if (file_exists($carouselPath)) {
+    $carouselData = json_decode(file_get_contents($carouselPath), true);
+    if ($carouselData && isset($carouselData['slides'])) {
+        $carouselSlides = array_filter($carouselData['slides'], fn($s) => !empty($s['activo']) && !empty($s['imagen']));
+        $carouselSlides = array_values($carouselSlides);
+    }
+}
+if (!empty($carouselSlides)):
+?>
     <link rel="stylesheet" href="../css/carousel.css">
 
     <section class="hero-carousel p-0">
-
         <div id="heroCarousel"
             class="carousel slide carousel-fade"
             data-bs-ride="carousel"
             data-bs-interval="5000">
 
-            <!-- =====================================================
-             INDICADORES
-             ===================================================== -->
-
+            <!-- INDICADORES -->
             <div class="carousel-indicators">
-
+                <?php foreach ($carouselSlides as $i => $slide): ?>
                 <button type="button"
                     data-bs-target="#heroCarousel"
-                    data-bs-slide-to="0"
-                    class="active"
-                    aria-current="true"
-                    aria-label="Slide 1">
+                    data-bs-slide-to="<?= $i ?>"
+                    class="<?= $i === 0 ? 'active' : '' ?>"
+                    aria-current="<?= $i === 0 ? 'true' : 'false' ?>"
+                    aria-label="Slide <?= $i + 1 ?>">
                 </button>
-
-                <button type="button"
-                    data-bs-target="#heroCarousel"
-                    data-bs-slide-to="1"
-                    aria-label="Slide 2">
-                </button>
-
-                <button type="button"
-                    data-bs-target="#heroCarousel"
-                    data-bs-slide-to="2"
-                    aria-label="Slide 3">
-                </button>
-
-                <button type="button"
-                    data-bs-target="#heroCarousel"
-                    data-bs-slide-to="3"
-                    aria-label="Slide 4">
-                </button>
-
+                <?php endforeach; ?>
             </div>
 
-
-            <!-- =====================================================
-             ÚNICO CAROUSEL INNER
-             ===================================================== -->
-
+            <!-- SLIDES -->
             <div class="carousel-inner">
+<<<<<<< HEAD
                 <!-- SLIDE 1 -->
                 <div class="carousel-item active">
                     <img src="<?= url('cliente/assets/img/carousel/img1.jpg') ?>"
@@ -167,39 +153,35 @@ ob_start();
                         <h1 class="display-4 fw-bold">Eventos Culturales</h1>
                         <p class="lead">Vive nuestras tradiciones y cultura.</p>
                         <a href="#cultura" class="btn btn-info rounded-pill px-4">Explorar</a>
+=======
+                <?php foreach ($carouselSlides as $i => $slide): ?>
+                <div class="carousel-item <?= $i === 0 ? 'active' : '' ?> position-relative"
+                    onmouseenter="this.querySelector('.btn-leer')?.classList.remove('d-none')"
+                    onmouseleave="this.querySelector('.btn-leer')?.classList.add('d-none')">
+                    <img src="<?= url('cliente/assets/img/carusel/' . htmlspecialchars($slide['imagen'])) ?>"
+                        class="d-block w-100 hero-img"
+                        alt="<?= htmlspecialchars($slide['titulo']) ?>">
+                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
+                        <h1 class="display-4 fw-bold"><?= htmlspecialchars($slide['titulo']) ?></h1>
+                        <p class="lead"><?= htmlspecialchars($slide['subtitulo']) ?></p>
+>>>>>>> 7d51997 (interfaz para registrar actividad y sidebar y navabar admin)
                     </div>
                 </div>
+                <?php endforeach; ?>
             </div>
-            <!-- CONTROLES / FLECHAS -->
+
+            <!-- CONTROLES -->
             <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Anterior</span>
             </button>
-
-
-            <!-- =====================================================
-             FLECHA SIGUIENTE
-             ===================================================== -->
-
-            <button class="carousel-control-next"
-                type="button"
-                data-bs-target="#heroCarousel"
-                data-bs-slide="next">
-
-                <span class="carousel-control-next-icon"
-                    aria-hidden="true">
-                </span>
-
-                <span class="visually-hidden">
-                    Siguiente
-                </span>
-
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
             </button>
-
-
         </div>
-
     </section>
+<?php endif; ?>
 
 
     <section class="py-5 bg-light overflow-hidden">

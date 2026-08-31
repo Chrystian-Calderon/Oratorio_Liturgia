@@ -1,0 +1,29 @@
+:root{--bg:#f0f2f5;--card:#fff;--text:#1a1a2e;--text-sec:#555;--primary:#2563eb;--primary-light:#dbeafe;--border:#dee2e6;--success:#16a34a;--danger:#dc2626;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,.08)}
+body.dark{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text-sec:#94a3b8;--primary:#3b82f6;--primary-light:#1e3a5f;--border:#334155;--success:#22c55e;--danger:#ef4444;--shadow:0 2px 12px rgba(0,0,0,.4)}
+.perfil-page{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:2rem}
+.perfil-page .page-head h3{font-weight:700;color:var(--text)}
+/* === PROFILE CARD === */
+.perfil-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.perfil-header{background:linear-gradient(135deg,var(--primary),#1d4ed8);padding:2rem;text-align:center;color:#fff}
+.perfil-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:2rem;font-weight:700;border:3px solid rgba(255,255,255,.4)}
+.perfil-header h4{margin:0;font-weight:700}
+.perfil-header p{margin:.25rem 0 0;opacity:.8;font-size:.9rem}
+/* === BODY === */
+.perfil-body{padding:1.5rem}
+.perfil-section{margin-bottom:1.5rem}
+.perfil-section h5{font-weight:700;color:var(--primary);font-size:1rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:.5rem}
+.perfil-section h5 i{font-size:.9rem}
+/* === FORM === */
+.perfil-form .form-label{font-size:.85rem;font-weight:600;color:var(--text-sec);margin-bottom:.3rem}
+.perfil-form .form-control{border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.9rem}
+.perfil-form .form-control:focus{border-color:var(--primary);box-shadow:0 0 0 .2rem var(--primary-light)}
+.perfil-form .form-control[readonly]{background:var(--bg);opacity:.7;cursor:not-allowed}
+/* === INFO ROW === */
+.info-row{display:flex;gap:.5rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.info-row:last-child{border-bottom:none}
+.info-label{font-weight:600;color:var(--text-sec);min-width:140px;font-size:.85rem}
+.info-value{color:var(--text);font-size:.9rem}
+/* === PASSWORD === */
+.password-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--text-sec);font-size:.9rem}
+/* === BUTTONS === */
+.btn-perfil{border-radius:8px;font-weight:600;padding:.5rem 1.5rem;font-size:.9rem}

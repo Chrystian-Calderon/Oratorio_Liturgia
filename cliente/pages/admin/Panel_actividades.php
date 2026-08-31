@@ -16,8 +16,6 @@ ob_start();
 ?>
   <div id="content">
     <div class="container-fluid py-3">
-      <h2 class="section-title">Actividades</h2>
-
       <!-- ===================== ESTADÍSTICAS ===================== -->
       <h2 class="section-title">Estadísticas</h2>
       <div class="row mb-4">
@@ -190,25 +188,29 @@ ob_start();
             });
 
             const insc = data.graficos.inscripciones_por_actividad || [];
-            chartInscripciones = new Chart(document.getElementById('graficoInscripcionesActividad'), {
-              type: 'doughnut',
-              data: {
-                labels: insc.map(function (p) { return p.actividad || '—'; }),
-                datasets: [{
-                  label: 'Inscripciones',
-                  data: insc.map(function (p) { return Number(p.total) || 0; }),
-                  backgroundColor: [
-                    'rgba(54, 162, 235, 0.7)',
-                    'rgba(255, 159, 64, 0.7)',
-                    'rgba(75, 192, 192, 0.7)',
-                    'rgba(153, 102, 255, 0.7)',
-                    'rgba(255, 99, 132, 0.7)',
-                    'rgba(255, 206, 86, 0.7)'
-                  ]
-                }]
-              },
-              options: { responsive: true }
-            });
+            if (insc.length > 0) {
+              chartInscripciones = new Chart(document.getElementById('graficoInscripcionesActividad'), {
+                type: 'doughnut',
+                data: {
+                  labels: insc.map(function (p) { return p.actividad || '—'; }),
+                  datasets: [{
+                    label: 'Inscripciones',
+                    data: insc.map(function (p) { return Number(p.total) || 0; }),
+                    backgroundColor: [
+                      'rgba(54, 162, 235, 0.7)',
+                      'rgba(255, 159, 64, 0.7)',
+                      'rgba(75, 192, 192, 0.7)',
+                      'rgba(153, 102, 255, 0.7)',
+                      'rgba(255, 99, 132, 0.7)',
+                      'rgba(255, 206, 86, 0.7)'
+                    ]
+                  }]
+                },
+                options: { responsive: true }
+              });
+            } else {
+              document.getElementById('graficoInscripcionesActividad').parentElement.innerHTML = '<p class="text-center text-muted py-4">No hay inscripciones registradas</p>';
+            }
           }
         })
         .catch(function (error) {

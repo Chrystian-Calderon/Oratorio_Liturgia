@@ -16,8 +16,6 @@ ob_start();
 ?>
   <div id="content">
     <div class="container-fluid py-3">
-      <h2 class="section-title">Panel de Eventos</h2>
-
       <!-- ===================== ESTADÍSTICAS ===================== -->
       <h2 class="section-title">Estadísticas</h2>
       <div class="row mb-4">
@@ -191,25 +189,29 @@ ob_start();
 
             // Gráfico: Participación por Evento
             const participacion = data.graficos.participacion_por_evento || [];
-            chartParticipacion = new Chart(document.getElementById('graficoParticipacion'), {
-              type: 'doughnut',
-              data: {
-                labels: participacion.map(function (p) { return p.evento || '—'; }),
-                datasets: [{
-                  label: 'Inscripciones',
-                  data: participacion.map(function (p) { return Number(p.total) || 0; }),
-                  backgroundColor: [
-                    'rgba(54, 162, 235, 0.7)',
-                    'rgba(255, 159, 64, 0.7)',
-                    'rgba(75, 192, 192, 0.7)',
-                    'rgba(153, 102, 255, 0.7)',
-                    'rgba(255, 99, 132, 0.7)',
-                    'rgba(255, 206, 86, 0.7)'
-                  ]
-                }]
-              },
-              options: { responsive: true }
-            });
+            if (participacion.length > 0) {
+              chartParticipacion = new Chart(document.getElementById('graficoParticipacion'), {
+                type: 'doughnut',
+                data: {
+                  labels: participacion.map(function (p) { return p.evento || '—'; }),
+                  datasets: [{
+                    label: 'Inscripciones',
+                    data: participacion.map(function (p) { return Number(p.total) || 0; }),
+                    backgroundColor: [
+                      'rgba(54, 162, 235, 0.7)',
+                      'rgba(255, 159, 64, 0.7)',
+                      'rgba(75, 192, 192, 0.7)',
+                      'rgba(153, 102, 255, 0.7)',
+                      'rgba(255, 99, 132, 0.7)',
+                      'rgba(255, 206, 86, 0.7)'
+                    ]
+                  }]
+                },
+                options: { responsive: true }
+              });
+            } else {
+              document.getElementById('graficoParticipacion').parentElement.innerHTML = '<p class="text-center text-muted py-4">No hay inscripciones registradas</p>';
+            }
           }
         })
         .catch(function (error) {

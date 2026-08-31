@@ -10,24 +10,16 @@ function renderNavbarAdmin(bool $sidebarVisible, string $pageTitle = ''): void {
         </a>
 
         <div class="ms-auto d-flex align-items-center gap-2">
-          <input id="searchGlobal" class="form-control form-control-sm search-input d-none d-md-block" placeholder="Buscar eventos/usuarios..." title="Buscar en tablas">
-          <div class="dropdown export-dropdown">
-            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Exportar</button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#" id="expExcel"><i class="fas fa-file-excel"></i> Exportar Excel</a></li>
-              <li><a class="dropdown-item" href="#" id="expPdf"><i class="fas fa-file-pdf"></i> Exportar PDF</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#" id="expAll"><i class="fas fa-file-archive"></i> Exportar Todo</a></li>
-            </ul>
-          </div>
-          <div class="vr d-none d-md-block"></div>
           <div class="dropdown">
-            <a class="nav-link dropdown-toggle p-0" href="#" data-bs-toggle="dropdown"><i class="fas fa-user-circle fa-2x"></i></a>
+            <a class="nav-link dropdown-toggle p-0 d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
+              <span class="navbar-user-name d-none d-md-inline"><?= htmlspecialchars($_SESSION['usuario'] ?? 'Usuario') ?></span>
+              <i class="fas fa-user-circle fa-2x"></i>
+            </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Perfil</a></li>
-              <li><a class="dropdown-item" href="../cliente/login.php"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
+              <li><span class="dropdown-item-text"><strong><?= htmlspecialchars($_SESSION['usuario'] ?? '') ?></strong><br><small class="text-muted"><?= htmlspecialchars($_SESSION['correo'] ?? '') ?></small></span></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="<?= url('/perfil') ?>"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
+              <li><a class="dropdown-item" href="<?= url('/logout') ?>"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
             </ul>
           </div>
         </div>
