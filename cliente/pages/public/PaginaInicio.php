@@ -113,47 +113,6 @@ if (!empty($carouselSlides)):
 
             <!-- SLIDES -->
             <div class="carousel-inner">
-<<<<<<< HEAD
-                <!-- SLIDE 1 -->
-                <div class="carousel-item active">
-                    <img src="<?= url('cliente/assets/img/carousel/img1.jpg') ?>"
-                        class="d-block w-100 hero-img"
-                        alt="Oratorio">
-                    <div class="carousel-caption custom-caption">
-                        <h1 class="display-4 fw-bold">Este espacio es para ti</h1>
-                        <p class="lead">Un espacio de fe, comunidad y crecimiento espiritual.</p>
-                        <a href="<?= url('/contacto') ?>" class="btn btn-success rounded-pill px-4">Leer Más</a>
-                    </div>
-                </div>
-
-
-                <!-- SLIDE 2 -->
-                <div class="carousel-item">
-                    <img src="<?= url('cliente/assets/img/carousel/img2.jpg') ?>" class="d-block w-100 hero-img" alt="Eventos">
-                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
-                        <h1 class="display-4 fw-bold">Reuniones Comunitarias</h1>
-                        <p class="lead">Participa en encuentros de fe y amistad.</p>
-                        <a href="#eventos" class="btn btn-warning rounded-pill px-4">Ver Eventos</a>
-                    </div>
-                </div>
-
-                <!-- SLIDE 3 -->
-                <div class="carousel-item">
-                    <img src="<?= url('cliente/assets/img/carousel/img1.jpg') ?>" class="d-block w-100 hero-img" alt="Formación">
-                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
-                        <h1 class="display-4 fw-bold">Formación Sacramental</h1>
-                        <p class="lead">Fortalece tu vida espiritual.</p>
-                        <a href="#formacion" class="btn btn-danger rounded-pill px-4">Más Información</a>
-                    </div>
-                </div>
-                <!-- SLIDE 4 -->
-                <div class="carousel-item">
-                    <img src="<?= url('cliente/assets/img/carousel/img3.jpg') ?>" class="d-block w-100 hero-img" alt="Cultura">
-                    <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
-                        <h1 class="display-4 fw-bold">Eventos Culturales</h1>
-                        <p class="lead">Vive nuestras tradiciones y cultura.</p>
-                        <a href="#cultura" class="btn btn-info rounded-pill px-4">Explorar</a>
-=======
                 <?php foreach ($carouselSlides as $i => $slide): ?>
                 <div class="carousel-item <?= $i === 0 ? 'active' : '' ?> position-relative"
                     onmouseenter="this.querySelector('.btn-leer')?.classList.remove('d-none')"
@@ -164,7 +123,6 @@ if (!empty($carouselSlides)):
                     <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold"><?= htmlspecialchars($slide['titulo']) ?></h1>
                         <p class="lead"><?= htmlspecialchars($slide['subtitulo']) ?></p>
->>>>>>> 7d51997 (interfaz para registrar actividad y sidebar y navabar admin)
                     </div>
                 </div>
                 <?php endforeach; ?>

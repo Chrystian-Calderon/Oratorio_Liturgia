@@ -1,208 +1,308 @@
 # Oratorio Liturgia
 
-Sistema de gestión para el Oratorio — eventos, inscripciones, personas, actividades, asistencias y reportes.
+Sistema de gestión para el Oratorio — eventos, inscripciones, personas, actividades, asistencias, sacramentos y reportes.
 
 ---
 
-## Estructura actual
+## Requisitos
 
+- PHP 8.1+
+- MySQL 8.0+ o MariaDB 10.5+
+- Extensiones: `mysqli`, `json`, `session`
+- **No requiere Composer**
+
+---
+
+## Instalación
+
+```bash
+# 1. Clonar el repositorio
+git clone <url>
+cd Oratorio_Liturgia
+
+# 2. Configurar base de datos
+cp .env.example .env
+# Editar .env con tus credenciales de MySQL
+
+# 3. Importar schema
+mysql -u root -p oratorio < oratorio.sql
+
+# 4. Configurar servidor web (Apache con mod_rewrite)
+# La carpeta raíz del vhost debe apuntar a Oratorio_Liturgia/
 ```
-Oratorio_Liturgia/
-├── index.php                  # Punto de entrada (front controller)
-├── bootstrap.php              # Helpers: appPath(), url(), env()
-├── .env / .env.example        # Configuración de entorno
-├── docker-compose.yml         # Docker local
-├── vercel.json                # Deploy Vercel
-├── oratorio.sql               # Schema de base de datos
-│
-├── cliente/                   # FRONTEND (vistas, assets, componentes)
-│   ├── assets/
-│   │   ├── css/               # Hojas de estilo por página
-│   │   │   ├── sidebar.css    # Sidebar + grid + overlay + mobile
-│   │   │   ├── navbar.css     # Navbar admin
-│   │   │   ├── Dashboard.css  # Dashboard
-│   │   │   └── ...            # acerca_nosotros, calendario, contacto, etc.
-│   │   ├── js/                # Scripts JS
-│   │   │   ├── navbar.js      # Navbar behavior
-│   │   │   ├── carousel.js    # Carousel
-│   │   │   ├── Dashboard.js   # cargarModulo()
-│   │   │   └── mini_estadisticas.js
-│   │   └── img/               # Imágenes estáticas
-│   │
-│   ├── components/            # Componentes PHP reutilizables
-│   │   ├── Sidebar.php        # Sidebar (HTML + JS inline IIFE)
-│   │   ├── NavbarAdmin.php    # Navbar administrativo
-│   │   ├── Navbar.php         # Navbar público
-│   │   └── footer/
-│   │       ├── FooterIndex.php
-│   │       └── FooterPublic.php
-│   │
-│   ├── layouts/               # Layouts maestros
-│   │   ├── AdminLayout.php    # Layout admin (sidebar + navbar + grid)
-│   │   └── PublicLayout.php   # Layout público
-│   │
-│   ├── pages/                 # Páginas organizadas por rol
-│   │   ├── admin/
-│   │   │   ├── Dashboard.php
-│   │   │   ├── Panel_actividades.php
-│   │   │   └── Panel_Eventos.php
-│   │   ├── private/
-│   │   │   └── IniciarSesion.php
-│   │   └── public/
-│   │       ├── PaginaInicio.php
-│   │       ├── login.php
-│   │       ├── Calendario.php
-│   │       ├── Contacto.php
-│   │       ├── Servicios.php
-│   │       ├── Participar.php
-│   │       └── AcercaNosotros.php
-│   │
-│   ├── services/              # (vacío — pendiente de migrar lógica JS del front)
-│   │
-│   │── ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
-│   │  ARCHIVOS SUELTOS (se moverán a pages/ en la reorganización)
-│   │── ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
-│   ├── actividades.php        # → pages/admin/ o pages/private/
-│   ├── asistencias.php        # → pages/admin/
-│   ├── Equipo.php             # → pages/public/
-│   ├── estadisticas_actividades.php  # → pages/admin/
-│   ├── eventos.php            # → pages/admin/
-│   ├── forget-password.php    # → pages/public/
-│   ├── FormacionSacramental.php  # → pages/public/
-│   ├── Galeria.php            # → pages/public/
-│   ├── inscripcion.php        # → pages/private/
-│   ├── listarActividades.php  # → pages/admin/
-│   ├── listarEventos.php      # → pages/admin/
-│   ├── logout.php             # → pages/private/ o routes/
-│   ├── menu.php               # → ELIMINAR (obsoleto, reemplazado por Sidebar)
-│   ├── MisEventos.php         # → pages/admin/ (usa su propio sidebar inline)
-│   ├── pagos.php              # → pages/admin/
-│   ├── personas.php           # → pages/admin/
-│   ├── personas1.php          # → pages/admin/ (duplicado?)
-│   ├── registrarse.php        # → pages/public/
-│   ├── reset.php              # → pages/public/
-│   ├── universidades.php      # → pages/admin/
-│   ├── usuarios_sistema.php   # → pages/admin/
-│   ├── usuarios.php           # → pages/admin/
-│   ├── Ver_Actividades.php    # → pages/public/ o pages/private/
-│   └── Ver_Eventos.php        # → pages/public/ o pages/private/
-│
-├── servidor/                  # BACKEND (lógica de negocio, BD, rutas)
-│   ├── index.php              # Router alternativo / legacy
-│   ├── router.php             # Enrutador principal (incluido por index.php)
-│   ├── conexionBD.php         # Conexión PDO a MySQL
-│   │
-│   ├── modules/               # (vacío — destino de la reorganización)
-│   ├── infrastructure/        # (vacío — destino: BD, helpers, middlewares)
-│   ├── routes/                # (vacío — destino: definiciones de rutas)
-│   ├── configuration/         # (vacío — destino: config centralizada)
-│   │
-│   │── ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
-│   │  ARCHIVOS SUELTOS (se moverán a modules/, routes/, infrastructure/)
-│   │── ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
-│   ├── validar_login.php          # → routes/ o modules/auth/
-│   ├── validar_IniciarSesion.php  # → routes/ o modules/auth/
-│   ├── registrar_usuario.php      # → modules/auth/
-│   ├── actualizar_usuario.php     # → modules/auth/
-│   ├── eliminar_usuario.php       # → modules/auth/
-│   ├── recuperar.php              # → modules/auth/
-│   ├── convertir_passwords.php    # → infrastructure/ (script utilitario)
-│   ├── validar_personas.php       # → modules/personas/
-│   ├── actualizar_personas1.php   # → modules/personas/
-│   ├── eliminar_personas1.php     # → modules/personas/
-│   ├── validar_eventos.php        # → modules/eventos/
-│   ├── validar_actividades.php    # → modules/actividades/
-│   ├── validar_asistencias.php    # → modules/asistencias/
-│   ├── validar_pagos.php          # → modules/pagos/
-│   ├── validar_universidades.php  # → modules/universidades/
-│   ├── validar_usuarios_sistema.php  # → modules/admin/
-│   ├── validar_inscripcion.php    # → modules/inscripciones/
-│   ├── procesar_inscripcion_evento.php   # → modules/inscripciones/
-│   ├── procesar_inscripcion_actividad.php  # → modules/inscripciones/
-│   ├── guardar_inscripcion.php    # → modules/inscripciones/
-│   ├── Formulario_Inscripcion.php # → modules/inscripciones/
-│   └── sacramentos_db.php         # → modules/sacramentos/
-│
-├── css/                       # CSS LEGACY (se eliminará o migrará a cliente/assets/css/)
-│   ├── login.css
-│   ├── forget-password.css
-│   └── menuu.css              # CSS del menú obsoleto
-│
-├── js/                        # JS LEGACY (se eliminará o migrará a cliente/assets/js/)
-│   ├── bootstrap.min.js
-│   ├── popper.min.js
-│   └── menu.js                # JS del menú obsoleto
-│
-└── portafolio/                # Recursos estáticos
-    ├── img/
-    ├── librerias/
-    └── videos/
+
+### Variables de entorno (`.env`)
+
+```env
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_NAME=oratorio
+DB_USER=app
+DB_PASSWORD=password
+BASE_URL=http://localhost:8000
 ```
 
 ---
 
-## Arquitectura actual (cómo funciona hoy)
+## Arquitectura
 
 ### Flujo de requests
 
 ```
-index.php → bootstrap.php → router.php → cliente/pages/... → AdminLayout/PublicLayout
+index.php → bootstrap.php → router.php → {controller} → {view} → AdminLayout/PublicLayout
 ```
 
-- `index.php`: front controller, inicia sesión, carga bootstrap, delega al router
-- `bootstrap.php`: define `appPath()`, `url()`, `env()`, carga `.env`
-- `router.php`: enruta según la URL a la página PHP correspondiente
-
-### Layouts y componentes
-
-| Archivo | Rol |
+| Archivo | Función |
 |---|---|
-| `AdminLayout.php` | Layout maestro admin: sidebar + navbar + grid (`280px 1fr`). Incluye `#sidebarOverlay` |
-| `PublicLayout.php` | Layout maestro público: navbar + footer |
-| `Sidebar.php` | Componente autocontenido: HTML nav + IIFE JS (submenús accordion, active page, mobile close, theme) |
-| `NavbarAdmin.php` | Navbar admin: toggle sidebar (`#sidebarToggle`), responsive, ESC key, theme toggle |
+| `index.php` | Front controller: inicia sesión, carga bootstrap, delega al router |
+| `bootstrap.php` | Define `appPath()`, `url()`, `env()`, carga `.env` |
+| `servidor/router.php` | Enruta URLs a controllers/vistas |
 
-### Estado del sidebar (en `localStorage`)
+### Convenciones de rutas
 
-| Key | Valores | Dónde se gestiona |
+- **Vistas** (GET): `pagina('cliente/pages/admin/X.php', $datos)` — renderiza HTML
+- **APIs** (POST/PUT/DELETE): `despachar($method, [...])` — retorna JSON
+- **URLs**: `url('/ruta')` genera la URL completa; `appPath()` genera rutas del filesystem
+
+### Layouts
+
+| Archivo | Uso |
+|---|---|
+| `AdminLayout.php` | Layout admin: sidebar + navbar + CSS Grid (`280px 1fr`) |
+| `PublicLayout.php` | Layout público: navbar + footer |
+
+### Componentes
+
+| Archivo | Descripción |
+|---|---|
+| `Sidebar.php` | Sidebar autocontenido (HTML + JS IIFE: accordion, active page, mobile, theme) |
+| `NavbarAdmin.php` | Navbar admin: toggle sidebar, responsive, ESC key, theme toggle |
+| `Navbar.php` | Navbar público |
+| `Notificacion.php` | Sistema de notificaciones toast |
+
+### Sidebar (localStorage)
+
+| Key | Valores | Gestiona |
 |---|---|---|
-| `sidebarVisible` | `'true'` / `'false'` | `NavbarAdmin.php` (toggle + resize) |
-| `theme` | `'dark'` / `'light'` | `Sidebar.php` (theme toggle) |
-
-### CSS del sidebar (`sidebar.css`)
-
-- Desktop: CSS Grid `grid-template-columns: 280px 1fr`
-- Mobile (≤990px): sidebar fixed + `translateX(-100%)`, `.sidebar-open #sidebar { translateX(0) }`
-- Clases: `.grid.sidebar-hidden` (desktop collapse), `.sidebar-open` (mobile open)
-- Submenús: `display: none` / `display: block` via `.show`
-- Overlay: `#sidebarOverlay.show`
-
-### Páginas admin (ya limpias de JS duplicado)
-
-- `Panel_actividades.php` — patrón limpio de referencia
-- `Dashboard.php` — limpio, usa solo lógica de negocio
-- `Panel_Eventos.php` — limpio, usa solo lógica de negocio
-
-### Páginas que aún usan su propio sidebar inline
-
-- `cliente/MisEventos.php` — tiene `<aside id="sidebar">` propio + `<nav id="navbar">` propio. **NO usa AdminLayout**. Pendiente de migrar.
+| `sidebarVisible` | `'true'` / `'false'` | `NavbarAdmin.php` |
+| `theme` | `'dark'` / `'light'` | `Sidebar.php` |
 
 ---
 
-## Pendiente (reorganización)
+## Estructura del proyecto
 
-### Archivos sueltos en `cliente/` → mover a `cliente/pages/`
-~22 archivos PHP raíz en `cliente/` necesitan clasificarse en `admin/`, `private/` o `public/`. Ver lista arriba con las flechas de destino.
+```
+Oratorio_Liturgia/
+├── index.php                    # Front controller
+├── bootstrap.php                # Helpers: appPath(), url(), env()
+├── .env / .env.example          # Configuración de entorno
+├── .htaccess                    # Apache mod_rewrite
+├── docker-compose.yml           # MySQL 8.4
+├── oratorio.sql                 # Schema de base de datos
+│
+├── cliente/                     # FRONTEND
+│   ├── assets/
+│   │   ├── css/                 # 31 hojas de estilo (una por página/módulo)
+│   │   ├── js/                  # Scripts: navbar, carousel, Dashboard, notificaciones
+│   │   └── img/                 # Imágenes estáticas + carousel
+│   │
+│   ├── components/              # Componentes PHP reutilizables
+│   │   ├── Sidebar.php
+│   │   ├── NavbarAdmin.php
+│   │   ├── Navbar.php
+│   │   ├── Notificacion.php
+│   │   └── footer/              # FooterIndex.php, FooterPublic.php
+│   │
+│   ├── layouts/                 # Layouts maestros
+│   │   ├── AdminLayout.php
+│   │   └── PublicLayout.php
+│   │
+│   └── pages/                   # Páginas por rol
+│       ├── admin/               # 20+ páginas admin (Dashboard, CRUD, Reportes, Paneles)
+│       │   ├── reportes/        # 6 vistas de reportes
+│       │   ├── actividades/     # index.php + form.php
+│       │   ├── eventos/         # index.php + form.php
+│       │   ├── inscripcion/     # index.php + form.php
+│       │   ├── personas/        # index.php + form.php
+│       │   ├── roles/           # index.php + form.php
+│       │   ├── universidades/   # index.php + form.php
+│       │   └── sacramentos/     # index.php + form.php
+│       ├── private/             # Páginas autenticadas
+│       │   └── IniciarSesion.php
+│       └── public/              # 14 páginas públicas
+│           ├── PaginaInicio.php
+│           ├── Ver_Actividades.php
+│           ├── Ver_Eventos.php
+│           ├── detalle_actividad.php
+│           ├── detalle_evento.php
+│           ├── registrarse_actividad.php
+│           ├── login.php
+│           ├── registrarse.php
+│           └── ...
+│
+└── servidor/                    # BACKEND
+    ├── router.php               # Enrutador principal
+    ├── config/database.php      # Conexión MySQL (conectar())
+    ├── helpers/respuesta.php    # respuestaJson()
+    │
+    ├── actividades/             # CRUD: listar, guardar, actualizar, eliminar, formulario, detalle, ver
+    ├── eventos/                 # CRUD: listar, guardar, actualizar, eliminar, formulario, detalle, ver
+    ├── personas/                # CRUD: listar, guardar, actualizar, eliminar, formulario
+    ├── roles/                   # CRUD: listar, guardar, actualizar, eliminar, formulario
+    ├── universidades/           # CRUD: listar, guardar, actualizar, eliminar, formulario
+    ├── sacramentos/             # CRUD: listar, guardar, actualizar, eliminar, formulario
+    ├── inscripcion/             # listar, actualizar, eliminar, formulario, registrar
+    ├── pagos/                   # guardar
+    ├── panel/                   # Endpoints JSON para gráficos (actividades, eventos)
+    ├── reportes/                # 6 endpoints JSON (eventos, actividades, participantes, sacramentos, asistencias, pagos)
+    ├── carousel/                # listar, actualizar, guardar-imagen, eliminar-imagen
+    ├── perfil/                  # actualizar
+    │
+    ├── validar_login.php        # Login público → session
+    ├── validar_IniciarSesion.php # Login admin (solo Administrativo)
+    ├── validar_inscripcion.php   # POST inscripción pública
+    ├── validar_actividades.php   # Form admin actividades (legacy)
+    ├── validar_asistencias.php   # Form admin asistencias (legacy)
+    ├── validar_pagos.php         # Form admin pagos (legacy)
+    ├── validar_personas.php      # Form admin personas (legacy)
+    ├── validar_usuarios_sistema.php # Form admin usuarios (legacy)
+    ├── registrar_usuario.php     # Registro público
+    ├── recuperar.php             # Recuperar contraseña
+    ├── reset.php                 # Reset contraseña
+    ├── logout.php                # Cerrar sesión
+    ├── conexionBD.php            # Conexión legacy (used by older admin forms)
+    │
+    └── data/carousel.json        # Configuración del carousel (JSON)
+```
 
-### Archivos sueltos en `servidor/` → mover a `modules/`, `routes/`, `infrastructure/`
-~22 archivos PHP de validación/procesamiento necesitan reorganizarse. Ver lista arriba con las flechas de destino.
+---
 
-### CSS/JS legacy en raíz → migrar o eliminar
-- `css/login.css`, `css/forget-password.css`, `css/menuu.css` → consolidar en `cliente/assets/css/`
-- `js/bootstrap.min.js`, `js/popper.min.js`, `js/menu.js` → eliminar (CDN ya se usa) o consolidar
+## Módulos
 
-### `cliente/MisEventos.php` → migrar a AdminLayout
-Tiene sidebar/navbar inline. Debe usar `AdminLayout.php` como el resto de páginas admin.
+### Admin (requieren login `Administrativo`)
 
-### `cliente/services/` → llenar con lógica JS del frontend
-Actualmente vacío. Destinado a helper functions JS reutilizables.
+| Ruta | Módulo | Descripción |
+|---|---|---|
+| `/dashboard` | Dashboard | Estadísticas generales con gráficos |
+| `/panel-eventos` | Panel Eventos | Gráficos + tabla de eventos |
+| `/panel-actividades` | Panel Actividades | Gráficos + tabla de actividades |
+| `/panel-carousel` | Panel Carousel | Administrar imágenes del carousel |
+| `/eventos` | Eventos | CRUD completo de eventos |
+| `/actividades` | Actividades | CRUD completo de actividades |
+| `/inscripcion` | Inscripciones | Editar/eliminar inscripciones |
+| `/personas` | Personas | CRUD completo de personas |
+| `/roles` | Roles | CRUD de roles del sistema |
+| `/universidades` | Universidades | CRUD de universidades |
+| `/sacramentos` | Sacramentos | CRUD de formularios de sacramentos |
+| `/asistencias` | Asistencias | Control de asistencia |
+| `/pagos` | Pagos | Gestión de pagos |
+| `/mis-eventos` | Mis Eventos | Eventos del usuario actual |
+| `/reportes/*` | Reportes | 6 vistas: eventos, actividades, participantes, sacramentos, asistencias, pagos |
+| `/perfil` | Perfil | Editar perfil del usuario |
+| `/ayuda` | Ayuda | Centro de ayuda con 14 secciones |
+
+### Públicas (no requieren login)
+
+| Ruta | Página |
+|---|---|
+| `/` o `/inicio` | Página principal |
+| `/ver-actividades` | Lista de actividades públicas |
+| `/ver-eventos` | Lista de eventos públicos |
+| `/detalle-actividad?id=X` | Detalle de actividad |
+| `/detalle-evento?id=X` | Detalle de evento |
+| `/inscripcion/registrar?id=X` | Inscripción a actividad (requiere login) |
+| `/servicios` | Servicios |
+| `/nosotros` | Acerca de nosotros |
+| `/contacto` | Contacto |
+| `/calendario` | Calendario |
+| `/participar` | Participar |
+| `/login` | Login público |
+| `/registrarse` | Registro de usuario |
+| `/recuperar-password` | Recuperar contraseña |
+| `/reset-password` | Reset contraseña |
+
+---
+
+## Cómo agregar una nueva ruta
+
+### 1. Vista (página HTML)
+
+```php
+// En servidor/router.php, agregar dentro del switch:
+case '/mi-nueva-pagina':
+    pagina('cliente/pages/admin/mi_pagina.php', [
+        'titulo' => 'Mi Página',
+    ]);
+    break;
+```
+
+### 2. Endpoint JSON (API)
+
+```php
+// En servidor/router.php:
+case '/mi-api':
+    despachar($method, [
+        'GET'  => 'servidor/mi_modulo/listar.php',
+        'POST' => 'servidor/mi_modulo/guardar.php',
+    ]);
+    break;
+```
+
+### 3. Crear el archivo del controller
+
+```php
+<?php
+// servidor/mi_modulo/listar.php
+declare(strict_types=1);
+require_once appPath('servidor/config/database.php');
+require_once appPath('servidor/helpers/respuesta.php');
+
+$conexion = conectar();
+$datos = $conexion->query("SELECT * FROM mi_tabla")->fetch_all(MYSQLI_ASSOC);
+$conexion->close();
+
+respuestaJson(true, 'Datos obtenidos.', $datos);
+```
+
+### 4. Crear la vista
+
+```php
+<?php
+$pageTitle = 'Mi Página';
+$pageStyles = ['<link rel="stylesheet" href="' . url('/assets/css/mi_pagina.css') . '">'];
+?>
+<?php ob_start(); ?>
+<!-- Contenido HTML aquí -->
+<?php
+$content = ob_get_clean();
+require_once appPath('cliente/layouts/AdminLayout.php');
+```
+
+---
+
+## Base de datos
+
+Tablas principales:
+
+| Tabla | Descripción |
+|---|---|
+| `personas` | Usuarios del sistema (nombres, apellidos, ci, correo, tipo_persona) |
+| `usuarios_sistema` | Roles y permisos |
+| `eventos` | Eventos del oratorio |
+| `actividades` | Actividades de cada evento (FK → eventos) |
+| `inscripcion` | Inscripciones de personas a actividades |
+| `asistencias` | Control de asistencia |
+| `universidades` | Universidades asociadas |
+| `formulario_sacramentos` | Formularios de sacramentos |
+
+---
+
+## Tecnologías
+
+- **Backend**: PHP 8.1 (sin framework, sin Composer)
+- **Frontend**: HTML5, CSS3, JavaScript vanilla
+- **UI**: Bootstrap 5.3.7, Font Awesome 6.5.0
+- **Gráficos**: Chart.js (via CDN)
+- **Exportación**: SheetJS (XLSX), jsPDF + jsPDF-AutoTable
+- **Base de datos**: MySQL 8.0+ / MariaDB
+- **Servidor web**: Apache con mod_rewrite
