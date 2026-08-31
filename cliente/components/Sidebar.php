@@ -51,12 +51,12 @@ function renderSidebar(): void {
                         Actividades
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="<?= url('/participantes') ?>">
                         <i class="fas fa-users me-2"></i>
                         Participantes
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a href="<?= url('/inscripcion') ?>">
                         <i class="fas fa-clipboard-list me-2"></i>
@@ -69,12 +69,12 @@ function renderSidebar(): void {
                         Asistencias
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="<?= url('/pagos') ?>">
                         <i class="fas fa-credit-card me-2"></i>
                         Pagos
                     </a>
-                </li>
+                </li> -->
             </ul>
         </li>
         <!-- ================= PERSONAS Y USUARIOS ================= -->
@@ -97,9 +97,9 @@ function renderSidebar(): void {
                     </a>
                 </li>
                 <li>
-                    <a href="<?= url('/usuarios') ?>">
+                    <a href="<?= url('/roles') ?>">
                         <i class="fas fa-user-cog me-2"></i>
-                        Usuarios del Sistema
+                        Roles del Sistema
                     </a>
                 </li>
                 <li>
@@ -110,11 +110,11 @@ function renderSidebar(): void {
                 </li>
             </ul>
         </li>
-        <!-- ================= FORMACIÓN ================= -->
+        <!-- ================= SACRAMENTOS ================= -->
         <li>
-            <a href="<?= url('/formacion-sacramental') ?>">
+            <a href="<?= url('/sacramentos') ?>">
                 <i class="fas fa-church me-2"></i>
-                Formación Sacramental
+                Sacramentos
             </a>
         </li>
         <!-- ================= PANELES ================= -->
