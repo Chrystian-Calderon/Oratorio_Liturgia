@@ -1,6 +1,8 @@
 <?php
 require_once appPath('servidor/config/database.php');
+require_once appPath('servidor/helpers/audit.php');
 $conexion = conectar();
+establecerAuditUser($conexion);
 
 // ======================================
 // OBTENER TOKEN (POST o GET)
@@ -42,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nueva = password_hash($password, PASSWORD_BCRYPT);
 
     $update = $conexion->prepare(
-        "UPDATE personas SET password=?, token=NULL, token_expira=NULL WHERE token=?"
+        "UPDATE personas SET password=?, token=NULL, token_expira=NULL, fecha_cambio_password=NOW() WHERE token=?"
     );
     $update->bind_param("ss", $nueva, $token);
     $update->execute();

@@ -2,8 +2,10 @@
 declare(strict_types=1);
 require_once appPath('servidor/config/database.php');
 require_once appPath('servidor/helpers/respuesta.php');
+require_once appPath('servidor/helpers/audit.php');
 
 $conexion = conectar();
+establecerAuditUser($conexion);
 
 try {
   $datos = json_decode(file_get_contents('php://input'), true);

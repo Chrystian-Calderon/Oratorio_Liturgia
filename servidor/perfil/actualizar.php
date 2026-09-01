@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require_once appPath('servidor/config/database.php');
 require_once appPath('servidor/helpers/respuesta.php');
+require_once appPath('servidor/helpers/audit.php');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
     respuestaJson(false, 'Método no permitido.', null, 405);
@@ -18,6 +19,7 @@ if (!$input) {
 }
 
 $conexion = conectar();
+establecerAuditUser($conexion);
 
 $correoActual = $_SESSION['correo'];
 
@@ -69,8 +71,21 @@ if ($password !== '') {
     if (strlen($password) < 8) {
         respuestaJson(false, 'La contraseña debe tener al menos 8 caracteres.', null, 400);
     }
+
+    // Verificar restricción de 45 días desde último cambio de contraseña
+    if ($persona['fecha_cambio_password'] !== null) {
+        $fechaCambio = new DateTime($persona['fecha_cambio_password']);
+        $ahora = new DateTime();
+        $diferencia = $ahora->diff($fechaCambio)->days;
+
+        if ($diferencia < 45) {
+            $restantes = 45 - $diferencia;
+            respuestaJson(false, "No puedes cambiar tu contraseña en este momento. Debes esperar {$restantes} días desde tu último cambio.", null, 400);
+        }
+    }
+
     $hash = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conexion->prepare("UPDATE personas SET nombres=?, apellidos=?, telefono=?, direccion=?, correo=?, password=? WHERE id_persona=?");
+    $stmt = $conexion->prepare("UPDATE personas SET nombres=?, apellidos=?, telefono=?, direccion=?, correo=?, password=?, fecha_cambio_password=NOW() WHERE id_persona=?");
     $stmt->bind_param("ssssssi", $nombres, $apellidos, $telefono, $direccion, $nuevoCorreo, $hash, $persona['id_persona']);
 } else {
     $stmt = $conexion->prepare("UPDATE personas SET nombres=?, apellidos=?, telefono=?, direccion=?, correo=? WHERE id_persona=?");

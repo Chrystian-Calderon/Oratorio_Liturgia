@@ -40,6 +40,7 @@ $resultado = $stmt->get_result();
 if ($usuario = $resultado->fetch_assoc()) {
     if (password_verify($password, $usuario['password'])) {
         session_regenerate_id(true);
+        $_SESSION['usuario'] = $usuario['nombres'] . ' ' . $usuario['apellidos'];
         $_SESSION['correo'] = $usuario['correo'];
         $_SESSION['nombre'] = $usuario['nombres'];
         $_SESSION['apellidos'] = $usuario['apellidos'];

@@ -1,6 +1,8 @@
 <?php
 require_once appPath('servidor/config/database.php');
+require_once appPath('servidor/helpers/audit.php');
 $conexion = conectar();
+establecerAuditUser($conexion);
 
 // Recibir datos
 $nombre = $_POST['txtnombre'];

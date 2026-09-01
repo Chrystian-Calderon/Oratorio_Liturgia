@@ -136,10 +136,22 @@ switch ($uri) {
         ]);
         break;
 
+    case '/logout-admin':
+        despachar($method, [
+            'POST' => 'servidor/logout_admin.php',
+        ]);
+        break;
+
     case '/dashboard':
         pagina(
             'cliente/pages/admin/Dashboard.php'
         );
+        break;
+
+    case '/dashboard-data':
+        despachar($method, [
+            'GET' => 'servidor/dashboard/datos.php',
+        ]);
         break;
 
     case '/panel-actividades':
@@ -285,10 +297,23 @@ switch ($uri) {
         ]);
         break;
 
+    // asistencias
     case '/asistencias':
-        pagina(
-            'cliente/pages/admin/asistencias.php'
-        );
+        despachar($method, [
+            'GET' => 'servidor/asistencias/listar.php',
+        ]);
+        break;
+
+    case '/asistencias/guardar':
+        despachar($method, [
+            'POST' => 'servidor/asistencias/guardar.php',
+        ]);
+        break;
+
+    case '/asistencias/eliminar':
+        despachar($method, [
+            'DELETE' => 'servidor/asistencias/eliminar.php',
+        ]);
         break;
 
     case '/eventos':
@@ -367,12 +392,6 @@ switch ($uri) {
         );
         break;
 
-    case '/personas-form':
-        pagina(
-            'cliente/pages/admin/personas.php'
-        );
-        break;
-
     case '/universidades':
         despachar($method, [
             'GET' => 'servidor/universidades/listar.php',
@@ -411,12 +430,6 @@ switch ($uri) {
         ]);
         break;
     
-    case '/usuarios-form':
-        pagina(
-            'cliente/pages/admin/usuarios_sistema.php'
-        );
-        break;
-
     // sacramentos
     case '/sacramentos':
         despachar($method, [
@@ -541,6 +554,12 @@ switch ($uri) {
         break;
 
     // perfil
+    case '/mi-perfil':
+        pagina(
+            'cliente/pages/public/perfil.php'
+        );
+        break;
+
     case '/perfil':
         pagina(
             'cliente/pages/admin/perfil.php'

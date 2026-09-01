@@ -20,29 +20,36 @@ if ($buscar !== '') {
   $tipos = 's';
 }
 
-$stmt = $conexion->prepare("SELECT COUNT(*) AS total FROM formulario_sacramentos {$where}");
-if ($parametros) $stmt->bind_param($tipos, ...$parametros);
-$stmt->execute();
-$total = (int) $stmt->get_result()->fetch_assoc()['total'];
-$stmt->close();
+try {
+  $stmt = $conexion->prepare("SELECT COUNT(*) AS total FROM formulario_sacramentos {$where}");
+  if ($parametros) $stmt->bind_param($tipos, ...$parametros);
+  $stmt->execute();
+  $total = (int) $stmt->get_result()->fetch_assoc()['total'];
+  $stmt->close();
 
-$totalPaginas = max(1, (int) ceil($total / $porPagina));
-if ($paginaActual > $totalPaginas) $paginaActual = $totalPaginas;
-$inicio = ($paginaActual - 1) * $porPagina;
+  $totalPaginas = max(1, (int) ceil($total / $porPagina));
+  if ($paginaActual > $totalPaginas) $paginaActual = $totalPaginas;
+  $inicio = ($paginaActual - 1) * $porPagina;
 
-$stmt = $conexion->prepare(
-  "SELECT * FROM formulario_sacramentos {$where} ORDER BY id_inscripcion DESC LIMIT ? OFFSET ?"
-);
-if ($parametros) {
-  $stmt->bind_param($tipos . 'ii', ...array_merge($parametros, [$porPagina, $inicio]));
-} else {
-  $stmt->bind_param('ii', $porPagina, $inicio);
+  $stmt = $conexion->prepare(
+    "SELECT * FROM formulario_sacramentos {$where} ORDER BY id_inscripcion DESC LIMIT ? OFFSET ?"
+  );
+  if ($parametros) {
+    $stmt->bind_param($tipos . 'ii', ...array_merge($parametros, [$porPagina, $inicio]));
+  } else {
+    $stmt->bind_param('ii', $porPagina, $inicio);
+  }
+  $stmt->execute();
+  $sacramentos = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+  $stmt->close();
+} catch (Throwable $e) {
+  error_log('Error al listar sacramentos: ' . $e->getMessage());
+  $sacramentos = [];
+  $total = 0;
+  $totalPaginas = 1;
+} finally {
+  $conexion->close();
 }
-$stmt->execute();
-$sacramentos = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
-
-$conexion->close();
 
 pagina('cliente/pages/admin/sacramentos/index.php', [
   'sacramentos'  => $sacramentos,

@@ -3,6 +3,10 @@ declare(strict_types=1);
 require_once appPath('servidor/config/database.php');
 require_once appPath('servidor/helpers/respuesta.php');
 
+if (!isset($_SESSION['usuario']) || !in_array($_SESSION['tipo_persona'], ['Administrativo', 'Encargado'])) {
+  respuestaJson(false, 'No autorizado.', null, 401);
+}
+
 $conexion = conectar();
 
 try {

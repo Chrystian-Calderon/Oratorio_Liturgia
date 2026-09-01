@@ -20,8 +20,9 @@ try {
   $email = trim($datos['email'] ?? '');
 
   if ($sacramento === '' || $nombreSolicitante === '' || $fechaNacimiento === '' ||
-      $lugarNacimiento === '' || $telefono === '' || $email === '') {
-    respuestaJson(false, 'Complete los campos obligatorios (sacramento, solicitante, fecha y lugar de nacimiento, teléfono y correo).', null, 422);
+      $lugarNacimiento === '' || $nombrePadre === '' || $nombreMadre === '' ||
+      $telefono === '' || $email === '') {
+    respuestaJson(false, 'Complete los campos obligatorios (sacramento, solicitante, fecha y lugar de nacimiento, padres, teléfono y correo).', null, 422);
   }
 
   $stmt = $conexion->prepare(

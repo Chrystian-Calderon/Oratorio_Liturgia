@@ -20,7 +20,7 @@
             "titulo": "Formación Sacramental",
             "subtitulo": "Fortalece tu vida espiritual.",
             "imagen": "img3.jpg",
-            "activo": true
+            "activo": false
         },
         {
             "id": 4,

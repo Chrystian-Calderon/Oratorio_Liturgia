@@ -2,8 +2,10 @@
 declare(strict_types=1);
 require_once appPath('servidor/config/database.php');
 require_once appPath('servidor/helpers/respuesta.php');
+require_once appPath('servidor/helpers/audit.php');
 
 $conexion = conectar();
+establecerAuditUser($conexion);
 
 try {
   $datos = json_decode(file_get_contents('php://input'), true);
@@ -47,7 +49,7 @@ try {
   $afectadas = $stmt->affected_rows;
   $stmt->close();
 
-  if ($afectadas < 0) {
+  if ($afectadas <= 0) {
     respuestaJson(false, 'Error al actualizar la inscripción.', null, 500);
   }
 
