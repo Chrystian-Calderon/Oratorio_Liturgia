@@ -89,14 +89,14 @@ $sac = $sacramento;
 
         <div class="row">
           <div class="col-md-6 mb-3">
-            <label for="nombre_padre" class="form-label">Nombre del Padre</label>
-            <input type="text" class="form-control" id="nombre_padre"
+            <label for="nombre_padre" class="form-label">Nombre del Padre <span class="required-star">*</span></label>
+            <input type="text" class="form-control" id="nombre_padre" required
                    value="<?= $esEdicion ? htmlspecialchars($sac['nombre_padre'] ?? '') : '' ?>"
                    placeholder="Ej: Gustavo David Lanza Ramos">
           </div>
           <div class="col-md-6 mb-3">
-            <label for="nombre_madre" class="form-label">Nombre de la Madre</label>
-            <input type="text" class="form-control" id="nombre_madre"
+            <label for="nombre_madre" class="form-label">Nombre de la Madre <span class="required-star">*</span></label>
+            <input type="text" class="form-control" id="nombre_madre" required
                    value="<?= $esEdicion ? htmlspecialchars($sac['nombre_madre'] ?? '') : '' ?>"
                    placeholder="Ej: Sandra Marlene Flores Tapia">
           </div>

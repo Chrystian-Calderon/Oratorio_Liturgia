@@ -49,7 +49,7 @@ $basePagina = url('/inscripcion') . (empty($filtros) ? '?pagina=' : '?' . implod
         <tbody>
           <?php if (empty($inscripciones)): ?>
             <tr>
-              <td colspan="9" class="text-center text-muted py-4">No hay inscripciones registradas.</td>
+              <td colspan="7" class="text-center text-muted py-4">No hay inscripciones registradas.</td>
             </tr>
           <?php else: ?>
             <?php foreach ($inscripciones as $i): ?>
@@ -113,18 +113,37 @@ $basePagina = url('/inscripcion') . (empty($filtros) ? '?pagina=' : '?' . implod
           Mostrando <?= count($inscripciones) ?> de <?= (int) $total ?> inscripciones
           (página <?= (int) $paginaActual ?> de <?= (int) $totalPaginas ?>)
         </small>
-        <nav aria-label="Paginación de inscripciones">
+          <nav aria-label="Paginación de inscripciones">
           <ul class="pagination pagination-sm mb-0">
             <li class="page-item <?= $paginaActual <= 1 ? 'disabled' : '' ?>">
               <a class="page-link" href="<?= $basePagina . max(1, $paginaActual - 1) ?>" aria-label="Anterior">
                 <i class="fas fa-chevron-left"></i>
               </a>
             </li>
-            <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-              <li class="page-item <?= $i === $paginaActual ? 'active' : '' ?>">
-                <a class="page-link" href="<?= $basePagina . $i ?>"><?= $i ?></a>
+            <?php
+            $paginas = [];
+            if ($paginaActual <= 2) {
+                for ($i = 1; $i <= min(3, $totalPaginas); $i++) $paginas[] = $i;
+            } else {
+                $paginas[] = $paginaActual;
+                if ($paginaActual + 1 <= $totalPaginas) $paginas[] = $paginaActual + 1;
+            }
+            if ($totalPaginas > 2) {
+                if (!in_array($totalPaginas - 1, $paginas)) $paginas[] = $totalPaginas - 1;
+                if (!in_array($totalPaginas, $paginas)) $paginas[] = $totalPaginas;
+            }
+            $paginas = array_unique($paginas);
+            sort($paginas);
+            $ultimaMostrada = 0;
+            foreach ($paginas as $p):
+                if ($ultimaMostrada > 0 && $p > $ultimaMostrada + 1):
+                    echo '<li class="page-item disabled"><span class="page-link">…</span></li>';
+                endif;
+            ?>
+              <li class="page-item <?= $p === $paginaActual ? 'active' : '' ?>">
+                <a class="page-link" href="<?= $basePagina . $p ?>"><?= $p ?></a>
               </li>
-            <?php endfor; ?>
+            <?php $ultimaMostrada = $p; endforeach; ?>
             <li class="page-item <?= $paginaActual >= $totalPaginas ? 'disabled' : '' ?>">
               <a class="page-link" href="<?= $basePagina . min($totalPaginas, $paginaActual + 1) ?>" aria-label="Siguiente">
                 <i class="fas fa-chevron-right"></i>

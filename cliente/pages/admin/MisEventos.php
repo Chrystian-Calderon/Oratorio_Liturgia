@@ -891,7 +891,7 @@ $ultimasPersonas = $conexion->query($sql);
 
       <!-- Ayuda -->
       <li data-section="ayuda">
-        <a href="#"><i class="fas fa-question-circle"></i> Ayuda</a>
+        <a href="<?= url('/ayuda') ?>"><i class="fas fa-question-circle"></i> Ayuda</a>
       </li>
     </ul>
 

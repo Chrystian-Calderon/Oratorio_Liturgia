@@ -39,16 +39,9 @@ ob_start();
   </div>
 </div>
 <div id="toasts" class="position-fixed top-0 end-0 p-3"></div>
+<script src="<?= url('/cliente/assets/js/reportes.js') ?>"></script>
 <script>
 let datosReporte = [];
-function showToast(msg, type) {
-  const el = document.createElement('div');
-  el.className = 'toast ' + (type === 'error' ? 'bg-danger text-white' : 'bg-success text-white');
-  el.innerHTML = '<div class="toast-body">' + msg + '</div>';
-  document.getElementById('toasts').appendChild(el);
-  new bootstrap.Toast(el, {delay:3000}).show();
-  el.addEventListener('hidden.bs.toast', () => el.remove());
-}
 function cargarReporte(e) {
   if (e) e.preventDefault();
   const params = new URLSearchParams({buscar: document.getElementById('buscar').value, sacramento: document.getElementById('sacramento').value});
