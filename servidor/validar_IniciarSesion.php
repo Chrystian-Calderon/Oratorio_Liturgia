@@ -44,6 +44,7 @@ if(mysqli_num_rows($resultado) > 0){
             $_SESSION['usuario'] = $nombres . ' ' . $apellido;
             $_SESSION['correo'] = $usuario['correo'];
             $_SESSION['tipo_persona'] = $usuario['tipo_persona'];
+            $_SESSION['id_usuario'] = $usuario['id_persona'];
 
             // Redireccionar
             header("Location: " . url('/panel-eventos'));

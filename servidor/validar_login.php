@@ -45,6 +45,7 @@ if ($usuario = $resultado->fetch_assoc()) {
         $_SESSION['nombre'] = $usuario['nombres'];
         $_SESSION['apellidos'] = $usuario['apellidos'];
         $_SESSION['tipo_persona'] = $usuario['tipo_persona'];
+        $_SESSION['id_usuario'] = $usuario['id_persona'];
 
         header("Location: " . url('/inicio'));
         exit();
