@@ -19,7 +19,11 @@ function renderNavbarAdmin(bool $sidebarVisible, string $pageTitle = ''): void {
               <li><span class="dropdown-item-text"><strong><?= htmlspecialchars($_SESSION['usuario'] ?? '') ?></strong><br><small class="text-muted"><?= htmlspecialchars($_SESSION['correo'] ?? '') ?></small></span></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="<?= url('/perfil') ?>"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
-              <li><a class="dropdown-item" href="<?= url('/logout') ?>"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
+              <li>
+                <form action="<?= url('/logout-admin') ?>" method="POST" class="m-0">
+                  <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</button>
+                </form>
+              </li>
             </ul>
           </div>
         </div>

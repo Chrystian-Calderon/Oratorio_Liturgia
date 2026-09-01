@@ -8,10 +8,9 @@ function renderFooterIndex(): void {
           <h4 class="mb-4"><i class="bi bi-church me-2"></i>Oratorio y Liturgia</h4>
           <p>Una comunidad dedicada a fortalecer la fe a través de la oración, la liturgia y el servicio comunitario.</p>
         <div class="d-flex mt-4">
-          <a href="#" class="text-white me-3"><i class="bi bi-facebook fs-4"></i></a>
-          <a href="#" class="text-white me-3"><i class="bi bi-twitter fs-4"></i></a>
-          <a href="#" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
-          <a href="#" class="text-white"><i class="bi bi-youtube fs-4"></i></a>
+          <a href="https://www.facebook.com/share/1DXqH1baJa/" class="text-white me-3"><i class="bi bi-facebook fs-4"></i></a>
+          <a href="https://www.instagram.com/pastoraluniversitariausb?igsi=YzVlcW9uNDM3aHJm" class="text-white me-3"><i class="bi bi-tiktok fs-4"></i></a>
+          <a href="https://www.tiktok.com/@pastoraluniversitariausb?_r=1&_t=ZS-99N1d8re8JA" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
         </div>
       </div>
       <div class="col-lg-2 col-md-6 mb-4 mb-md-0">

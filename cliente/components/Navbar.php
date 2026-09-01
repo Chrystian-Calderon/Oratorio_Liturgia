@@ -34,10 +34,13 @@ function renderNavbar(): void {
           <li class="nav-item">
             <a class="nav-link nav-hover" href="<?php echo url('/calendario'); ?>">Calendario</a>
           </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link nav-hover" href="<?php echo url('/ayuda'); ?>">Ayuda</a>
+          </li> -->
           <li class="nav-item d-flex gap-2 ms-lg-3 mt-2 mt-lg-0">
             <?php if ($tipoPersona === 'Administrativo'): ?>
-            <a class="btn btn-outline-light btn-sm px-3 rounded-pill" href="<?php echo url('/login-admin'); ?>">
-              Iniciar Sesion
+            <a class="btn btn-outline-light btn-sm px-3 rounded-pill" href="<?php echo url('/dashboard'); ?>">
+              Panel Administrativo
             </a>
             <?php elseif ($usuario_nombre === '' || $usuario_correo === ''): ?>
             <a class="btn btn-outline-light btn-sm px-3 rounded-pill" href="<?php echo url('/login'); ?>">
@@ -61,6 +64,12 @@ function renderNavbar(): void {
             <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
               <li><h6 class="dropdown-header text-muted text-center small"><?php echo $usuario_correo; ?></h6></li>
               <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2" href="<?php echo url('/mi-perfil'); ?>">
+                  <i class="bi bi-person"></i>
+                  Mi Perfil
+                </a>
+              </li>
               <li>
                 <form action="<?php echo url('/logout'); ?>" method="POST" class="m-0">
                   <button

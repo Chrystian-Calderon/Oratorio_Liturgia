@@ -228,9 +228,11 @@ function renderSidebar(): void {
                 <small class="small-muted text-truncate d-block"><?= htmlspecialchars($correoUsuario) ?></small>
             </div>
         </div>
-        <a href="<?= url('/logout') ?>" class="sidebar-logout mt-3">
+        <!-- <form action="<?= url('/logout-admin') ?>" method="POST" class="m-0">
+          <button type="submit" class="sidebar-logout mt-3">
             <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
-        </a>
+          </button>
+        </form> -->
     </div>
 </nav>
 

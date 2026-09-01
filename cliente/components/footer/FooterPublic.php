@@ -19,13 +19,13 @@ function renderFooterPublic(): void {
 
             <div class="col-md-3 text-center text-md-end">
               <div class="social-links d-flex justify-content-center justify-content-md-end gap-4">
-                  <a href="https://www.facebook.com/share/19hQUo9Yht/" target="_blank" aria-label="Facebook" style="color: #ffffff; font-size: 1.4rem;">
+                  <a href="https://www.facebook.com/share/1DXqH1baJa/" target="_blank" aria-label="Facebook" style="color: #ffffff; font-size: 1.4rem;">
                       <i class="fab fa-facebook-f"></i>
                   </a>
-                  <a href="https://www.instagram.com/pastoraluniversitariausb?igsh=YzVlcW9uNDM3aHJm" target="_blank" aria-label="Instagram" style="color: #ffffff; font-size: 1.4rem;">
+                  <a href="https://www.instagram.com/pastoraluniversitariausb?igsi=YzVlcW9uNDM3aHJm" target="_blank" aria-label="Instagram" style="color: #ffffff; font-size: 1.4rem;">
                       <i class="fab fa-instagram"></i>
                   </a>
-                  <a href="https://www.tiktok.com/@pastoraluniversitariausb?_t=ZM-8zZknjhgwL8&_r=1" target="_blank" aria-label="TikTok" style="color: #ffffff; font-size: 1.4rem;">
+                  <a href="https://www.tiktok.com/@pastoraluniversitariausb?_r=1&_t=ZS-99N1d8re8JA" target="_blank" aria-label="TikTok" style="color: #ffffff; font-size: 1.4rem;">
                       <i class="fab fa-tiktok"></i>
                   </a>
               </div>
