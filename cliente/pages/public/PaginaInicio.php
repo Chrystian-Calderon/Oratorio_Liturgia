@@ -28,51 +28,6 @@ ob_start();
         <a href="https://wa.me/59172060082?text=Hola%2C%20me%20gustar%C3%ADa%20obtener%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Oratorio%20y%20Liturgia" target="_blank" class="floating-btn btn-whatsapp" title="WhatsApp">
             <i class="fab fa-whatsapp"></i>
         </a>
-        <!-- Botón de Sugerencias -->
-        <button type="button" class="floating-btn btn-suggestion" title="Danos tus sugerencias" data-bs-toggle="modal" data-bs-target="#suggestionModal">
-            <i class="fas fa-comment-dots"></i>
-        </button>
-    </div>
-
-    <!-- MODAL DE SUGERENCIAS -->
-    <div class="modal fade suggestion-modal" id="suggestionModal" tabindex="-1" aria-labelledby="suggestionModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-warning text-dark">
-                    <h5 class="modal-title fw-bold" id="suggestionModalLabel">
-                        <i class="fas fa-lightbulb me-2"></i>Danos tus sugerencias
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="mb-3">Tu opinión es muy importante para nosotros. Compártenos tus sugerencias para mejorar nuestra comunidad.</p>
-                    <form id="suggestionForm">
-                        <div class="mb-3">
-                            <label for="suggestionName" class="form-label">Nombre (opcional)</label>
-                            <input type="text" class="form-control" id="suggestionName" placeholder="Tu nombre">
-                        </div>
-                        <div class="mb-3">
-                            <label for="suggestionEmail" class="form-label">Correo electrónico (opcional)</label>
-                            <input type="email" class="form-control" id="suggestionEmail" placeholder="correo@ejemplo.com">
-                        </div>
-                        <div class="mb-3">
-                            <label for="suggestionMessage" class="form-label">Tu sugerencia *</label>
-                            <textarea class="form-control" id="suggestionMessage" rows="4" placeholder="Escribe aquí tu sugerencia..." required></textarea>
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="suggestionAnonymous" checked>
-                            <label class="form-check-label" for="suggestionAnonymous">Enviar de forma anónima</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-warning fw-bold" id="sendSuggestionBtn">
-                        <i class="fas fa-paper-plane me-1"></i> Enviar sugerencia
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- =========================================================
@@ -90,7 +45,7 @@ if (file_exists($carouselPath)) {
 }
 if (!empty($carouselSlides)):
 ?>
-    <link rel="stylesheet" href="../css/carousel.css">
+    <link rel="stylesheet" href="<?= url('cliente/assets/css/carousel.css') ?>">
 
     <section class="hero-carousel p-0">
         <div id="heroCarousel"
@@ -170,8 +125,7 @@ if (!empty($carouselSlides)):
                         </a>
 
                         <!--Ver Noticias -->
-                        <a href="#" class="btn btn-primary btn-lg rouded-pill px-4 shadow-sm"
-                            class="btn btn-outline-primary btn-lg rounded-pill px-4">
+                        <a href="<?= url('/ver-eventos') ?>" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
                             <i class="fas fa-newspaper me-2"></i>
                             Ver Noticias
                         </a>
@@ -894,44 +848,12 @@ if (!empty($carouselSlides)):
             }
         })();
 
-        const crypto = require('crypto');
-        const secret = 'y37cqdomdrgvbliyfnjgbq83ukgtsw3d'; // Your verification secret key
-        const userId = current_user.id // A string UUID to identify your user
-
-        const hash = crypto.createHmac('sha256', secret).update(userId).digest('hex');
     </script>
 
     <script src="<?= url('cliente/assets/js/navbar.js') ?>"></script>
     <script src="<?= url('cliente/assets/js/carousel.js') ?>"></script>
 
     <script>
-        // Manejo del formulario de sugerencias
-        const sendSuggestionBtn = document.getElementById('sendSuggestionBtn');
-        const suggestionModal = document.getElementById('suggestionModal');
-
-        sendSuggestionBtn.addEventListener('click', function() {
-            const name = document.getElementById('suggestionName').value;
-            const email = document.getElementById('suggestionEmail').value;
-            const message = document.getElementById('suggestionMessage').value;
-            const isAnonymous = document.getElementById('suggestionAnonymous').checked;
-
-            if (!message.trim()) {
-                alert('Por favor, escribe tu sugerencia antes de enviar.');
-                return;
-            }
-
-            let confirmMessage = '¡Gracias por tu sugerencia! ';
-            if (isAnonymous) {
-                confirmMessage += 'Tu opinión ha sido enviada de forma anónima.';
-            } else {
-                confirmMessage += ` Hemos recibido tu sugerencia, ${name || 'usuario'}.`;
-            }
-
-            alert(confirmMessage);
-            document.getElementById('suggestionForm').reset();
-            bootstrap.Modal.getInstance(suggestionModal).hide();
-        });
-
         // Script para el modal de inscripción rápida
         const inscripcionModal = document.getElementById('inscripcionModal');
         if (inscripcionModal) {

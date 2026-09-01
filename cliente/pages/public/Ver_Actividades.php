@@ -138,19 +138,28 @@ $limpiarFiltros = !empty($filtroBusqueda) || !empty($filtroTipo);
                 <li class="page-item"><a class="page-link" href="?pagina=<?= $paginaActual - 1 ?>&buscar=<?= urlencode($filtroBusqueda) ?>&tipo=<?= urlencode($filtroTipo) ?>"><i class="fa-solid fa-chevron-left"></i></a></li>
             <?php endif; ?>
             <?php
-            $rango = 2; $inicio = max(1, $paginaActual - $rango); $fin = min($totalPaginas, $paginaActual + $rango);
-            if ($inicio > 1) {
-                echo '<li class="page-item"><a class="page-link" href="?pagina=1&buscar=' . urlencode($filtroBusqueda) . '&tipo=' . urlencode($filtroTipo) . '">1</a></li>';
-                if ($inicio > 2) echo '<li class="page-item disabled"><span class="page-link">…</span></li>';
+            $paginas = [];
+            if ($paginaActual <= 2) {
+                for ($i = 1; $i <= min(3, $totalPaginas); $i++) $paginas[] = $i;
+            } else {
+                $paginas[] = $paginaActual;
+                if ($paginaActual + 1 <= $totalPaginas) $paginas[] = $paginaActual + 1;
             }
-            for ($i = $inicio; $i <= $fin; $i++): ?>
-                <li class="page-item <?= $i === $paginaActual ? 'active' : '' ?>"><a class="page-link" href="?pagina=<?= $i ?>&buscar=<?= urlencode($filtroBusqueda) ?>&tipo=<?= urlencode($filtroTipo) ?>"><?= $i ?></a></li>
-            <?php endfor;
-            if ($fin < $totalPaginas) {
-                if ($fin < $totalPaginas - 1) echo '<li class="page-item disabled"><span class="page-link">…</span></li>';
-                echo '<li class="page-item"><a class="page-link" href="?pagina=' . $totalPaginas . '&buscar=' . urlencode($filtroBusqueda) . '&tipo=' . urlencode($filtroTipo) . '">' . $totalPaginas . '</a></li>';
+            if ($totalPaginas > 2) {
+                if (!in_array($totalPaginas - 1, $paginas)) $paginas[] = $totalPaginas - 1;
+                if (!in_array($totalPaginas, $paginas)) $paginas[] = $totalPaginas;
             }
-            ?>
+            $paginas = array_unique($paginas);
+            sort($paginas);
+            $ultimaMostrada = 0;
+            foreach ($paginas as $p):
+                if ($ultimaMostrada > 0 && $p > $ultimaMostrada + 1):
+                    echo '<li class="page-item disabled"><span class="page-link">…</span></li>';
+                endif;
+                ?>
+                <li class="page-item <?= $p === $paginaActual ? 'active' : '' ?>"><a class="page-link" href="?pagina=<?= $p ?>&buscar=<?= urlencode($filtroBusqueda) ?>&tipo=<?= urlencode($filtroTipo) ?>"><?= $p ?></a></li>
+                <?php $ultimaMostrada = $p;
+            endforeach; ?>
             <?php if ($paginaActual < $totalPaginas): ?>
                 <li class="page-item"><a class="page-link" href="?pagina=<?= $paginaActual + 1 ?>&buscar=<?= urlencode($filtroBusqueda) ?>&tipo=<?= urlencode($filtroTipo) ?>"><i class="fa-solid fa-chevron-right"></i></a></li>
             <?php endif; ?>
