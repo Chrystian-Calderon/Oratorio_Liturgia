@@ -170,33 +170,61 @@ body {
   justify-content: center;
   align-items: center;
   padding: 10px;
+  z-index: 1050;
 }
 
 .modal-content {
   background: #0f172a;
   border-radius: 14px;
-  padding: 15px;
+  padding: 20px;
   width: 100%;
-  max-width: 420px;
+  max-width: 480px;
+  color: var(--text);
 }
 
-/* INPUTS */
-input,
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
   color: white;
-  outline: none;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--yellow);
+.close-modal {
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--muted);
+  line-height: 1;
+}
+
+.close-modal:hover {
+  color: white;
+}
+
+#event-detail p {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+#event-detail p strong {
+  color: var(--yellow);
+}
+
+#event-detail #detail-description {
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
 }
 
 /* RESPONSIVE */
