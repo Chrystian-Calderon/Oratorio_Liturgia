@@ -131,6 +131,7 @@ CREATE TABLE `personas` (
   `foto_perfil` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `token` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `token_expira` datetime DEFAULT NULL,
+  `fecha_cambio_password` datetime DEFAULT NULL,
   PRIMARY KEY (`id_persona`),
   UNIQUE KEY `ci` (`ci`),
   UNIQUE KEY `correo` (`correo`),
