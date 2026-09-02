@@ -208,6 +208,15 @@ function renderSidebar(): void {
                 Ayuda
             </a>
         </li>
+        <!-- ================= SEPARADOR ================= -->
+        <li class="sidebar-divider"></li>
+        <!-- ================= AUDITORÍA ================= -->
+        <li>
+            <a href="<?= url('/auditoria') ?>">
+                <i class="fas fa-shield-alt me-2"></i>
+                Auditoría
+            </a>
+        </li>
     </ul>
     <!-- ================= FOOTER ================= -->
     <div class="sidebar-footer">

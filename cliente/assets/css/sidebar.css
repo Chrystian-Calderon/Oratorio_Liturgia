@@ -225,6 +225,16 @@
   color: #4e9eff !important;
 }
 
+/* === SEPARADOR VISUAL === */
+#sidebar .components > li.sidebar-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(78, 158, 223, 0.3), transparent);
+  margin: 0.6rem 1rem;
+  border: none;
+  list-style: none;
+  pointer-events: none;
+}
+
 /* === COLORES POR SECCIÓN === */
 #sidebar .components>li:nth-child(1)>.submenu-toggle i:first-child {
   color: #4e9eff;
@@ -256,6 +266,10 @@
 
 #sidebar .components>li[data-section="ayuda"]>a i {
   color: #9ca3af;
+}
+
+#sidebar .components>li>a[href*="auditoria"] i {
+  color: #fbbf24;
 }
 
 /* === PERFIL USUARIO (PIE) === */

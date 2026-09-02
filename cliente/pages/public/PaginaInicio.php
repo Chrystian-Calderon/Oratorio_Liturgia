@@ -28,6 +28,8 @@ ob_start();
         <a href="https://wa.me/59172060082?text=Hola%2C%20me%20gustar%C3%ADa%20obtener%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Oratorio%20y%20Liturgia" target="_blank" class="floating-btn btn-whatsapp" title="WhatsApp">
             <i class="fab fa-whatsapp"></i>
         </a>
+
+        <!-- Botón de Sugerencias -->
     </div>
 
     <!-- =========================================================
@@ -45,8 +47,6 @@ if (file_exists($carouselPath)) {
 }
 if (!empty($carouselSlides)):
 ?>
-    <link rel="stylesheet" href="<?= url('cliente/assets/css/carousel.css') ?>">
-
     <section class="hero-carousel p-0">
         <div id="heroCarousel"
             class="carousel slide carousel-fade"
