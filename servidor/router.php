@@ -522,6 +522,19 @@ switch ($uri) {
         );
         break;
 
+    // auditoría (visual - demo)
+    case '/auditoria':
+        pagina(
+            'cliente/pages/admin/auditoria.php'
+        );
+        break;
+
+    case '/auditoria-data':
+        despachar($method, [
+            'GET' => 'servidor/auditoria/listar.php',
+        ]);
+        break;
+
     // carrusel panel
     case '/panel-carousel':
         pagina(
