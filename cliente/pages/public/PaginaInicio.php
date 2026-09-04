@@ -80,13 +80,11 @@ if (!empty($carouselSlides)):
                         class="d-block w-100 hero-img"
                         alt="<?= htmlspecialchars($slide['titulo']) ?>">
                     <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
-                        <h1 class="display-4 fw-bold"><?= htmlspecialchars($slide['titulo']) ?></h1>
-                        <p class="lead"><?= htmlspecialchars($slide['subtitulo']) ?></p>
-                        <?php if (!empty($slide['descripcion'])): ?>
-                            <a href="<?= url('/carousel-detalle?id=' . (int) $slide['id']) ?>" class="btn btn-warning btn-lg rounded-pill px-4 shadow-sm mt-3">
-                                <i class="fas fa-book-open me-2"></i>Leer más
-                            </a>
-                        <?php endif; ?>
+                        <!-- <h1 class="display-4 fw-bold"><?= htmlspecialchars($slide['titulo']) ?></h1>
+                        <p class="lead"><?= htmlspecialchars($slide['subtitulo']) ?></p> -->
+                        <a href="<?= url('/carousel-detalle?id=' . (int) $slide['id']) ?>" class="btn btn-warning btn-lg rounded-pill px-4 shadow-sm mt-3">
+                            <i class="fas fa-book-open me-2"></i>Leer más
+                        </a>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -480,7 +478,7 @@ if (!empty($carouselSlides)):
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden">
                         <div class="position-relative" style="height: 250px; overflow: hidden;">
-                            <img src="<?= url('cliente/assets/img/Celebraciones_eucaristicas.jpg') ?>" alt="Misas" class="w-100 h-100 object-fit-cover transition-transform" style="transition: transform 0.5s ease;">
+                            <img src="<?= url('cliente/assets/img/img_eucaristía.jpg') ?>" alt="Misas" class="w-100 h-100 object-fit-cover transition-transform" style="transition: transform 0.5s ease;">
                             <span class="position-absolute top-0 start-0 bg-primary text-white px-3 py-1 m-3 rounded-pill">Nuevo</span>
                         </div>
                         <div class="card-body d-flex flex-column p-4">
