@@ -28,6 +28,7 @@ ob_start();
         <li><a class="nav-link" data-target="sacramentos">Sacramentos</a></li>
         <li><a class="nav-link" data-target="paneles">Paneles</a></li>
         <li><a class="nav-link" data-target="reportes">Reportes</a></li>
+        <li><a class="nav-link" data-target="sugerencias">Sugerencias y Contacto</a></li>
         <li><a class="nav-link" data-target="faq">Preguntas Frecuentes</a></li>
         <li><a class="nav-link" data-target="contacto">Contacto</a></li>
     </ul>
@@ -71,22 +72,29 @@ ob_start();
             <p>El Dashboard es la página principal que muestra un resumen completo del estado del sistema.</p>
         </div>
         <div class="section-card">
-            <h5><i class="fas fa-chart-bar"></i> Métricas Principales</h5>
+            <h5><i class="fas fa-chart-bar"></i> Resumen General</h5>
+            <p>Tarjetas con las métricas principales del sistema:</p>
             <ul>
-                <li><strong>Total Personas:</strong> Cantidad de personas registradas en el sistema.</li>
-                <li><strong>Eventos Activos:</strong> Eventos con estado "Activo" vigentes.</li>
+                <li><strong>Personas:</strong> Cantidad de personas registradas en el sistema.</li>
+                <li><strong>Eventos:</strong> Total de eventos registrados.</li>
+                <li><strong>Actividades:</strong> Total de actividades registradas.</li>
                 <li><strong>Inscripciones:</strong> Total de inscripciones realizadas.</li>
-                <li><strong>Pagos Recientes:</strong> Pagos registrados en los últimos 30 días.</li>
             </ul>
         </div>
         <div class="section-card">
-            <h5><i class="fas fa-chart-pie"></i> Gráficos del Dashboard</h5>
+            <h5><i class="fas fa-calendar-day"></i> Próximos</h5>
             <ul>
-                <li><strong>Distribución por Género:</strong> Gráfico circular que muestra la proporción de personas por género.</li>
-                <li><strong>Inscripciones por Mes:</strong> Gráfico de barras con la tendencia de inscripciones.</li>
-                <li><strong>Top 5 Actividades:</strong> Las 5 actividades con más inscritos.</li>
-                <li><strong>Pagos Recientes:</strong> Tabla con los últimos pagos registrados.</li>
+                <li><strong>Próximos Eventos:</strong> Lista de eventos más próximos con su fecha.</li>
+                <li><strong>Próximas Actividades:</strong> Lista de actividades más próximas con su fecha.</li>
             </ul>
+        </div>
+        <div class="section-card">
+            <h5><i class="fas fa-user-plus"></i> Actividad Reciente</h5>
+            <p><strong>Últimas Personas Registradas:</strong> Tabla con las personas más recientes, mostrando CI, nombre completo, universidad y estado.</p>
+        </div>
+        <div class="section-card">
+            <h5><i class="fas fa-bolt"></i> Accesos Rápidos</h5>
+            <p>Accesos directos a los módulos más usados: <strong>Gestionar Eventos</strong>, <strong>Gestionar Actividades</strong> y <strong>Gestionar Participantes</strong>.</p>
         </div>
     </div>
 
@@ -108,8 +116,10 @@ ob_start();
             <ul>
                 <li><strong>Nombre del evento *</strong>: Nombre descriptivo del evento.</li>
                 <li><strong>Descripción</strong>: Detalles adicionales del evento.</li>
+                <li><strong>Fecha del evento *</strong>: Fecha programada del evento (no se permiten fechas pasadas al crear).</li>
+                <li><strong>Hora del evento</strong>: Hora en la que se realizará.</li>
+                <li><strong>Lugar</strong>: Ubicación o recinto del evento.</li>
                 <li><strong>Estado *</strong>: Activo, Inactivo o Cancelado.</li>
-                <li><strong>Fecha del evento *</strong>: Fecha programada del evento.</li>
             </ul>
         </div>
     </div>
@@ -133,9 +143,12 @@ ob_start();
                 <li><strong>Evento *</strong>: Evento al que pertenece.</li>
                 <li><strong>Tipo</strong>: Tipo de actividad (Taller, Charla, etc.).</li>
                 <li><strong>Fecha Inicio / Fin *</strong>: Período de duración.</li>
+                <li><strong>Hora Inicio / Fin *</strong>: Horario de cada jornada.</li>
+                <li><strong>Duración *</strong>: Duración estimada de la actividad.</li>
                 <li><strong>Días de la semana</strong>: Seleccione los días (checkboxes).</li>
                 <li><strong>Cupo máximo</strong>: Número máximo de participantes.</li>
-                <li><strong>Precio *</strong>: Costo de la actividad (0 si es gratuita).</li>
+                <li><strong>Cupo disponible</strong>: Cupos restantes actuales.</li>
+                <li><strong>Costo (Bs) *</strong>: Costo de la actividad (0 si es gratuita).</li>
                 <li><strong>Requisitos</strong>: Requisitos para participar.</li>
                 <li><strong>Estado *</strong>: Activo, Cancelado, Completado o En espera.</li>
             </ul>
@@ -157,12 +170,16 @@ ob_start();
         <div class="section-card">
             <h5><i class="fas fa-edit"></i> Editar Inscripción</h5>
             <ul>
+                <li><strong>Persona *</strong>: Participante inscrito.</li>
+                <li><strong>Actividad *</strong>: Actividad a la que pertenece.</li>
                 <li><strong>Estado</strong>: Pre-inscrito, Inscrito, En espera, Cancelado o Completado.</li>
                 <li><strong>Cumple requisitos</strong>: Si, No o En revisión.</li>
+                <li><strong>Pago</strong>: Asociar un pago existente o registrar uno nuevo con monto, método y estado.</li>
                 <li><strong>Asistencia</strong>: Número de asistencias registradas.</li>
+                <li><strong>Calificación</strong>: Nota del participante (0-100).</li>
                 <li><strong>Observaciones</strong>: Notas adicionales sobre la inscripción.</li>
             </ul>
-            <p class="mt-2"><small class="text-muted"><i class="fas fa-info-circle me-1"></i>Las inscripciones se crean automáticamente al registrar una persona en una actividad desde el formulario de la actividad.</small></p>
+            <p class="mt-2"><small class="text-muted"><i class="fas fa-info-circle me-1"></i>Las inscripciones se crean cuando una persona se inscribe desde el sitio web público (formulario de inscripción de la actividad), y luego pueden editarse desde este panel.</small></p>
         </div>
     </div>
 
@@ -173,20 +190,19 @@ ob_start();
             <p>Registre y administre la asistencia de los participantes a las actividades del oratorio.</p>
         </div>
         <div class="section-card">
-            <h5><i class="fas fa-list"></i> Listar Asistencias</h5>
+            <h5><i class="fas fa-list"></i> Registrar Asistencia por Actividad</h5>
             <div class="paso"><span class="paso-num">1</span><span class="paso-text">Acceda a <strong>Gestión → Asistencias</strong>.</span></div>
-            <div class="paso"><span class="paso-num">2</span><span class="paso-text">Filtre por nombre de participante o actividad.</span></div>
-            <div class="paso"><span class="paso-num">3</span><span class="paso-text">Cree una nueva asistencia con <strong>"Nueva Asistencia"</strong>.</span></div>
+            <div class="paso"><span class="paso-num">2</span><span class="paso-text">Seleccione una <strong>Actividad</strong> y una <strong>Fecha</strong>.</span></div>
+            <div class="paso"><span class="paso-num">3</span><span class="paso-text">Se cargan automáticamente las personas inscritas en esa actividad.</span></div>
+            <div class="paso"><span class="paso-num">4</span><span class="paso-text">Marque la <strong>asistencia</strong> (Si, No o Justificado) de cada participante y guarde.</span></div>
         </div>
         <div class="section-card">
-            <h5><i class="fas fa-plus-circle"></i> Registrar Asistencia</h5>
+            <h5><i class="fas fa-edit"></i> Campos de la Asistencia</h5>
             <ul>
-                <li><strong>Persona *</strong>: Seleccione la persona que asistió.</li>
-                <li><strong>Actividad *</strong>: Actividad a la que asistió.</li>
-                <li><strong>Fecha *</strong>: Fecha de la asistencia.</li>
-                <li><strong>Asistió *</strong>: Si, No o Justificado.</li>
-                <li><strong>Observaciones</strong>: Notas adicionales.</li>
+                <li><strong>Asistió</strong>: Si, No o Justificado (por cada participante).</li>
+                <li><strong>Observaciones</strong>: Notas adicionales por registro.</li>
             </ul>
+            <p class="mt-2"><small class="text-muted"><i class="fas fa-info-circle me-1"></i>También puede eliminar registros de asistencia individuales desde la lista.</small></p>
         </div>
     </div>
 
@@ -208,24 +224,21 @@ ob_start();
                 <li><strong>Nombres *</strong>: Nombre completo.</li>
                 <li><strong>Apellidos *</strong>: Apellidos completos.</li>
                 <li><strong>CI *</strong>: Cédula de identidad (único).</li>
-                <li><strong>Género *</strong>: Masculino, Femenino o No binario.</li>
-                <li><strong>Fecha de nacimiento *</strong>: Debe ser mayor de 12 años.</li>
-                <li><strong>Lugar de nacimiento</strong>: Ciudad de nacimiento.</li>
-                <li><strong>Estado civil *</strong>: Soltero, Casado, Divorciado o Viudo.</li>
-                <li><strong>Estudios *</strong>: Secundaria, Universitario, Técnico, Doctorado, Maestría.</li>
-                <li><strong>Profesión</strong>: Ocupación actual.</li>
-                <li><strong>Correo electrónico *</strong>: Debe contener @.</li>
-                <li><strong>Teléfono *</strong>: Mínimo 8 dígitos.</li>
-                <li><strong>Parroquia *</strong>: Parroquia a la que pertenece.</li>
-                <li><strong>Universidad</strong>: Universidad asociada (opcional).</li>
+                <li><strong>Género</strong>: Masculino, Femenino, Otro o Prefiero no decir (opcional).</li>
+                <li><strong>Correo electrónico *</strong>: Correo de la persona (único).</li>
+                <li><strong>Teléfono</strong>: Teléfono de contacto (opcional).</li>
+                <li><strong>Tipo de persona</strong>: Estudiante, Docente, Voluntario, Sacerdote, Administrativo o Externo.</li>
+                <li><strong>Estado</strong>: Activo, Inactivo o Suspendido.</li>
                 <li><strong>Dirección</strong>: Dirección de residencia.</li>
+                <li><strong>Contraseña *</strong>: Obligatoria al crear (mínimo 6 caracteres); opcional al editar.</li>
+                <li><strong>Universidad</strong>: Universidad asociada (opcional).</li>
                 <li><strong>Rol del sistema</strong>: Asigne un rol si la persona será usuario del sistema (opcional).</li>
             </ul>
         </div>
         <div class="section-card">
             <h5><i class="fas fa-exclamation-triangle"></i> Notas Importantes</h5>
             <ul>
-                <li>El <strong>CI</strong> debe ser único. Si ya existe otro registro con ese CI, se mostrará un error.</li>
+                <li>El <strong>CI</strong> y el <strong>correo</strong> deben ser únicos. Si ya existe otro registro con esos datos, se mostrará un error.</li>
                 <li>El <strong>rol</strong> es opcional. Si no se asigna, la persona no podrá acceder al sistema.</li>
                 <li>Si asigna un rol existente, se actualizará; si asigna uno nuevo, se creará un registro en <strong>usuarios_sistema</strong>.</li>
             </ul>
@@ -254,14 +267,13 @@ ob_start();
             <h5><i class="fas fa-plus-circle"></i> Crear / Editar Rol</h5>
             <div class="paso"><span class="paso-num">1</span><span class="paso-text">Acceda a <strong>Personas y Usuarios → Roles del Sistema</strong>.</span></div>
             <div class="paso"><span class="paso-num">2</span><span class="paso-text">Haga clic en <strong>"Nuevo Rol"</strong> para crear uno nuevo.</span></div>
-            <div class="paso"><span class="paso-num">3</span><span class="paso-text">Complete los campos: <strong>Nombre *</strong>, <strong>Estado *</strong> (Activo/Inactivo), <strong>Contraseña *</strong>.</span></div>
+            <div class="paso"><span class="paso-num">3</span><span class="paso-text">Complete los campos: <strong>Rol *</strong> (uno de los estándar), <strong>Estado *</strong> (Activo/Inactivo/Suspendido) y <strong>Permisos</strong>.</span></div>
         </div>
         <div class="section-card">
             <h5><i class="fas fa-exclamation-triangle"></i> Notas Importantes</h5>
             <ul>
                 <li>Los roles son <strong>estándar</strong> del sistema (no se pueden crear roles personalizados).</li>
-                <li>No puede eliminar un rol que esté siendo usado por personas en el sistema.</li>
-                <li>La contraseña se almacena de forma segura (hash). No se puede recuperar, solo restablecer.</li>
+                <li>La <strong>contraseña</strong> de acceso de cada usuario se gestiona desde el formulario de <strong>Personas</strong>, no desde Roles.</li>
             </ul>
         </div>
     </div>
@@ -282,9 +294,12 @@ ob_start();
             <h5><i class="fas fa-plus-circle"></i> Crear / Editar Universidad</h5>
             <ul>
                 <li><strong>Nombre *</strong>: Nombre completo de la universidad.</li>
-                <li><strong>Siglas</strong>: Acrónimo o siglas (ej: UCB, UMSA).</li>
-                <li><strong>País *</strong>: País donde se encuentra.</li>
+                <li><strong>Sigla</strong>: Acrónimo o siglas (ej: UCB, UMSA).</li>
                 <li><strong>Ciudad *</strong>: Ciudad de la universidad.</li>
+                <li><strong>Dirección *</strong>: Domicilio de la universidad.</li>
+                <li><strong>Teléfono</strong>: Teléfono de contacto.</li>
+                <li><strong>Correo</strong>: Correo electrónico.</li>
+                <li><strong>Sitio web</strong>: Página web de la universidad.</li>
                 <li><strong>Estado *</strong>: Activo o Inactivo.</li>
             </ul>
         </div>
@@ -300,7 +315,7 @@ ob_start();
             <h5><i class="fas fa-list"></i> Listar Sacramentos</h5>
             <div class="paso"><span class="paso-num">1</span><span class="paso-text">Acceda a <strong>Sacramentos</strong> en el menú lateral.</span></div>
             <div class="paso"><span class="paso-num">2</span><span class="paso-text">Filtre por nombre del solicitante.</span></div>
-            <div class="paso"><span class="paso-num">3</span><span class="paso-text">Cree un nuevo registro con <strong>"Nuevo Sacramento"</strong>.</span></div>
+            <div class="paso"><span class="paso-num">3</span><span class="paso-text">Cree un nuevo registro con <strong>"Nueva Inscripción"</strong>.</span></div>
         </div>
         <div class="section-card">
             <h5><i class="fas fa-plus-circle"></i> Crear / Editar Registro</h5>
@@ -309,20 +324,18 @@ ob_start();
                 <li><strong>Nombre solicitante *</strong>: Nombre completo del solicitante.</li>
                 <li><strong>Fecha de nacimiento *</strong>: Fecha de nacimiento del solicitante.</li>
                 <li><strong>Lugar de nacimiento *</strong>: Ciudad de nacimiento.</li>
-                <li><strong>Nombre del padre</strong>: Nombre del padre (opcional).</li>
-                <li><strong>Nombre de la madre</strong>: Nombre de la madre (opcional).</li>
-                <li><strong>Nombre del padrino</strong>: Padrino (opcional, para bautizo/confirmación).</li>
-                <li><strong>Nombre de la madrina</strong>: Madrina (opcional, para bautizo/confirmación).</li>
-                <li><strong>Parroquia *</strong>: Parroquia de residencia.</li>
-                <li><strong>Dirección</strong>: Dirección de residencia.</li>
                 <li><strong>Teléfono *</strong>: Número de teléfono.</li>
                 <li><strong>Email *</strong>: Correo electrónico.</li>
+                <li><strong>Nombre del padre *</strong>: Nombre del padre (obligatorio).</li>
+                <li><strong>Nombre de la madre *</strong>: Nombre de la madre (obligatorio).</li>
+                <li><strong>Nombre del padrino</strong>: Padrino (opcional, para bautizo/confirmación).</li>
+                <li><strong>Nombre de la madrina</strong>: Madrina (opcional, para bautizo/confirmación).</li>
             </ul>
         </div>
         <div class="section-card">
             <h5><i class="fas fa-exclamation-triangle"></i> Notas Importantes</h5>
             <ul>
-                <li>Para <strong>Bautizo</strong>, es obligatorio completar los datos del padre y la madre.</li>
+                <li>Para <strong>Bautizo</strong><strong></strong>, es obligatorio completar los datos del padre y la madre.</li>
                 <li>Para <strong>Matrimonio</strong>, se recomienda incluir padrino y madrina.</li>
                 <li>Los sacramentos no se pueden eliminar si ya tienen un certificado generado.</li>
             </ul>
@@ -353,6 +366,19 @@ ob_start();
                 <li><strong>Próximas Actividades</strong>: Lista de actividades próximas.</li>
             </ul>
         </div>
+        <div class="section-card">
+            <h5><i class="fas fa-images"></i> Panel del Carrusel</h5>
+            <p>Administre las imágenes y textos del banner principal que se muestra en la página de inicio del sitio público.</p>
+            <div class="paso"><span class="paso-num">1</span><span class="paso-text">Acceda a <strong>Paneles → Carrusel</strong>.</span></div>
+            <div class="paso"><span class="paso-num">2</span><span class="paso-text">Edite el <strong>Título</strong>, <strong>Subtítulo</strong> y <strong>Descripción</strong> de cada slide.</span></div>
+            <div class="paso"><span class="paso-num">3</span><span class="paso-text">Use el botón <strong>Subir/Cambiar</strong> para reemplazar la imagen (JPG, PNG o WebP, máximo 5 MB).</span></div>
+            <div class="paso"><span class="paso-num">4</span><span class="paso-text">Active o desactive el switch <strong>"Activo"</strong> para mostrar u ocultar cada slide.</span></div>
+            <div class="paso"><span class="paso-num">5</span><span class="paso-text">Haga clic en <strong>"Guardar Cambios"</strong> para aplicar los cambios.</span></div>
+            <ul class="mt-2">
+                <li>Si el slide tiene una <strong>Descripción</strong> rellenada, aparece el botón <strong>"Leer más"</strong> sobre la imagen en el banner, que lleva a una página de detalle.</li>
+                <li>La imagen se guarda automáticamente al subirla; los textos con <strong>"Guardar Cambios"</strong>.</li>
+            </ul>
+        </div>
     </div>
 
     <!-- ========== REPORTES ========== -->
@@ -380,6 +406,30 @@ ob_start();
             </ul>
             <div class="paso"><span class="paso-num">1</span><span class="paso-text">Aplique los <strong>filtros</strong> deseados y haga clic en <strong>"Filtrar"</strong>.</span></div>
             <div class="paso"><span class="paso-num">2</span><span class="paso-text">Haga clic en <strong>"Excel"</strong> o <strong>"PDF"</strong> para exportar.</span></div>
+        </div>
+    </div>
+
+    <!-- ========== SUGERENCIAS Y CONTACTO ========== -->
+    <div class="ayuda-seccion" id="sec-sugerencias">
+        <div class="section-card">
+            <h5><i class="fas fa-comments"></i> Sugerencias y Mensajes de Contacto</h5>
+            <p>Consulte y gestione los mensajes enviados desde el sitio web público, tanto las sugerencias como las solicitudes de contacto.</p>
+        </div>
+
+        <div class="section-card">
+            <h5><i class="fas fa-lightbulb"></i> Sugerencias</h5>
+            <div class="paso"><span class="paso-num">1</span><span class="paso-text">Acceda a <strong>Sugerencias y Contacto → Sugerencias</strong>.</span></div>
+            <div class="paso"><span class="paso-num">2</span><span class="paso-text">Filtre por <strong>palabra clave</strong> o por <strong>estado</strong> (Nuevo, Leído, Respondido).</span></div>
+            <div class="paso"><span class="paso-num">3</span><span class="paso-text">Seleccione una sugerencia para leer su contenido y actualizar su estado.</span></div>
+            <p class="mt-2 text-muted small">El contador junto a "Sugerencias y Contacto" en el menú muestra el total de sugerencias pendientes por atender.</p>
+        </div>
+
+        <div class="section-card">
+            <h5><i class="fas fa-envelope"></i> Mensajes de Contacto</h5>
+            <div class="paso"><span class="paso-num">1</span><span class="paso-text">Acceda a <strong>Sugerencias y Contacto → Mensajes de Contacto</strong>.</span></div>
+            <div class="paso"><span class="paso-num">2</span><span class="paso-text">Filtre por <strong>palabra clave</strong> o por <strong>estado</strong> (Nuevo, Leído, Respondido).</span></div>
+            <div class="paso"><span class="paso-num">3</span><span class="paso-text">Abra un mensaje para ver los datos del remitente y su contenido.</span></div>
+            <div class="paso"><span class="paso-num">4</span><span class="paso-text">Cambie el estado a <strong>Leído</strong> o <strong>Respondido</strong> cuando lo atienda.</span></div>
         </div>
     </div>
 
@@ -486,6 +536,36 @@ ob_start();
             </button>
             <div class="faq-answer">
                 <p>Haga clic en el botón con el ícono de <strong>sol ☀️</strong> o <strong>luna 🌙</strong> ubicado en la parte superior del sidebar de navegación. Su preferencia se guarda en el navegador para futuras sesiones.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                ¿Cómo cambio la imagen del banner de la página de inicio?
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>Vaya a <strong>Paneles → Carrusel</strong>, en el slide deseado haga clic en <strong>"Subir/Cambiar"</strong>, seleccione la imagen (JPG, PNG o WebP, máximo 5 MB) y presione <strong>"Guardar Cambios"</strong>. La imagen se actualiza en el banner de la página de inicio.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                ¿Cómo agrego el botón "Leer más" en un slide del banner?
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>El botón <strong>"Leer más"</strong> aparece automáticamente sobre la imagen de un slide cuando su campo <strong>Descripción</strong> contiene texto. Complete la descripción en <strong>Paneles → Carrusel</strong> y guarde los cambios.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                ¿Dónde veo las sugerencias enviadas desde el sitio web?
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>Acceda a <strong>Sugerencias y Contacto → Sugerencias</strong>. Allí puede filtrar y cambiar el estado de cada sugerencia (Nuevo, Leído, Respondido).</p>
             </div>
         </div>
     </div>
