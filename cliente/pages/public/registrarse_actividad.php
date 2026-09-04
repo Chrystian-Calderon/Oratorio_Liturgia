@@ -2,11 +2,20 @@
 require_once appPath('servidor/inscripcion/registrar.php');
 
 $pageTitle = 'Inscripción | ' . htmlspecialchars($actividad['nombre_actividad']);
-$pageStyles = ['cliente/assets/css/registrarse_actividad.css'
+$pageStyles = ['cliente/assets/css/registrarse_actividad.css', 'cliente/assets/css/notificacion.css'
 ];
 ?>
 
 <?php ob_start(); ?>
+
+<?php
+if (isset($_SESSION['notificacion'])) {
+    $notificacion = $_SESSION['notificacion'];
+    require_once appPath('cliente/components/Notificacion.php');
+    mostrarNotificacion($notificacion['mensaje'], $notificacion['tipo']);
+    unset($_SESSION['notificacion']);
+}
+?>
 
 <!-- Encabezado -->
 <header class="page-header">
@@ -197,6 +206,8 @@ $pageStyles = ['cliente/assets/css/registrarse_actividad.css'
         </div>
     </div>
 </main>
+
+<script src="<?= url('cliente/assets/js/notificacion.js') ?>"></script>
 
 <?php
 $content = ob_get_clean();

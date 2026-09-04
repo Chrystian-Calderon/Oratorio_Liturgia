@@ -22,15 +22,21 @@ $observacion = trim($_POST['observacion'] ?? '');
 // ==========================================================
 
 if ($id_actividad <= 0) {
-    die("Actividad no válida.");
+    $_SESSION['notificacion'] = ['mensaje' => 'Actividad no válida.', 'tipo' => 'error'];
+    header("Location: " . url('/ver-actividades'));
+    exit;
 }
 
 if ($nombre === '' || $apellidos === '' || $correo === '' || $ci === '') {
-    die("Complete todos los campos obligatorios.");
+    $_SESSION['notificacion'] = ['mensaje' => 'Complete todos los campos obligatorios.', 'tipo' => 'error'];
+    header("Location: " . url('/inscripcion/registrar?id=' . $id_actividad));
+    exit;
 }
 
 if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-    die("El correo electrónico no es válido.");
+    $_SESSION['notificacion'] = ['mensaje' => 'El correo electrónico no es válido.', 'tipo' => 'error'];
+    header("Location: " . url('/inscripcion/registrar?id=' . $id_actividad));
+    exit;
 }
 
 // ==========================================================
@@ -44,11 +50,15 @@ $actividad = $stmtActividad->get_result()->fetch_assoc();
 $stmtActividad->close();
 
 if (!$actividad) {
-    die("La actividad no existe.");
+    $_SESSION['notificacion'] = ['mensaje' => 'La actividad no existe.', 'tipo' => 'error'];
+    header("Location: " . url('/ver-actividades'));
+    exit;
 }
 
 if ($actividad['estado'] !== 'Activo') {
-    die("La actividad no está disponible.");
+    $_SESSION['notificacion'] = ['mensaje' => 'La actividad no está disponible.', 'tipo' => 'error'];
+    header("Location: " . url('/detalle-actividad?id=' . $id_actividad));
+    exit;
 }
 
 // ==========================================================
@@ -58,6 +68,7 @@ if ($actividad['estado'] !== 'Activo') {
 $cupoDisponible = (int)$actividad['cupo_disponible'];
 
 if ($cupoDisponible <= 0) {
+    $_SESSION['notificacion'] = ['mensaje' => 'Lo sentimos, los cupos para esta actividad están agotados.', 'tipo' => 'error'];
     header("Location: " . url('/detalle-actividad?id=' . $id_actividad));
     exit;
 }
@@ -92,7 +103,9 @@ if ($personaPorCI) {
         $stmtInsert->bind_param("ssssss", $nombre, $apellidos, $ci, $correo, $telefono, $passwordHash);
 
         if (!$stmtInsert->execute()) {
-            die("Error al registrar persona: " . $stmtInsert->error);
+            $_SESSION['notificacion'] = ['mensaje' => 'Error al registrar la información. Inténtalo de nuevo.', 'tipo' => 'error'];
+            header("Location: " . url('/inscripcion/registrar?id=' . $id_actividad));
+            exit;
         }
 
         $id_persona = $conexion->insert_id;
@@ -111,6 +124,7 @@ $inscripcionExistente = $stmtExiste->get_result()->fetch_assoc();
 $stmtExiste->close();
 
 if ($inscripcionExistente) {
+    $_SESSION['notificacion'] = ['mensaje' => 'Ya te encuentras inscrito en esta actividad.', 'tipo' => 'warning'];
     header("Location: " . url('/detalle-actividad?id=' . $id_actividad));
     exit;
 }
@@ -131,7 +145,9 @@ $stmtIns = $conexion->prepare("INSERT INTO inscripcion (id_actividad, id_persona
 $stmtIns->bind_param("iiisssssis", $id_actividad, $id_persona, $id_pago, $cumple_requisitos, $estado, $fecha_inscripcion, $fecha_actualizacion, $observacion, $asistencia, $calificacion);
 
 if (!$stmtIns->execute()) {
-    die("Error al registrar inscripción: " . $stmtIns->error);
+    $_SESSION['notificacion'] = ['mensaje' => 'Error al registrar la inscripción. Inténtalo de nuevo.', 'tipo' => 'error'];
+    header("Location: " . url('/inscripcion/registrar?id=' . $id_actividad));
+    exit;
 }
 $stmtIns->close();
 
@@ -152,5 +168,6 @@ $conexion->close();
 // 9. FINALIZAR
 // ==========================================================
 
+$_SESSION['notificacion'] = ['mensaje' => '¡Inscripción realizada con éxito!', 'tipo' => 'success'];
 header("Location: " . url('/detalle-actividad?id=' . $id_actividad));
 exit;

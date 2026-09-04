@@ -2,8 +2,15 @@
 require_once appPath('servidor/actividades/detalle.php');
 
 $pageTitle = 'Detalle de Actividad';
-$pageStyles = ['cliente/assets/css/detalle_actividad.css'];
+$pageStyles = ['cliente/assets/css/detalle_actividad.css', 'cliente/assets/css/notificacion.css'];
 ob_start();
+
+if (isset($_SESSION['notificacion'])) {
+    $notificacion = $_SESSION['notificacion'];
+    require_once appPath('cliente/components/Notificacion.php');
+    mostrarNotificacion($notificacion['mensaje'], $notificacion['tipo']);
+    unset($_SESSION['notificacion']);
+}
 ?>
 
 <section class="container py-5">
@@ -182,6 +189,8 @@ ob_start();
     </div>
 
 </section>
+
+<script src="<?= url('cliente/assets/js/notificacion.js') ?>"></script>
 
 <?php
 $content = ob_get_clean();
