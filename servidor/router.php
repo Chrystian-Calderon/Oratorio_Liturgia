@@ -41,6 +41,18 @@ switch ($uri) {
         );
         break;
 
+    case '/noticias':
+        pagina(
+            'cliente/pages/public/Noticias.php'
+        );
+        break;
+
+    case '/carousel-detalle':
+        pagina(
+            'cliente/pages/public/CarouselDetalle.php'
+        );
+        break;
+
     case '/contacto':
         pagina(
             'cliente/pages/public/Contacto.php'
@@ -582,6 +594,55 @@ switch ($uri) {
     case '/perfil/actualizar':
         despachar($method, [
             'PUT' => 'servidor/perfil/actualizar.php',
+        ]);
+        break;
+
+    // sugerencias y contacto
+    case '/sugerencias':
+        pagina(
+            'cliente/pages/admin/Sugerencias.php'
+        );
+        break;
+
+    case '/sugerencias/guardar':
+        despachar($method, [
+            'POST' => 'servidor/sugerencias/guardar.php',
+        ]);
+        break;
+
+    case '/sugerencias/listar':
+        despachar($method, [
+            'GET' => 'servidor/sugerencias/listar.php',
+        ]);
+        break;
+
+    case '/sugerencias/contador':
+        despachar($method, [
+            'GET' => 'servidor/sugerencias/contador.php',
+        ]);
+        break;
+
+    case '/sugerencias/actualizar-estado':
+        despachar($method, [
+            'PUT' => 'servidor/sugerencias/actualizar_estado.php',
+        ]);
+        break;
+
+    case '/contacto-admin':
+        pagina(
+            'cliente/pages/admin/ContactoAdmin.php'
+        );
+        break;
+
+    case '/contacto/guardar':
+        despachar($method, [
+            'POST' => 'servidor/contacto/guardar.php',
+        ]);
+        break;
+
+    case '/inicio-eventos-data':
+        despachar($method, [
+            'GET' => 'servidor/inicio/eventos.php',
         ]);
         break;
 

@@ -208,6 +208,34 @@ function renderSidebar(): void {
                 Ayuda
             </a>
         </li>
+        <!-- ================= SUGERENCIAS Y CONTACTO ================= -->
+        <li class="has-submenu">
+            <div
+                class="submenu-toggle"
+                aria-expanded="false"
+            >
+                <span>
+                    <i class="fas fa-comments me-2"></i>
+                    Sugerencias y Contacto
+                    <span class="badge-notification" id="badgeSugerencias" style="display: none;"></span>
+                </span>
+                <i class="fas fa-chevron-right rotate-icon"></i>
+            </div>
+            <ul class="submenu list-unstyled">
+                <li>
+                    <a href="<?= url('/sugerencias') ?>">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        Sugerencias
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= url('/contacto-admin') ?>">
+                        <i class="fas fa-envelope me-2"></i>
+                        Mensajes de Contacto
+                    </a>
+                </li>
+            </ul>
+        </li>
         <!-- ================= SEPARADOR ================= -->
         <li class="sidebar-divider"></li>
         <!-- ================= AUDITORÍA ================= -->
@@ -364,6 +392,24 @@ function renderSidebar(): void {
             }
         );
     }
+
+    // ================= BADGE SUGERENCIAS =================
+    function actualizarBadgeSugerencias() {
+        fetch('<?= url('/sugerencias/contador') ?>')
+            .then(function(r) { return r.json(); })
+            .then(function(res) {
+                if (res.success && res.data.total > 0) {
+                    var badge = document.getElementById('badgeSugerencias');
+                    if (badge) {
+                        badge.textContent = res.data.total;
+                        badge.style.display = 'inline';
+                    }
+                }
+            })
+            .catch(function() {});
+    }
+    actualizarBadgeSugerencias();
+    setInterval(actualizarBadgeSugerencias, 30000);
 })();
 </script>
 <?php

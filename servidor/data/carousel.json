@@ -5,6 +5,7 @@
             "id": 1,
             "titulo": "Este espacio es para ti",
             "subtitulo": "Un espacio de fe, comunidad y crecimiento espiritual.",
+            "descripcion": "La Pastoral Universitaria de la USB es un espacio abierto a todos los estudiantes y miembros de la comunidad. Aquí encontrarás acompañamiento espiritual, charlas de formación, grupos de oración y muchas actividades para crecer en la fe y en comunidad. Te esperamos con los brazos abiertos en la Capilla Universitaria y en nuestra oficina de Pastoral.",
             "imagen": "img1.jpg",
             "activo": true
         },
@@ -12,6 +13,7 @@
             "id": 2,
             "titulo": "Formación Sacramental",
             "subtitulo": "Fortalece tu vida espiritual con nosotros.",
+            "descripcion": "Preparamos a jóvenes y adultos para recibir los sacramentos de iniciación cristiana: Bautismo, Primera Comunión y Confirmación. Nuestros cursos combinan formación doctrinal, acompañamiento personal y encuentros de integración para vivir una experiencia de fe profunda y comunitaria. ¡Inscríbete y comienza tu camino!",
             "imagen": "img2.jpg",
             "activo": true
         },
@@ -19,6 +21,7 @@
             "id": 3,
             "titulo": "Formación Sacramental",
             "subtitulo": "Fortalece tu vida espiritual.",
+            "descripcion": "",
             "imagen": "img3.jpg",
             "activo": false
         },
@@ -26,6 +29,7 @@
             "id": 4,
             "titulo": "Eventos Culturales",
             "subtitulo": "Vive nuestras tradiciones y cultura.",
+            "descripcion": "A lo largo del año celebramos diversas actividades culturales: festivales de música sacra, exposiciones, ferias, conciertos y celebraciones de nuestras tradiciones. Son espacios de encuentro donde la fe y la cultura se unen para enriquecer la vida universitaria y comunitaria.",
             "imagen": "slide_4_1788368922.jpg",
             "activo": true
         }

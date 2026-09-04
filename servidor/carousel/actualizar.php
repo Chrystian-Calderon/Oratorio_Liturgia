@@ -17,6 +17,7 @@ if (!$input || !isset($input['id'])) {
 $id = (int) $input['id'];
 $titulo = trim($input['titulo'] ?? '');
 $subtitulo = trim($input['subtitulo'] ?? '');
+$descripcion = trim($input['descripcion'] ?? '');
 $activo = $input['activo'] ?? true;
 
 if ($titulo === '') {
@@ -35,6 +36,7 @@ foreach ($datos['slides'] as &$slide) {
     if ((int) $slide['id'] === $id) {
         $slide['titulo'] = $titulo;
         $slide['subtitulo'] = $subtitulo;
+        $slide['descripcion'] = $descripcion;
         $slide['activo'] = (bool) $activo;
         $encontrado = true;
         break;

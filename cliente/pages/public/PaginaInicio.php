@@ -3,6 +3,7 @@
 $pageStyles = [
     'cliente/assets/css/pagina_inicio.css',
     'cliente/assets/css/carousel.css',
+    'cliente/assets/css/inicio-eventos-wrapper.css',
 ];
 ob_start();
 ?>
@@ -30,6 +31,9 @@ ob_start();
         </a>
 
         <!-- Botón de Sugerencias -->
+        <button type="button" class="floating-btn btn-suggestion" title="Sugerencias" data-bs-toggle="modal" data-bs-target="#sugerenciaModal">
+            <i class="fas fa-lightbulb"></i>
+        </button>
     </div>
 
     <!-- =========================================================
@@ -78,6 +82,11 @@ if (!empty($carouselSlides)):
                     <div class="carousel-caption custom-caption" style="left: 50%; transform:translateX(-50%)">
                         <h1 class="display-4 fw-bold"><?= htmlspecialchars($slide['titulo']) ?></h1>
                         <p class="lead"><?= htmlspecialchars($slide['subtitulo']) ?></p>
+                        <?php if (!empty($slide['descripcion'])): ?>
+                            <a href="<?= url('/carousel-detalle?id=' . (int) $slide['id']) ?>" class="btn btn-warning btn-lg rounded-pill px-4 shadow-sm mt-3">
+                                <i class="fas fa-book-open me-2"></i>Leer más
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -125,7 +134,7 @@ if (!empty($carouselSlides)):
                         </a>
 
                         <!--Ver Noticias -->
-                        <a href="<?= url('/ver-eventos') ?>" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
+                        <a href="<?= url('/noticias') ?>" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
                             <i class="fas fa-newspaper me-2"></i>
                             Ver Noticias
                         </a>
@@ -380,55 +389,14 @@ if (!empty($carouselSlides)):
         <div class="container">
             <h2 class="text-center fw-bold border-bottom border-primary pb-2 mb-5">Próximos Eventos</h2>
             <p class="text-center mb-5 lead">No te pierdas nuestras próximas actividades y celebraciones especiales.</p>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">Retiro Espiritual</h5>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <p class="card-text"><i class="bi bi-calendar-event me-2"></i>15-17 de Noviembre, 2023</p>
-                            <p class="card-text"><i class="bi bi-clock me-2"></i>Viernes 6:00 PM - Domingo 2:00 PM</p>
-                            <p class="card-text"><i class="bi bi-geo-alt me-2"></i>Casa de Retiros San José</p>
-                            <p class="card-text flex-grow-1">Un fin de semana dedicado a la reflexión, oración y renovación espiritual. Incluye charlas, momentos de silencio y celebración eucarística.</p>
-                            <div class="mt-auto">
-                                <div class="d-grid"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inscripcionModal" data-evento="Retiro Espiritual">Inscribirse</button></div>
-                            </div>
-                        </div>
+            <div class="eventos-wrapper">
+                <button class="btn btn-primary eventos-control eventos-prev" type="button" aria-label="Evento anterior"><i class="bi bi-chevron-left"></i></button>
+                <div class="eventos-scroll" id="eventosScroll" data-url="<?= url('/inicio-eventos-data') ?>">
+                    <div class="eventos-cargando text-center w-100 py-4">
+                        <div class="spinner-border text-primary" role="status"></div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow">
-                        <div class="card-header bg-success text-white">
-                            <h5 class="mb-0">Concierto de Música Sacra</h5>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <p class="card-text"><i class="bi bi-calendar-event me-2"></i>25 de Noviembre, 2023</p>
-                            <p class="card-text"><i class="bi bi-clock me-2"></i>7:00 PM - 9:00 PM</p>
-                            <p class="card-text"><i class="bi bi-geo-alt me-2"></i>Iglesia Principal</p>
-                            <p class="card-text flex-grow-1">Disfruta de un concierto especial con coros locales interpretando música sacra clásica y contemporánea. Entrada gratuita.</p>
-                            <div class="mt-auto">
-                                <div class="d-grid"><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inscripcionModal" data-evento="Concierto de Música Sacra">Confirmar Asistencia</button></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow">
-                        <div class="card-header bg-warning text-dark">
-                            <h5 class="mb-0">Taller de Liturgia</h5>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <p class="card-text"><i class="bi bi-calendar-event me-2"></i>2 de Diciembre, 2026</p>
-                            <p class="card-text"><i class="bi bi-clock me-2"></i>9:00 AM - 1:00 PM</p>
-                            <p class="card-text"><i class="bi bi-geo-alt me-2"></i>Salón Parroquial</p>
-                            <p class="card-text flex-grow-1">Taller formativo para ministros de liturgia, lectores y todos aquellos interesados en profundizar en el significado de la liturgia.</p>
-                            <div class="mt-auto">
-                                <div class="d-grid"><button class="btn btn-warning text-dark" data-bs-toggle="modal" data-bs-target="#inscripcionModal" data-evento="Taller de Liturgia">Inscribirse</button></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button class="btn btn-primary eventos-control eventos-next" type="button" aria-label="Siguiente evento"><i class="bi bi-chevron-right"></i></button>
             </div>
         </div>
     </section>
@@ -645,15 +613,16 @@ if (!empty($carouselSlides)):
                 <div class="col-lg-8 mx-auto">
                     <div class="bg-white text-dark rounded-3 p-4 shadow">
                         <h4 class="text-center mb-4">Envíanos un mensaje</h4>
-                        <form>
+                        <form id="formContactoInicio">
                             <div class="row g-3">
-                                <div class="col-md-6"><input type="text" class="form-control" placeholder="Tu nombre" required></div>
-                                <div class="col-md-6"><input type="email" class="form-control" placeholder="Tu correo electrónico" required></div>
-                                <div class="col-12"><input type="text" class="form-control" placeholder="Asunto"></div>
-                                <div class="col-12"><textarea class="form-control" rows="4" placeholder="Tu mensaje" required></textarea></div>
-                                <div class="col-12"><button type="submit" class="btn btn-primary w-100 py-2">Enviar Mensaje</button></div>
+                                <div class="col-md-6"><input type="text" class="form-control" id="cNombre" placeholder="Tu nombre" required></div>
+                                <div class="col-md-6"><input type="email" class="form-control" id="cEmail" placeholder="Tu correo electrónico" required></div>
+                                <div class="col-12"><input type="text" class="form-control" id="cAsunto" placeholder="Asunto"></div>
+                                <div class="col-12"><textarea class="form-control" id="cMensaje" rows="4" placeholder="Tu mensaje" required></textarea></div>
+                                <div class="col-12"><button type="submit" class="btn btn-primary w-100 py-2" id="btnEnviarContactoInicio"><i class="fas fa-paper-plane me-2"></i>Enviar Mensaje</button></div>
                             </div>
                         </form>
+                        <div id="contactoInicioAlert" class="mt-3" style="display: none;"></div>
                     </div>
                 </div>
             </div>
@@ -813,8 +782,56 @@ if (!empty($carouselSlides)):
         </div>
     </div>
 
-    <script src="<?= url('cliente/assets/js/mini_estadisticas.js') ?>"></script>
+    <!-- Modal Sugerencias -->
+    <div class="modal fade" id="sugerenciaModal" tabindex="-1" aria-labelledby="sugerenciaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 overflow-hidden">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title fw-bold" id="sugerenciaModalLabel"><i class="fas fa-lightbulb me-2"></i>Enviar Sugerencia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted mb-3">Tu opinión nos ayuda a mejorar. Comparte tus sugerencias con nosotros.</p>
+                    <form id="formSugerencia">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="sugNombre" class="form-label">Nombre *</label>
+                                <input type="text" class="form-control" id="sugNombre" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="sugApellido" class="form-label">Apellido *</label>
+                                <input type="text" class="form-control" id="sugApellido" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="sugCorreo" class="form-label">Correo electrónico *</label>
+                                <input type="email" class="form-control" id="sugCorreo" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="sugTelefono" class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" id="sugTelefono">
+                            </div>
+                            <div class="col-12">
+                                <label for="sugAsunto" class="form-label">Asunto *</label>
+                                <input type="text" class="form-control" id="sugAsunto" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="sugMensaje" class="form-label">Mensaje *</label>
+                                <textarea class="form-control" id="sugMensaje" rows="4" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-warning fw-bold w-100 py-2">
+                                    <i class="fas fa-paper-plane me-2"></i>Enviar Sugerencia
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script src="<?= url('cliente/assets/js/mini_estadisticas.js') ?>"></script>
+    <script src="<?= url('cliente/assets/js/inicio-eventos-wrapper.js') ?>"></script>
     <!-- CHATBOT-->
     <script>
         (function() {
@@ -877,7 +894,114 @@ if (!empty($carouselSlides)):
                         entry.target.style.transform = 'translateY(0)';
                         observer.unobserve(entry.target);
                     }
+        });
+
+        // Formulario de sugerencias
+        var formSugerencia = document.getElementById('formSugerencia');
+        if (formSugerencia) {
+            formSugerencia.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var btn = this.querySelector('button[type="submit"]');
+                var originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Enviando...';
+
+                var data = {
+                    nombre: document.getElementById('sugNombre').value.trim(),
+                    apellido: document.getElementById('sugApellido').value.trim(),
+                    correo: document.getElementById('sugCorreo').value.trim(),
+                    telefono: document.getElementById('sugTelefono').value.trim(),
+                    asunto: document.getElementById('sugAsunto').value.trim(),
+                    mensaje: document.getElementById('sugMensaje').value.trim()
+                };
+
+                fetch('<?= url('/sugerencias/guardar') ?>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (res.success) {
+                        var modal = bootstrap.Modal.getInstance(document.getElementById('sugerenciaModal'));
+                        modal.hide();
+                        formSugerencia.reset();
+                        showToast('Sugerencia enviada exitosamente.', 'success');
+                    } else {
+                        showToast(res.message || 'Error al enviar la sugerencia.', 'error');
+                    }
+                })
+                .catch(function() {
+                    showToast('Error de conexión. Intente nuevamente.', 'error');
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
                 });
+            });
+        }
+
+        function showToast(msg, type) {
+            var el = document.createElement('div');
+            el.className = 'alert alert-' + (type === 'error' ? 'danger' : 'success') + ' position-fixed top-0 end-0 m-3 shadow';
+            el.style.zIndex = '9999';
+            el.style.minWidth = '280px';
+            el.innerHTML = msg;
+            document.body.appendChild(el);
+            setTimeout(function() { el.remove(); }, 4000);
+        }
+
+        // Formulario de contacto en inicio
+        var formContactoInicio = document.getElementById('formContactoInicio');
+        if (formContactoInicio) {
+            formContactoInicio.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var btn = document.getElementById('btnEnviarContactoInicio');
+                var originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Enviando...';
+
+                var data = {
+                    nombre: document.getElementById('cNombre').value.trim(),
+                    apellido: '-',
+                    correo: document.getElementById('cEmail').value.trim(),
+                    telefono: '',
+                    asunto: document.getElementById('cAsunto').value.trim() || 'Contacto desde inicio',
+                    mensaje: document.getElementById('cMensaje').value.trim()
+                };
+
+                fetch('<?= url('/contacto/guardar') ?>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    var alertDiv = document.getElementById('contactoInicioAlert');
+                    alertDiv.style.display = 'block';
+                    if (res.success) {
+                        alertDiv.className = 'alert alert-success';
+                        alertDiv.textContent = res.message;
+                        formContactoInicio.reset();
+                    } else {
+                        alertDiv.className = 'alert alert-danger';
+                        alertDiv.textContent = res.message || 'Error al enviar el mensaje.';
+                    }
+                    setTimeout(function() { alertDiv.style.display = 'none'; }, 5000);
+                })
+                .catch(function() {
+                    var alertDiv = document.getElementById('contactoInicioAlert');
+                    alertDiv.style.display = 'block';
+                    alertDiv.className = 'alert alert-danger';
+                    alertDiv.textContent = 'Error de conexión. Intente nuevamente.';
+                    setTimeout(function() { alertDiv.style.display = 'none'; }, 5000);
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                });
+            });
+        }
             }, {
                 threshold: 0.1
             });

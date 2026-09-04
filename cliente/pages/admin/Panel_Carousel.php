@@ -23,8 +23,8 @@ ob_start();
 
     <p class="text-muted mb-4">
         <i class="fas fa-info-circle me-1"></i>
-        Edite los títulos, subtítulos y imágenes del carrusel principal.
-        Los cambios se reflejan en la página de inicio.
+        Edite los títulos, subtítulos, descripciones e imágenes del carrusel principal.
+        Los cambios se reflejan en la página de inicio y en su página de detalle.
     </p>
 
     <div class="row" id="slidesContainer">
@@ -88,6 +88,11 @@ function renderSlides() {
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Subtítulo</label>
                         <input type="text" class="form-control slide-subtitulo" data-id="${s.id}" value="${escHtml(s.subtitulo)}" maxlength="200">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Descripción</label>
+                        <textarea class="form-control slide-descripcion" data-id="${s.id}" rows="4" maxlength="1000">${escHtml(s.descripcion || '')}</textarea>
+                        <div class="form-text">Texto que se muestra en la página de detalle al pulsar "Leer más".</div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <label class="form-label mb-0 fw-semibold">Activo</label>
@@ -164,6 +169,7 @@ function guardarTodos() {
     const promises = slidesData.map(s => {
         const titulo = document.querySelector('.slide-titulo[data-id="' + s.id + '"]').value.trim();
         const subtitulo = document.querySelector('.slide-subtitulo[data-id="' + s.id + '"]').value.trim();
+        const descripcion = document.querySelector('.slide-descripcion[data-id="' + s.id + '"]').value.trim();
         const activo = document.querySelector('.slide-activo[data-id="' + s.id + '"]').checked;
 
         if (!titulo) {
@@ -174,7 +180,7 @@ function guardarTodos() {
         return fetch('<?= url('/panel-carousel/actualizar') ?>', {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id: s.id, titulo, subtitulo, activo})
+            body: JSON.stringify({id: s.id, titulo, subtitulo, descripcion, activo})
         }).then(r => r.json());
     });
 

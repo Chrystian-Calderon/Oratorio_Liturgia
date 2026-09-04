@@ -65,7 +65,7 @@ $pageStyles = [
                         <h3 class="form-title">Envíanos un mensaje</h3>
                         <p>Completa el formulario y te contactaremos a la brevedad.</p>
 
-                        <form action="https://formspree.io/f/maqqoeby" method="POST">
+                        <form id="formContacto">
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="nombre" class="form-label">Nombre *</label>
@@ -110,11 +110,14 @@ $pageStyles = [
                             </div>
 
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary-custom">Enviar Mensaje</button>
+                                <button type="submit" class="btn btn-primary-custom" id="btnEnviarContacto">
+                                    <i class="fas fa-paper-plane me-2"></i>Enviar Mensaje
+                                </button>
                             </div>
 
                             <p class="text-muted mt-3" style="font-size: 0.85rem;">* Campos obligatorios</p>
                         </form>
+                        <div id="contactoAlert" class="mt-3" style="display: none;"></div>
                     </div>
                 </div>
             </div>
@@ -128,6 +131,61 @@ $pageStyles = [
             <p class="mb-0">&copy; 2026. Todos los derechos son reservados.</p>
         </div>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var formContacto = document.getElementById('formContacto');
+        var alertDiv = document.getElementById('contactoAlert');
+
+        if (formContacto) {
+            formContacto.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var btn = document.getElementById('btnEnviarContacto');
+                var originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Enviando...';
+
+                var data = {
+                    nombre: document.getElementById('nombre').value.trim(),
+                    apellido: document.getElementById('apellido').value.trim(),
+                    correo: document.getElementById('email').value.trim(),
+                    telefono: document.getElementById('telefono').value.trim(),
+                    asunto: document.getElementById('asunto').value,
+                    mensaje: document.getElementById('mensaje').value.trim()
+                };
+
+                fetch('<?= url('/contacto/guardar') ?>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    alertDiv.style.display = 'block';
+                    if (res.success) {
+                        alertDiv.className = 'alert alert-success';
+                        alertDiv.textContent = res.message;
+                        formContacto.reset();
+                    } else {
+                        alertDiv.className = 'alert alert-danger';
+                        alertDiv.textContent = res.message || 'Error al enviar el mensaje.';
+                    }
+                    setTimeout(function() { alertDiv.style.display = 'none'; }, 5000);
+                })
+                .catch(function() {
+                    alertDiv.style.display = 'block';
+                    alertDiv.className = 'alert alert-danger';
+                    alertDiv.textContent = 'Error de conexión. Intente nuevamente.';
+                    setTimeout(function() { alertDiv.style.display = 'none'; }, 5000);
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                });
+            });
+        }
+    });
+    </script>
 <?php
 $content = ob_get_clean();
 require appPath('cliente/layouts/PublicLayout.php');

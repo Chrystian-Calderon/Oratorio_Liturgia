@@ -1,0 +1,86 @@
+.eventos-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.eventos-scroll {
+  display: flex;
+  gap: 1.5rem;
+
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scroll-behavior: smooth;
+
+  padding: 1rem 0.5rem;
+
+  scrollbar-width: none;
+
+  cursor: grab;
+}
+
+.eventos-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.eventos-scroll.dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.evento-item {
+  flex: 0 0 calc(33.333% - 1rem);
+}
+
+.evento-item .card {
+  width: 100%;
+}
+
+.eventos-control {
+  position: absolute;
+  z-index: 10;
+
+  width: 45px;
+  height: 45px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eventos-prev {
+  left: -20px;
+}
+
+.eventos-next {
+  right: -20px;
+}
+
+@media (max-width: 991px) {
+
+  .evento-item {
+    flex: 0 0 calc(50% - 0.75rem);
+  }
+
+}
+
+@media (max-width: 767px) {
+
+  .evento-item {
+    flex: 0 0 85%;
+  }
+
+  .eventos-prev {
+    left: 5px;
+  }
+
+  .eventos-next {
+    right: 5px;
+  }
+
+}
