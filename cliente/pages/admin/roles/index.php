@@ -27,7 +27,6 @@ ob_start();
     <table class="table table-hover table-bordered align-middle text-center">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Rol</th>
           <th>Permisos</th>
           <th>Estado</th>
@@ -39,12 +38,11 @@ ob_start();
       <tbody>
         <?php if (empty($roles)): ?>
           <tr>
-            <td colspan="7" class="text-center text-muted py-4">No hay roles registrados.</td>
+            <td colspan="6" class="text-center text-muted py-4">No hay roles registrados.</td>
           </tr>
         <?php else: ?>
           <?php foreach ($roles as $r): ?>
             <tr id="rol-<?= (int) $r['id_usuario'] ?>">
-              <td><?= (int) $r['id_usuario'] ?></td>
               <td><span class="badge bg-primary"><?= htmlspecialchars($r['rol']) ?></span></td>
               <td><?= htmlspecialchars($r['permisos'] ?? '—') ?></td>
               <td>

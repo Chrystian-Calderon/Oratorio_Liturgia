@@ -26,6 +26,13 @@ function renderSidebar(): void {
                 Dashboard
             </a>
         </li>
+        <!-- ================= PÁGINA DE INICIO ================= -->
+        <li>
+            <a href="<?= url('/inicio') ?>" target="_blank">
+                <i class="fas fa-home me-2"></i>
+                Página de Inicio
+            </a>
+        </li>
         <!-- ================= GESTIÓN ================= -->
         <li class="has-submenu">
             <div

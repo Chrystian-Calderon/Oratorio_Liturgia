@@ -7,6 +7,7 @@
 --
 -- REQUISITO: Antes de cada operación, ejecutar:
 --   SET @audit_user_id = <id_usuario>;
+--   SET @audit_usuario_nombre = '<nombre del usuario>';
 -- desde PHP para que el trigger conozca el usuario.
 -- ================================================
 
@@ -29,7 +30,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_nuevos
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'INSERT',
         'personas',
         NEW.id_persona,
@@ -74,7 +75,7 @@ BEGIN
             valores_anteriores, valores_nuevos
         ) VALUES (
             @audit_user_id,
-            USER(),
+            @audit_usuario_nombre,
             'UPDATE',
             'personas',
             OLD.id_persona,
@@ -135,7 +136,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_anteriores
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'DELETE',
         'personas',
         OLD.id_persona,
@@ -173,7 +174,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_nuevos
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'INSERT',
         'usuarios_sistema',
         NEW.id_usuario,
@@ -203,7 +204,7 @@ BEGIN
             valores_anteriores, valores_nuevos
         ) VALUES (
             @audit_user_id,
-            USER(),
+            @audit_usuario_nombre,
             'UPDATE',
             'usuarios_sistema',
             OLD.id_usuario,
@@ -237,7 +238,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_anteriores
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'DELETE',
         'usuarios_sistema',
         OLD.id_usuario,
@@ -267,7 +268,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_nuevos
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'INSERT',
         'pagos',
         NEW.id_pago,
@@ -303,7 +304,7 @@ BEGIN
             valores_anteriores, valores_nuevos
         ) VALUES (
             @audit_user_id,
-            USER(),
+            @audit_usuario_nombre,
             'UPDATE',
             'pagos',
             OLD.id_pago,
@@ -346,7 +347,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_anteriores
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'DELETE',
         'pagos',
         OLD.id_pago,
@@ -379,7 +380,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_nuevos
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'INSERT',
         'actividades',
         NEW.id_actividad,
@@ -420,7 +421,7 @@ BEGIN
             valores_anteriores, valores_nuevos
         ) VALUES (
             @audit_user_id,
-            USER(),
+            @audit_usuario_nombre,
             'UPDATE',
             'actividades',
             OLD.id_actividad,
@@ -472,7 +473,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_anteriores
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'DELETE',
         'actividades',
         OLD.id_actividad,
@@ -506,7 +507,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_nuevos
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'INSERT',
         'inscripcion',
         NEW.id_inscripcion,
@@ -543,7 +544,7 @@ BEGIN
             valores_anteriores, valores_nuevos
         ) VALUES (
             @audit_user_id,
-            USER(),
+            @audit_usuario_nombre,
             'UPDATE',
             'inscripcion',
             OLD.id_inscripcion,
@@ -592,7 +593,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_anteriores
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'DELETE',
         'inscripcion',
         OLD.id_inscripcion,
@@ -624,7 +625,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_nuevos
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'INSERT',
         'eventos',
         NEW.id_evento,
@@ -656,7 +657,7 @@ BEGIN
             valores_anteriores, valores_nuevos
         ) VALUES (
             @audit_user_id,
-            USER(),
+            @audit_usuario_nombre,
             'UPDATE',
             'eventos',
             OLD.id_evento,
@@ -693,7 +694,7 @@ BEGIN
         registro_id, fecha_hora, descripcion, valores_anteriores
     ) VALUES (
         @audit_user_id,
-        USER(),
+        @audit_usuario_nombre,
         'DELETE',
         'eventos',
         OLD.id_evento,

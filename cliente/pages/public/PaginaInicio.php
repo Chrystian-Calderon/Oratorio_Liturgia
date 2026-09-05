@@ -892,114 +892,7 @@ if (!empty($carouselSlides)):
                         entry.target.style.transform = 'translateY(0)';
                         observer.unobserve(entry.target);
                     }
-        });
-
-        // Formulario de sugerencias
-        var formSugerencia = document.getElementById('formSugerencia');
-        if (formSugerencia) {
-            formSugerencia.addEventListener('submit', function(e) {
-                e.preventDefault();
-                var btn = this.querySelector('button[type="submit"]');
-                var originalText = btn.innerHTML;
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Enviando...';
-
-                var data = {
-                    nombre: document.getElementById('sugNombre').value.trim(),
-                    apellido: document.getElementById('sugApellido').value.trim(),
-                    correo: document.getElementById('sugCorreo').value.trim(),
-                    telefono: document.getElementById('sugTelefono').value.trim(),
-                    asunto: document.getElementById('sugAsunto').value.trim(),
-                    mensaje: document.getElementById('sugMensaje').value.trim()
-                };
-
-                fetch('<?= url('/sugerencias/guardar') ?>', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
-                    if (res.success) {
-                        var modal = bootstrap.Modal.getInstance(document.getElementById('sugerenciaModal'));
-                        modal.hide();
-                        formSugerencia.reset();
-                        showToast('Sugerencia enviada exitosamente.', 'success');
-                    } else {
-                        showToast(res.message || 'Error al enviar la sugerencia.', 'error');
-                    }
-                })
-                .catch(function() {
-                    showToast('Error de conexión. Intente nuevamente.', 'error');
-                })
-                .finally(function() {
-                    btn.disabled = false;
-                    btn.innerHTML = originalText;
                 });
-            });
-        }
-
-        function showToast(msg, type) {
-            var el = document.createElement('div');
-            el.className = 'alert alert-' + (type === 'error' ? 'danger' : 'success') + ' position-fixed top-0 end-0 m-3 shadow';
-            el.style.zIndex = '9999';
-            el.style.minWidth = '280px';
-            el.innerHTML = msg;
-            document.body.appendChild(el);
-            setTimeout(function() { el.remove(); }, 4000);
-        }
-
-        // Formulario de contacto en inicio
-        var formContactoInicio = document.getElementById('formContactoInicio');
-        if (formContactoInicio) {
-            formContactoInicio.addEventListener('submit', function(e) {
-                e.preventDefault();
-                var btn = document.getElementById('btnEnviarContactoInicio');
-                var originalText = btn.innerHTML;
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Enviando...';
-
-                var data = {
-                    nombre: document.getElementById('cNombre').value.trim(),
-                    apellido: '-',
-                    correo: document.getElementById('cEmail').value.trim(),
-                    telefono: '',
-                    asunto: document.getElementById('cAsunto').value.trim() || 'Contacto desde inicio',
-                    mensaje: document.getElementById('cMensaje').value.trim()
-                };
-
-                fetch('<?= url('/contacto/guardar') ?>', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
-                    var alertDiv = document.getElementById('contactoInicioAlert');
-                    alertDiv.style.display = 'block';
-                    if (res.success) {
-                        alertDiv.className = 'alert alert-success';
-                        alertDiv.textContent = res.message;
-                        formContactoInicio.reset();
-                    } else {
-                        alertDiv.className = 'alert alert-danger';
-                        alertDiv.textContent = res.message || 'Error al enviar el mensaje.';
-                    }
-                    setTimeout(function() { alertDiv.style.display = 'none'; }, 5000);
-                })
-                .catch(function() {
-                    var alertDiv = document.getElementById('contactoInicioAlert');
-                    alertDiv.style.display = 'block';
-                    alertDiv.className = 'alert alert-danger';
-                    alertDiv.textContent = 'Error de conexión. Intente nuevamente.';
-                    setTimeout(function() { alertDiv.style.display = 'none'; }, 5000);
-                })
-                .finally(function() {
-                    btn.disabled = false;
-                    btn.innerHTML = originalText;
-                });
-            });
-        }
             }, {
                 threshold: 0.1
             });
@@ -1010,6 +903,113 @@ if (!empty($carouselSlides)):
                 card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 observer.observe(card);
             });
+
+            // Formulario de sugerencias
+            var formSugerencia = document.getElementById('formSugerencia');
+            if (formSugerencia) {
+                formSugerencia.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    var btn = this.querySelector('button[type="submit"]');
+                    var originalText = btn.innerHTML;
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Enviando...';
+
+                    var data = {
+                        nombre: document.getElementById('sugNombre').value.trim(),
+                        apellido: document.getElementById('sugApellido').value.trim(),
+                        correo: document.getElementById('sugCorreo').value.trim(),
+                        telefono: document.getElementById('sugTelefono').value.trim(),
+                        asunto: document.getElementById('sugAsunto').value.trim(),
+                        mensaje: document.getElementById('sugMensaje').value.trim()
+                    };
+
+                    fetch('<?= url('/sugerencias/guardar') ?>', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    })
+                    .then(function(r) { return r.json(); })
+                    .then(function(res) {
+                        if (res.success) {
+                            var modal = bootstrap.Modal.getInstance(document.getElementById('sugerenciaModal'));
+                            modal.hide();
+                            formSugerencia.reset();
+                            showToast('Sugerencia enviada exitosamente.', 'success');
+                        } else {
+                            showToast(res.message || 'Error al enviar la sugerencia.', 'error');
+                        }
+                    })
+                    .catch(function() {
+                        showToast('Error de conexión. Intente nuevamente.', 'error');
+                    })
+                    .finally(function() {
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
+                    });
+                });
+            }
+
+            function showToast(msg, type) {
+                var el = document.createElement('div');
+                el.className = 'alert alert-' + (type === 'error' ? 'danger' : 'success') + ' position-fixed top-0 end-0 m-3 shadow';
+                el.style.zIndex = '9999';
+                el.style.minWidth = '280px';
+                el.innerHTML = msg;
+                document.body.appendChild(el);
+                setTimeout(function() { el.remove(); }, 4000);
+            }
+
+            // Formulario de contacto en inicio
+            var formContactoInicio = document.getElementById('formContactoInicio');
+            if (formContactoInicio) {
+                formContactoInicio.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    var btn = document.getElementById('btnEnviarContactoInicio');
+                    var originalText = btn.innerHTML;
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Enviando...';
+
+                    var data = {
+                        nombre: document.getElementById('cNombre').value.trim(),
+                        apellido: '-',
+                        correo: document.getElementById('cEmail').value.trim(),
+                        telefono: '',
+                        asunto: document.getElementById('cAsunto').value.trim() || 'Contacto desde inicio',
+                        mensaje: document.getElementById('cMensaje').value.trim()
+                    };
+
+                    fetch('<?= url('/contacto/guardar') ?>', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    })
+                    .then(function(r) { return r.json(); })
+                    .then(function(res) {
+                        var alertDiv = document.getElementById('contactoInicioAlert');
+                        alertDiv.style.display = 'block';
+                        if (res.success) {
+                            alertDiv.className = 'alert alert-success';
+                            alertDiv.textContent = res.message;
+                            formContactoInicio.reset();
+                        } else {
+                            alertDiv.className = 'alert alert-danger';
+                            alertDiv.textContent = res.message || 'Error al enviar el mensaje.';
+                        }
+                        setTimeout(function() { alertDiv.style.display = 'none'; }, 5000);
+                    })
+                    .catch(function() {
+                        var alertDiv = document.getElementById('contactoInicioAlert');
+                        alertDiv.style.display = 'block';
+                        alertDiv.className = 'alert alert-danger';
+                        alertDiv.textContent = 'Error de conexión. Intente nuevamente.';
+                        setTimeout(function() { alertDiv.style.display = 'none'; }, 5000);
+                    })
+                    .finally(function() {
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
+                    });
+                });
+            }
         });
     </script>
 <?php

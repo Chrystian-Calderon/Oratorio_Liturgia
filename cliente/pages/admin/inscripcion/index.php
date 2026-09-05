@@ -60,7 +60,7 @@ $basePagina = url('/inscripcion') . (empty($filtros) ? '?pagina=' : '?' . implod
                 <td><?= htmlspecialchars($i['nombre_actividad'] ?? '—') ?></td>
                 <td>
                   <?php if (!empty($i['id_pago'])): ?>
-                    <?= htmlspecialchars($i['pago_concepto'] ?? ('Pago #' . (int) $i['id_pago'])) ?>
+                    <?= htmlspecialchars($i['pago_concepto'] ?? 'Pago registrado') ?>
                     <small class="d-block text-muted"><?= number_format((float) $i['pago_monto'], 2) ?> Bs</small>
                   <?php else: ?>
                     <span class="text-muted">Sin pago</span>

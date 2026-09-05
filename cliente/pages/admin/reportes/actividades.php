@@ -31,9 +31,9 @@ ob_start();
       <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle" id="tablaReporte">
           <thead class="table-primary">
-            <tr><th>ID</th><th>Nombre</th><th>Tipo</th><th>Evento</th><th>Inicio</th><th>Fin</th><th>Inscritos</th><th>Pagos</th><th>Estado</th></tr>
+            <tr><th>Nombre</th><th>Tipo</th><th>Evento</th><th>Inicio</th><th>Fin</th><th>Inscritos</th><th>Pagos</th><th>Estado</th></tr>
           </thead>
-          <tbody><tr><td colspan="9" class="text-center text-muted">Cargando...</td></tr></tbody>
+          <tbody><tr><td colspan="8" class="text-center text-muted">Cargando...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -56,10 +56,10 @@ function cargarReporte(e) {
 }
 function renderTabla() {
   const tbody = document.querySelector('#tablaReporte tbody');
-  if (!datosReporte.length) { tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Sin resultados</td></tr>'; return; }
+  if (!datosReporte.length) { tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">Sin resultados</td></tr>'; return; }
   tbody.innerHTML = datosReporte.map(a => {
     const b = a.estado === 'Activo' ? 'success' : a.estado === 'Completado' ? 'primary' : a.estado === 'Cancelado' ? 'danger' : 'warning';
-    return `<tr><td>${a.id_actividad}</td><td>${a.nombre_actividad}</td><td>${a.tipo_actividad||'—'}</td><td>${a.nombre_evento}</td><td>${a.fecha_inicio}</td><td>${a.fecha_fin}</td><td>${a.total_inscripciones}/${a.cupo_maximo||'∞'}</td><td>${Number(a.total_pagos).toFixed(2)} Bs</td><td><span class="badge bg-${b}">${a.estado}</span></td></tr>`;
+    return `<tr><td>${a.nombre_actividad}</td><td>${a.tipo_actividad||'—'}</td><td>${a.nombre_evento}</td><td>${a.fecha_inicio}</td><td>${a.fecha_fin}</td><td>${a.total_inscripciones}/${a.cupo_maximo||'∞'}</td><td>${Number(a.total_pagos).toFixed(2)} Bs</td><td><span class="badge bg-${b}">${a.estado}</span></td></tr>`;
   }).join('');
 }
 function exportarExcel() {

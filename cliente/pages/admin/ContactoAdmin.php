@@ -69,7 +69,6 @@ ob_start();
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>ID</th>
                             <th>Nombre</th>
                             <th>Correo</th>
                             <th>Asunto</th>
@@ -80,7 +79,7 @@ ob_start();
                         </tr>
                     </thead>
                     <tbody id="tableBody">
-                        <tr><td colspan="8" class="text-center py-4 text-muted"><i class="fas fa-spinner fa-spin me-2"></i>Cargando...</td></tr>
+                        <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fas fa-spinner fa-spin me-2"></i>Cargando...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -154,7 +153,7 @@ ob_start();
     function renderTabla(registros) {
         var tbody = document.getElementById('tableBody');
         if (registros.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-muted">No se encontraron registros</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No se encontraron registros</td></tr>';
             return;
         }
         var html = '';
@@ -162,7 +161,6 @@ ob_start();
             var cls = r.estado === 'Nuevo' ? 'badge-nuevo' : r.estado === 'Leido' ? 'badge-leido' : 'badge-respondido';
             var fecha = r.fecha_creacion ? new Date(r.fecha_creacion).toLocaleDateString('es-BO') : '-';
             html += '<tr>' +
-                '<td>#' + r.id + '</td>' +
                 '<td>' + esc(r.nombre) + ' ' + esc(r.apellido) + '</td>' +
                 '<td>' + esc(r.correo) + '</td>' +
                 '<td>' + esc(r.asunto) + '</td>' +

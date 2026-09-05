@@ -30,9 +30,9 @@ ob_start();
       <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle" id="tablaReporte">
           <thead class="table-primary">
-            <tr><th>ID</th><th>Sacramento</th><th>Solicitante</th><th>Nacimiento</th><th>Lugar</th><th>Padre</th><th>Madre</th><th>Teléfono</th><th>Correo</th><th>Registro</th></tr>
+            <tr><th>Sacramento</th><th>Solicitante</th><th>Nacimiento</th><th>Lugar</th><th>Padre</th><th>Madre</th><th>Teléfono</th><th>Correo</th><th>Registro</th></tr>
           </thead>
-          <tbody><tr><td colspan="10" class="text-center text-muted">Cargando...</td></tr></tbody>
+          <tbody><tr><td colspan="9" class="text-center text-muted">Cargando...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -53,8 +53,8 @@ function cargarReporte(e) {
 }
 function renderTabla() {
   const tbody = document.querySelector('#tablaReporte tbody');
-  if (!datosReporte.length) { tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted">Sin resultados</td></tr>'; return; }
-  tbody.innerHTML = datosReporte.map(s => `<tr><td>${s.id_inscripcion}</td><td><span class="badge bg-primary">${s.sacramento}</span></td><td>${s.nombre_solicitante}</td><td>${s.fecha_nacimiento}</td><td>${s.lugar_nacimiento}</td><td>${s.nombre_padre||'—'}</td><td>${s.nombre_madre||'—'}</td><td>${s.telefono}</td><td>${s.email}</td><td>${(s.fecha_registro||'').slice(0,10)}</td></tr>`).join('');
+  if (!datosReporte.length) { tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Sin resultados</td></tr>'; return; }
+  tbody.innerHTML = datosReporte.map(s => `<tr><td><span class="badge bg-primary">${s.sacramento}</span></td><td>${s.nombre_solicitante}</td><td>${s.fecha_nacimiento}</td><td>${s.lugar_nacimiento}</td><td>${s.nombre_padre||'—'}</td><td>${s.nombre_madre||'—'}</td><td>${s.telefono}</td><td>${s.email}</td><td>${(s.fecha_registro||'').slice(0,10)}</td></tr>`).join('');
 }
 function exportarExcel() {
   if (!datosReporte.length) { showToast('No hay datos para exportar.', 'error'); return; }

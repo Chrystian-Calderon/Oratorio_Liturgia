@@ -41,9 +41,9 @@ ob_start();
       <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle" id="tablaReporte">
           <thead class="table-primary">
-            <tr><th>ID</th><th>Persona</th><th>Concepto</th><th>Monto</th><th>Fecha</th><th>Método</th><th>Estado</th><th>Comprobante</th></tr>
+            <tr><th>Persona</th><th>Concepto</th><th>Monto</th><th>Fecha</th><th>Método</th><th>Estado</th><th>Comprobante</th></tr>
           </thead>
-          <tbody><tr><td colspan="8" class="text-center text-muted">Cargando...</td></tr></tbody>
+          <tbody><tr><td colspan="7" class="text-center text-muted">Cargando...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -70,10 +70,10 @@ function cargarReporte(e) {
 }
 function renderTabla() {
   const tbody = document.querySelector('#tablaReporte tbody');
-  if (!datosReporte.length) { tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">Sin resultados</td></tr>'; return; }
+  if (!datosReporte.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Sin resultados</td></tr>'; return; }
   tbody.innerHTML = datosReporte.map(p => {
     const b = p.estado === 'Completado' ? 'success' : p.estado === 'Pendiente' ? 'warning' : p.estado === 'Rechazado' ? 'danger' : 'info';
-    return `<tr><td>${p.id_pago}</td><td>${p.nombres} ${p.apellidos}<br><small class="text-muted">${p.ci}</small></td><td>${p.concepto}</td><td><strong>${Number(p.monto).toFixed(2)} Bs</strong></td><td>${p.fecha_pago}</td><td>${p.metodo_pago}</td><td><span class="badge bg-${b}">${p.estado}</span></td><td>${p.comprobante||'—'}</td></tr>`;
+    return `<tr><td>${p.nombres} ${p.apellidos}<br><small class="text-muted">${p.ci}</small></td><td>${p.concepto}</td><td><strong>${Number(p.monto).toFixed(2)} Bs</strong></td><td>${p.fecha_pago}</td><td>${p.metodo_pago}</td><td><span class="badge bg-${b}">${p.estado}</span></td><td>${p.comprobante||'—'}</td></tr>`;
   }).join('');
 }
 function exportarExcel() {

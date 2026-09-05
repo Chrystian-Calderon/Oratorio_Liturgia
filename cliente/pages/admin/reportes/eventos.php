@@ -46,11 +46,11 @@ ob_start();
         <table class="table table-hover table-bordered align-middle" id="tablaReporte">
           <thead class="table-primary">
             <tr>
-              <th>ID</th><th>Nombre</th><th>Estado</th><th>Fecha Evento</th>
+              <th>Nombre</th><th>Estado</th><th>Fecha Evento</th>
               <th>Actividades</th><th>Inscripciones</th><th>Creado</th>
             </tr>
           </thead>
-          <tbody><tr><td colspan="7" class="text-center text-muted">Cargando...</td></tr></tbody>
+          <tbody><tr><td colspan="6" class="text-center text-muted">Cargando...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -71,10 +71,10 @@ function cargarReporte(e) {
 }
 function renderTabla() {
   const tbody = document.querySelector('#tablaReporte tbody');
-  if (!datosReporte.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Sin resultados</td></tr>'; return; }
+  if (!datosReporte.length) { tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Sin resultados</td></tr>'; return; }
   tbody.innerHTML = datosReporte.map(e => {
     const badge = e.estado === 'Activo' ? 'success' : e.estado === 'Cancelado' ? 'danger' : 'secondary';
-    return `<tr><td>${e.id_evento}</td><td>${e.nombre_evento}</td><td><span class="badge bg-${badge}">${e.estado}</span></td><td>${e.fecha_evento || '—'}</td><td>${e.total_actividades}</td><td>${e.total_inscripciones}</td><td>${(e.fecha_creacion||'').slice(0,10)}</td></tr>`;
+    return `<tr><td>${e.nombre_evento}</td><td><span class="badge bg-${badge}">${e.estado}</span></td><td>${e.fecha_evento || '—'}</td><td>${e.total_actividades}</td><td>${e.total_inscripciones}</td><td>${(e.fecha_creacion||'').slice(0,10)}</td></tr>`;
   }).join('');
 }
 function exportarExcel() {

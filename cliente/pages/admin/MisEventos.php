@@ -993,7 +993,6 @@ $ultimasPersonas = $conexion->query($sql);
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Nombre del Evento</th>
                     <th>Fecha</th>
                     <th>Lugar</th>

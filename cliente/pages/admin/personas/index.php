@@ -49,7 +49,6 @@ $basePagina = url('/personas') . (empty($filtros) ? '?pagina=' : '?' . implode('
       <table class="table table-hover table-bordered align-middle text-center">
         <thead>
           <tr>
-            <th>ID</th>
             <th>CI</th>
             <th>Nombre Completo</th>
             <th>Tipo</th>
@@ -62,12 +61,11 @@ $basePagina = url('/personas') . (empty($filtros) ? '?pagina=' : '?' . implode('
         <tbody>
           <?php if (empty($personas)): ?>
             <tr>
-              <td colspan="8" class="text-center text-muted py-4">No hay personas registradas.</td>
+              <td colspan="7" class="text-center text-muted py-4">No hay personas registradas.</td>
             </tr>
           <?php else: ?>
             <?php foreach ($personas as $p): ?>
               <tr>
-                <td><?= (int) $p['id_persona'] ?></td>
                 <td><?= htmlspecialchars($p['ci']) ?></td>
                 <td class="text-start">
                   <div><?= htmlspecialchars(trim($p['nombres'] . ' ' . $p['apellidos'])) ?></div>

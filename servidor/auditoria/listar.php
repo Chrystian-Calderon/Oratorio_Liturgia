@@ -19,9 +19,10 @@ try {
     $tipos = '';
 
     if ($buscar !== '') {
-        $where[] = "(a.descripcion LIKE ? OR a.usuario_mysql LIKE ? OR a.tabla_afectada LIKE ?)";
-        array_push($parametros, "%{$buscar}%", "%{$buscar}%", "%{$buscar}%");
-        $tipos .= 'sss';
+        $where[] = "(a.descripcion LIKE ? OR a.usuario_mysql LIKE ? OR a.tabla_afectada LIKE ?
+                    OR p.nombres LIKE ? OR p.apellidos LIKE ?)";
+        array_push($parametros, "%{$buscar}%", "%{$buscar}%", "%{$buscar}%", "%{$buscar}%", "%{$buscar}%");
+        $tipos .= 'sssss';
     }
 
     if ($accion !== '') {
@@ -50,12 +51,14 @@ try {
 
     // Registros paginados
     $porPagina = 15;
+    $nombreUsuarioSql = "TRIM(CONCAT(COALESCE(p.nombres, ''), ' ', COALESCE(p.apellidos, '')))";
     $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
     if ($paginaActual < 1) $paginaActual = 1;
 
     $stmt = $conexion->prepare(
         "SELECT COUNT(*) AS total
          FROM auditoria a
+         LEFT JOIN personas p ON p.id_persona = a.id_usuario
          {$whereSql}"
     );
     if ($parametros) {
@@ -73,8 +76,10 @@ try {
     $stmt = $conexion->prepare(
         "SELECT a.id_auditoria, a.id_usuario, a.usuario_mysql, a.accion,
                 a.tabla_afectada, a.registro_id, a.fecha_hora, a.descripcion,
-                a.valores_anteriores, a.valores_nuevos
+                a.valores_anteriores, a.valores_nuevos,
+                {$nombreUsuarioSql} AS nombre_real_usuario
          FROM auditoria a
+         LEFT JOIN personas p ON p.id_persona = a.id_usuario
          {$whereSql}
          ORDER BY a.fecha_hora DESC
          LIMIT {$porPagina} OFFSET {$inicio}"

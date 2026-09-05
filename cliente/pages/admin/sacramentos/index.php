@@ -35,7 +35,6 @@ $basePagina = url('/sacramentos') . (($buscar ?? '') !== '' ? '?buscar=' . urlen
     <table class="table table-hover table-bordered align-middle text-center">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Sacramento</th>
           <th>Nombre del Solicitante</th>
           <th>Fecha Nacimiento</th>
@@ -48,12 +47,11 @@ $basePagina = url('/sacramentos') . (($buscar ?? '') !== '' ? '?buscar=' . urlen
       <tbody>
         <?php if (empty($sacramentos)): ?>
           <tr>
-            <td colspan="8" class="text-center text-muted py-4">No hay inscripciones sacramentales registradas.</td>
+            <td colspan="7" class="text-center text-muted py-4">No hay inscripciones sacramentales registradas.</td>
           </tr>
         <?php else: ?>
           <?php foreach ($sacramentos as $s): ?>
             <tr>
-              <td><?= (int) $s['id_inscripcion'] ?></td>
               <td><span class="badge bg-primary"><?= htmlspecialchars($s['sacramento']) ?></span></td>
               <td class="text-start"><?= htmlspecialchars($s['nombre_solicitante']) ?></td>
               <td><?= htmlspecialchars($s['fecha_nacimiento']) ?></td>

@@ -38,7 +38,7 @@ $sql = "SELECT id_actividad, nombre_actividad, tipo_actividad, fecha_inicio, fec
                dias_semana, hora_inicio, hora_fin, duracion, requisitos, costo,
                cupo_maximo, cupo_disponible, descripcion, id_evento, estado
         $sqlBase
-        ORDER BY fecha_inicio ASC
+        ORDER BY fecha_inicio DESC
         LIMIT $offset, $registrosPorPagina";
 
 $stmt = $conexion->prepare($sql);

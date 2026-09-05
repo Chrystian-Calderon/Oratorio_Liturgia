@@ -35,7 +35,6 @@ $basePagina = url('/universidades') . (($buscar ?? '') !== '' ? '?buscar=' . url
     <table class="table table-hover table-bordered align-middle text-center">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Nombre</th>
           <th>Sigla</th>
           <th>Ciudad</th>
@@ -48,12 +47,11 @@ $basePagina = url('/universidades') . (($buscar ?? '') !== '' ? '?buscar=' . url
       <tbody>
         <?php if (empty($universidades)): ?>
           <tr>
-            <td colspan="8" class="text-center text-muted py-4">No hay universidades registradas.</td>
+            <td colspan="7" class="text-center text-muted py-4">No hay universidades registradas.</td>
           </tr>
         <?php else: ?>
           <?php foreach ($universidades as $u): ?>
             <tr>
-              <td><?= (int) $u['id_universidad'] ?></td>
               <td class="text-start"><?= htmlspecialchars($u['nombre']) ?></td>
               <td><span class="badge bg-secondary"><?= htmlspecialchars($u['sigla'] ?? '—') ?></span></td>
               <td><?= htmlspecialchars($u['ciudad']) ?></td>

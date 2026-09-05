@@ -19,6 +19,7 @@
 function establecerAuditUser(mysqli $conexion): void
 {
     $idUsuario = $_SESSION['id_usuario'] ?? null;
+    $nombreUsuario = $_SESSION['usuario'] ?? null;
 
     $stmt = $conexion->prepare("SET @audit_user_id = ?");
     if ($idUsuario !== null) {
@@ -26,6 +27,16 @@ function establecerAuditUser(mysqli $conexion): void
     } else {
         $null = null;
         $stmt->bind_param("i", $null);
+    }
+    $stmt->execute();
+    $stmt->close();
+
+    $stmt = $conexion->prepare("SET @audit_usuario_nombre = ?");
+    if ($nombreUsuario !== null && $nombreUsuario !== '') {
+        $stmt->bind_param("s", $nombreUsuario);
+    } else {
+        $null = null;
+        $stmt->bind_param("s", $null);
     }
     $stmt->execute();
     $stmt->close();

@@ -148,11 +148,9 @@ ob_start();
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>ID</th>
                             <th>Usuario</th>
                             <th>Acción</th>
                             <th>Tabla Afectada</th>
-                            <th>Registro ID</th>
                             <th>Fecha / Hora</th>
                             <th>Descripción</th>
                             <th>Detalle</th>
@@ -160,7 +158,7 @@ ob_start();
                     </thead>
                     <tbody id="auditTableBody">
                         <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">
+                            <td colspan="6" class="text-center py-4 text-muted">
                                 <i class="fas fa-spinner fa-spin me-2"></i>Cargando datos...
                             </td>
                         </tr>
@@ -211,11 +209,11 @@ ob_start();
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <strong>Valores Anteriores:</strong>
-                        <div id="detalleAnteriores" class="json-detail mt-1">N/A</div>
+                        <pre id="detalleAnteriores" class="json-detail mt-1">N/A</pre>
                     </div>
                     <div class="col-md-6 mb-3">
                         <strong>Valores Nuevos:</strong>
-                        <div id="detalleNuevos" class="json-detail mt-1">N/A</div>
+                        <pre id="detalleNuevos" class="json-detail mt-1">N/A</pre>
                     </div>
                 </div>
             </div>
@@ -272,14 +270,14 @@ ob_start();
             .catch(function(e) {
                 console.error(e);
                 document.getElementById('auditTableBody').innerHTML =
-                    '<tr><td colspan="8" class="text-center text-danger py-4">Error al cargar datos</td></tr>';
+                    '<tr><td colspan="6" class="text-center text-danger py-4">Error al cargar datos</td></tr>';
             });
     }
 
     function renderTabla(registros) {
         var tbody = document.getElementById('auditTableBody');
         if (registros.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-muted">No se encontraron registros</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No se encontraron registros</td></tr>';
             return;
         }
         var html = '';
@@ -288,16 +286,14 @@ ob_start();
                              r.accion === 'UPDATE' ? 'badge-update' : 'badge-delete';
             var fecha = r.fecha_hora ? new Date(r.fecha_hora).toLocaleString('es-BO') : '-';
             html += '<tr>' +
-                '<td class="audit-id">#' + r.id_auditoria + '</td>' +
-                '<td class="audit-user">' + esc(r.usuario_mysql || '-') + '</td>' +
+                '<td class="audit-user">' + esc(r.nombre_real_usuario || r.usuario_mysql || '-') + '</td>' +
                 '<td><span class="badge-action ' + badgeClass + '">' + esc(r.accion) + '</span></td>' +
                 '<td>' + esc(r.tabla_afectada) + '</td>' +
-                '<td>' + (r.registro_id || '-') + '</td>' +
                 '<td class="audit-fecha">' + fecha + '</td>' +
                 '<td class="audit-desc">' + esc(r.descripcion || '-') + '</td>' +
                 '<td><button class="btn btn-outline-secondary btn-sm btn-detalle" ' +
                     'data-id="' + r.id_auditoria + '" ' +
-                    'data-usuario="' + esc(r.usuario_mysql || '') + '" ' +
+                    'data-usuario="' + esc(r.nombre_real_usuario || r.usuario_mysql || '') + '" ' +
                     'data-accion="' + esc(r.accion) + '" ' +
                     'data-tabla="' + esc(r.tabla_afectada) + '" ' +
                     'data-registro="' + (r.registro_id || '') + '" ' +
@@ -327,15 +323,24 @@ ob_start();
         document.getElementById('detalleRegistroId').textContent = btn.dataset.registro || 'N/A';
         document.getElementById('detalleFecha').textContent = btn.dataset.fecha ? new Date(btn.dataset.fecha).toLocaleString('es-BO') : '-';
         document.getElementById('detalleDesc').textContent = btn.dataset.desc || '-';
-        document.getElementById('detalleAnteriores').textContent = formatearJson(btn.dataset.anteriores);
-        document.getElementById('detalleNuevos').textContent = formatearJson(btn.dataset.nuevos);
+        document.getElementById('detalleAnteriores').textContent = formatearPlano(btn.dataset.anteriores);
+        document.getElementById('detalleNuevos').textContent = formatearPlano(btn.dataset.nuevos);
         new bootstrap.Modal(document.getElementById('detalleModal')).show();
     }
 
-    function formatearJson(str) {
+    function formatearPlano(str) {
         if (!str || str === 'null' || str === '') return 'N/A';
-        try { return JSON.stringify(JSON.parse(str), null, 2); }
+        var obj;
+        try { obj = JSON.parse(str); }
         catch(e) { return str; }
+        if (typeof obj !== 'object' || obj === null) return String(obj);
+        var lineas = [];
+        Object.keys(obj).forEach(function(k) {
+            var v = obj[k];
+            if (v === null || v === undefined || v === '') v = '—';
+            lineas.push(k + ': ' + v);
+        });
+        return lineas.join('\n');
     }
 
     function renderPaginacion(actual, total) {
@@ -369,9 +374,12 @@ ob_start();
     }
 
     function esc(s) {
-        var div = document.createElement('div');
-        div.textContent = s;
-        return div.innerHTML;
+        return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
     }
 
     document.getElementById('btnFiltrar').addEventListener('click', function() { cargarDatos(1); });
