@@ -50,7 +50,7 @@ $sql = "SELECT id_evento, nombre_evento, descripcion, fecha_evento, hora_evento,
                 WHEN estado = 'Inactivo' THEN 2
                 WHEN estado = 'Cancelado' THEN 3
             END,
-            fecha_evento ASC
+            fecha_evento DESC
         LIMIT $offset, $registrosPorPagina";
 
 $stmt = $conexion->prepare($sql);
